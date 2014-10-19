@@ -35,11 +35,13 @@ def get_model(signalname):
     model.set_signal_processes('tZq')
     
     
-    model.add_lognormal_uncertainty('ZZ_rate', math.log(1.3), 'ZZ')
-    model.add_lognormal_uncertainty('WZ_rate', math.log(1.3), 'WZ')
+    model.add_lognormal_uncertainty('ZZ_rate',    math.log(1.3), 'ZZ')
+    model.add_lognormal_uncertainty('WZ_rate',    math.log(1.3), 'WZ')
+    #model.distribution.set_distribution_parameters('WZ_rate', width=1000000) 
     model.add_lognormal_uncertainty('Zjets_rate', math.log(10), 'Zjets')
-    model.add_lognormal_uncertainty('TTZ_rate', math.log(1.3), 'TTZ')
-    model.add_lognormal_uncertainty('TTW_rate', math.log(1.3), 'TTW')
+    model.add_lognormal_uncertainty('TT',         math.log(10), 'Zjets')
+    model.add_lognormal_uncertainty('TTZ_rate',   math.log(1.3), 'TTZ')
+    model.add_lognormal_uncertainty('TTW_rate',   math.log(1.3), 'TTW')
     
     # Add some lognormal rate uncertainties. The first parameter is the name of the
     # uncertainty (which will also be the name of the nuisance parameter), the second
@@ -51,6 +53,9 @@ def get_model(signalname):
     # will be 100% correlated.
     
     
+    for p in model.processes:
+    	model.add_lognormal_uncertainty('lumi',        math.log(1.026), p)
+        model.add_lognormal_uncertainty('TrigLept',    math.log(1.05), p)
    
     
     return model
@@ -74,24 +79,42 @@ fit = mle(model, input = 'data', n = 1, signal_process_groups = signal_shapes, w
 
 
 
-one_sigma = 0.6827
-two_sigma = 0.95
+one_sigma   = 0.6827
+two_sigma   = 0.9545
+three_sigma = 0.9973
 
 print ("measurement of the cross-section")
-res = pl_interval(model, 'data', n=1, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+res    = pl_interval(model, 'data', n=1, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+res_2s = pl_interval(model, 'data', n=1, cls = [two_sigma], signal_process_groups = signal_shapes, options = options )
+res_3s = pl_interval(model, 'data', n=1, cls = [three_sigma], signal_process_groups = signal_shapes, options = options )
 #twi keys 'tZq' and the interval "one_sigma", it returns a list of double entries : lower and upper bound
-print [ "%.3f" % res['tZq'][0][0] , "%.3f" %res['tZq'][one_sigma][0][0] , "%.3f" %res['tZq'][one_sigma][0][1] ]
+print [ "%.5f" % res['tZq'][0][0] , "%.5f" %res['tZq'][one_sigma][0][0] , "%.5f" %res['tZq'][one_sigma][0][1] ]
 
-tZq_init_xs = 245.8
+tZq_init_xs = 0.0261
 
 
 tZq_fit  = tZq_init_xs*res['tZq'][0][0]
 tZq_down = tZq_init_xs*res['tZq'][one_sigma][0][0]
 tZq_up   = tZq_init_xs*res['tZq'][one_sigma][0][1] 
 
-print ["fitted cross section ", "%.1f" %tZq_fit]
-print ["down variation       ", "%.1f" %tZq_down]
-print ["up variation         ", "%.1f" %tZq_up]
+tZq_down_2S = tZq_init_xs*res_2s['tZq'][two_sigma][0][0]
+tZq_up_2S   = tZq_init_xs*res_2s['tZq'][two_sigma][0][1] 
+
+tZq_down_3S = tZq_init_xs*res_3s['tZq'][three_sigma][0][0]
+tZq_up_3S   = tZq_init_xs*res_3s['tZq'][three_sigma][0][1] 
+
+print ["fitted cross section ", "%.5f" %tZq_fit]
+print ["down variation       ", "%.5f" %tZq_down]
+print ["up variation         ", "%.5f" %tZq_up]
+
+print ["-2s variation       ", "%.5f" %tZq_down_2S]
+print ["+2s variation       ", "%.5f" %tZq_up_2S]
+
+print ["-3s variation       ", "%.5f" %tZq_down_3S]
+print ["+3s variation       ", "%.5f" %tZq_up_3S]
+
+
+
 
 
 

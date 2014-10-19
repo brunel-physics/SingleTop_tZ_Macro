@@ -10,8 +10,8 @@ void TreeReader::Loop(TString sample)
    initializeHisto(sample,                 true);
    initializeHisto(sample+"__lept__plus",       false);
    initializeHisto(sample+"__lept__minus",     false);
-   initializeHisto(sample+"__trig__plus",       false);
-   initializeHisto(sample+"__trig__minus",     false);
+   //initializeHisto(sample+"__trig__plus",       false);
+   //initializeHisto(sample+"__trig__minus",     false);
    //initializeHisto(sample+"__PDF__plus",      false);
    //initializeHisto(sample+"__PDF__minus",    false);
    initializeHisto(sample+"__jes__plus",        false);
@@ -52,11 +52,9 @@ void TreeReader::Loop(TString sample)
       //----------------------------------------------------------------------
       applyEventSel(thechannel, "",  sample);
       applyEventSel(thechannel, "lept__plus",      sample);
-      
-      applyEventSel(thechannel, "lept__plus",      sample);
       applyEventSel(thechannel, "lept__minus",    sample);
-      applyEventSel(thechannel, "trig__plus",      sample);
-      applyEventSel(thechannel, "trig__minus",    sample);
+      //applyEventSel(thechannel, "trig__plus",      sample);
+      //applyEventSel(thechannel, "trig__minus",    sample);
    //   applyEventSel(thechannel, "PDF__plus",     sample);
    //   applyEventSel(thechannel, "PDF__minus",   sample);
       applyEventSel(thechannel, "jes__plus",       sample);
@@ -108,6 +106,13 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       float * jet_btagdiscri = 0;
       int   * jet_flav       = 0;
       
+      evtweight = smalltree_evtweight;
+      iter_jets      = smalltree_njets;
+      jet_pt	     = smalltree_jet_pt;
+      jet_eta	     = smalltree_jet_eta;
+      jet_phi	     = smalltree_jet_phi;
+      jet_btagdiscri = smalltree_jet_btagdiscri;
+      jet_flav       = smalltree_jet_flav;
       
       
       if(systtype == "" || 
@@ -128,14 +133,15 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	//if(     systtype == "lept__plus")  cout << "in lept up " << endl;
 	//cout << "evtweight "  << evtweight << endl;
 	if(     systtype == "lept__plus")    evtweight = smalltree_weight_leptup;
-	else if(systtype == "lept__minus")  evtweight = smalltree_weight_leptdown;
+	else if(systtype == "lept__minus")   evtweight = smalltree_weight_leptdown;
 	else if(systtype == "trig__plus")    evtweight = smalltree_weight_trigup;
-	else if(systtype == "trig__minus")  evtweight = smalltree_weight_trigdown;
+	else if(systtype == "trig__minus")   evtweight = smalltree_weight_trigdown;
 	else if(systtype == "PDF__plus")     evtweight = smalltree_weight_PDFup;
-	else if(systtype == "PDF__minus")   evtweight = smalltree_weight_PDFdown;
+	else if(systtype == "PDF__minus")    evtweight = smalltree_weight_PDFdown;
 	//cout << "evtweight "  << evtweight << endl;
 	
       }else if(systtype == "jes__plus"){
+      
 	met_pt    = smalltree_met_jesup_pt;
 	met_phi   = smalltree_met_jesup_phi;
 	iter_jets      = smalltree_jesup_njets;
@@ -144,6 +150,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
         jet_phi        = smalltree_jet_jesup_phi;
         jet_btagdiscri = smalltree_jet_jesup_btagdiscri;
         jet_flav       = smalltree_jet_jesup_flav;
+	
       }else if(systtype == "jes__minus"){
 	met_pt    = smalltree_met_jesdown_pt;
 	met_phi   = smalltree_met_jesdown_phi;
@@ -261,7 +268,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
          fillHisto(thechannel, "LeptEtaZ1",  "afterZsel",  thesample,   leptZ1.Eta(), evtweight);
          fillHisto(thechannel, "LeptPtZ2",   "afterZsel",  thesample,   leptZ2.Pt(),  evtweight);
          fillHisto(thechannel, "LeptEtaZ2",  "afterZsel",  thesample,   leptZ2.Eta(), evtweight);
-         fillHisto(thechannel, "LeptPtW",	   "afterZsel",  thesample,   leptW.Pt(),   evtweight);
+         fillHisto(thechannel, "LeptPtW",    "afterZsel",  thesample,   leptW.Pt(),   evtweight);
          fillHisto(thechannel, "LeptEtaW",   "afterZsel",  thesample,   leptW.Eta(),  evtweight);
      
      

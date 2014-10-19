@@ -54,15 +54,15 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("TbartChan");
   samplelist.push_back("TtW");
   samplelist.push_back("TbartW");
-  //samplelist.push_back("WW");*/
+  //samplelist.push_back("WW");
   
   systlist.push_back("");  
   systlist.push_back("__lept__plus");
   systlist.push_back("__lept__minus");
-  systlist.push_back("__trig__plus");
-  systlist.push_back("__trig__minus");
+  //systlist.push_back("__trig__plus");
+  //systlist.push_back("__trig__minus");
   //systlist.push_back("__PDF__plus");
-  //systlist.push_back("__PDF__minus");
+  //systlist.push_back("__PDF__minus");*/
   systlist.push_back("__jes__plus");
   systlist.push_back("__jes__minus");
   systlist.push_back("__jer__plus"); 
