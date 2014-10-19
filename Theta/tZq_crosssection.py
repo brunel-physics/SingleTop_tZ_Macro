@@ -74,10 +74,6 @@ model_summary(model)
 
 signal_shapes = {'tZq': ['tZq']}  
 
-fit = mle(model, input = 'data', n = 1, signal_process_groups = signal_shapes, with_covariance=True, with_error=True, ks = True, chi2 = True, options = options)
-
-
-
 
 one_sigma   = 0.6827
 two_sigma   = 0.9545
@@ -117,5 +113,255 @@ print ["+3s variation       ", "%.5f" %tZq_up_3S]
 
 
 
+syst_down   = (res['tZq'][0][0] - res['tZq'][one_sigma][0][0])/res['tZq'][0][0]
+syst_up     = (res['tZq'][one_sigma][0][1] - res['tZq'][0][0])/res['tZq'][0][0]
+
+interval = (res['tZq'][one_sigma][0][1] - res['tZq'][one_sigma][0][0])/2
+
+
+print ["systdown/up (%)" , "%.1f" %(syst_down*100), "%.1f" %(syst_up*100)]
+print ["the interval is ", interval]
+print ["final cross section ", "%.1f" %tZq_fit, "-", "%.1f" %(syst_down*tZq_fit), "+", "%.1f" %(syst_up*tZq_fit)]
+
+ 
+resnll = nll_scan(model, 'data', n=1,  npoints=1000, range=[0.0, 10.], options = options)
+
+print ["nll scan"]
+finalplot = resnll['tZq'][0]
+
+#print ["profile scan ", resnll['tZq'][0].x ]
+
+#x = n.linspace(0, 4*n.pi,101)
+#y = n.cos(x)
+xprofil =  array("d", resnll['tZq'][0].x)
+yprofil =  array("d", resnll['tZq'][0].y)
+
+graph_profile = TGraph(len(xprofil), xprofil, yprofil)
+#graph_profile = TGraph(len(x), x,y)
+histo_graph = TH1F("histo_graph", "histo_graph", 100, xprofil[0], xprofil[len(xprofil)-1]);
+histo_graph.SetMaximum(graph_profile.GetMaximum());
+
+finalplot.write_txt('PRL.txt')
+#finalplot.histo()
+
+
+
+
+
+
+
+print ("------------------------------------------------------------------")
+print ("------------------------------------------------------------------")
+
+
+### For max. Likelihood Fit results
+
+print ["start fit mle"]
+fit = mle(model, input = 'data', n = 1, signal_process_groups = signal_shapes, with_covariance=True, with_error=True, ks = True, chi2 = True, options = options)
+print ["mle fit done"]
+# the output is (fitted value, uncertainty)
+# The first numbers in the brackets show how far we are from the nominal value (which is 0) after the fit. 
+#A value of 1 would mean 1 sigma deviation. So we are below 1 sigma deviation. 
+#The second numbers in the brackets illustrates the uncertainty on the fitted value, it should be below 1, 
+#and a value close to 1 corresponds to "no sensitivity" on the systematic.
+
+print ("Determine nuisance parameters and their uncertainties")
+parameter_values = {}
+parameter_uncert = {}
+for p in model.get_parameters([]):
+    parameter_values[p] = fit['tZq'][p][0][0]
+    parameter_uncert[p] = fit['tZq'][p][0][1]
+    
+    print [p, "%.4f" %parameter_values[p], "%.4f" %parameter_uncert[p] ]
+
+
+
+parameter_values['beta_signal'] =  res['tZq'][0][0]
+
+
+histos = evaluate_prediction(model, parameter_values, include_signal = True)
+write_histograms_to_rootfile(histos, 'histos-mle_tZq.root')
+
+print ("------------------------------------------------------------------")
+print ("------------------------------------------------------------------")
+
+
+
+
+
+
+#############################################
+#### Perform fit excluding one nuisance param
+#############################################
+
+
+if dosysttable:
+	syst = 0
+	tot_uncert =0
+
+        print ["--------------------------------"]
+	print ("Determine the impact of each systematic")
+	for p in model.get_parameters([]):
+		model_syst = model.copy()
+		model_syst.distribution.set_distribution_parameters(p, width = 0.0, mean = parameter_values[p], range = [parameter_values[p], parameter_values[p]])
+		res_syst = pl_interval(model_syst, 'data', n=1, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+	
+       		
+		interval_syst = (res_syst['tZq'][one_sigma][0][1] - res_syst['tZq'][one_sigma][0][0])/2
+		syst  = (abs(interval**2 - interval_syst**2))**(0.5)
+		tot_uncert = tot_uncert + (syst)**2
+		#print ["syst effect of (%)  ", p, "%.2f" %(syst*100)]
+		#print ["syst effect of (pb) ", p, "%.2f" %(syst*tZq_fit)]
+		print [p, "%.2f" %(syst*tZq_fit), "%.2f" %(syst*100)]
+		
+        	#print ["--------------------------------"]
+
+	#print ["total syst down/up" ,"%.4f" % total_down**(0.5), "%.4f" %total_up**(0.5)]
+	tot_uncert = tot_uncert**(0.5)
+	print ["total uncert %" , tot_uncert*100]
+	tot_uncert = tot_uncert*tZq_fit
+	print ["total uncert pb" , tot_uncert]
+
+
+print ("------------------------------------------------------------------")
+print ("------------------------------------------------------------------")
+
+################################
+#### Perform toy MC
+################################
+
+theBias0p5 = TH1F('theBias0p5', 'theBias0p5', 100, 0.3, 0.7)
+theBias0p6 = TH1F('theBias0p6', 'theBias0p6', 100, 0.4, 0.8)
+theBias0p7 = TH1F('theBias0p7', 'theBias0p7', 100, 0.5, 0.9)
+theBias0p8 = TH1F('theBias0p8', 'theBias0p8', 100, 0.6, 1.0)
+theBias0p9 = TH1F('theBias0p9', 'theBias0p9', 100, 0.7, 1.1)
+theBias1p0 = TH1F('theBias1p0', 'theBias1p0', 100, 0.8, 1.2)
+theBias1p1 = TH1F('theBias1p1', 'theBias1p1', 100, 0.9, 1.3)
+theBias1p2 = TH1F('theBias1p2', 'theBias1p2', 100, 1.0, 1.4)
+theBias1p3 = TH1F('theBias1p3', 'theBias1p3', 100, 1.1, 1.5)
+theBias1p4 = TH1F('theBias1p4', 'theBias1p4', 100, 1.2, 1.6)
+theBias1p5 = TH1F('theBias1p5', 'theBias1p5', 100, 1.3, 1.7)
+
+
+thePull0p5 = TH1F('thePull0p5', 'thePull0p5', 200, -4, 4)
+thePull0p6 = TH1F('thePull0p6', 'thePull0p6', 200, -4, 4)
+thePull0p7 = TH1F('thePull0p7', 'thePull0p7', 200, -4, 4)
+thePull0p8 = TH1F('thePull0p8', 'thePull0p8', 200, -4, 4)
+thePull0p9 = TH1F('thePull0p9', 'thePull0p9', 200, -4, 4)
+thePull1p0 = TH1F('thePull1p0', 'thePull1p0', 200, -4, 4)
+thePull1p1 = TH1F('thePull1p1', 'thePull1p1', 200, -4, 4)
+thePull1p2 = TH1F('thePull1p2', 'thePull1p2', 200, -4, 4)
+thePull1p3 = TH1F('thePull1p3', 'thePull1p3', 200, -4, 4)
+thePull1p4 = TH1F('thePull1p4', 'thePull1p4', 200, -4, 4)
+thePull1p5 = TH1F('thePull1p5', 'thePull1p5', 200, -4, 4)
+
+if dobiasscan:
+	for i in range(11):
+		print ("perform toy MC for bias scan")
+		fixed_dist = get_fixed_dist(model.distribution)
+		#mle(model, "toys:1.0", 1000, nuisance_prior_toys = fixed_dist)
+		if i==0:
+			#res_toy = pl_interval(model, 'toys:0.5', n=1100, cls = [one_sigma], signal_process_groups = signal_shapes, nuisance_prior_toys = fixed_dist )
+			res_toy = pl_interval(model, 'toys:0.5', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes , options = options)
+			for j in range(10000):
+				theBias0p5.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 0.5)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull0p5.Fill(pull)
+			#print ["%.4f" % res_toy['tZq'][0][0], res_toy['tZq'][one_sigma][0][1], res_toy['tZq'][one_sigma][0][1]]
+	        if i==1:
+		        res_toy = pl_interval(model, 'toys:0.6', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes , options = options)
+		        for j in range(10000):
+		       		theBias0p6.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 0.6)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull0p6.Fill(pull)
+	        if i==2:
+		        res_toy = pl_interval(model, 'toys:0.7', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes , options = options)
+		        for j in range(10000):
+			        theBias0p7.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 0.7)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull0p7.Fill(pull)
+	        if i==3:
+		        res_toy = pl_interval(model, 'toys:0.8', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes, options = options)
+		        for j in range(10000):
+			        theBias0p8.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 0.8)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull0p8.Fill(pull)
+	        if i==4:
+		        res_toy = pl_interval(model, 'toys:0.9', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes, options = options)
+		        for j in range(10000):
+			        theBias0p9.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 0.9)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull0p9.Fill(pull)
+	        if i==5:
+		        res_toy = pl_interval(model, 'toys:1.0', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+		        for j in range(10000):
+			        theBias1p0.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.0)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p0.Fill(pull)
+	        if i==6:
+		        res_toy = pl_interval(model, 'toys:1.1', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes , options = options)
+		        for j in range(10000):
+			        theBias1p1.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.1)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p1.Fill(pull)
+	        if i==7:
+		        res_toy = pl_interval(model, 'toys:1.2', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+		        for j in range(10000):
+			        theBias1p2.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.2)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p2.Fill(pull)
+	        if i==8:
+		        res_toy = pl_interval(model, 'toys:1.3', n=10101, cls = [one_sigma], signal_process_groups = signal_shapes , options = options)
+		        for j in range(10000):
+			        theBias1p3.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.3)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p3.Fill(pull)
+	        if i==9:
+		        res_toy = pl_interval(model, 'toys:1.4', n=10100, cls = [one_sigma], signal_process_groups = signal_shapes, options = options)
+		        for j in range(10000):
+			        theBias1p4.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.4)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p4.Fill(pull)         
+	        if i==10:
+		        res_toy = pl_interval(model, 'toys:1.5', n=10101, cls = [one_sigma], signal_process_groups = signal_shapes, options = options )
+		        for j in range(10000):
+			        theBias1p5.Fill(res_toy['tZq'][0][j])
+				pull = (res_toy['tZq'][0][j] - 1.5)/(0.5*(res_toy['tZq'][one_sigma][j][1] -res_toy['tZq'][one_sigma][j][0]))
+				thePull1p5.Fill(pull)
+	       
+	        print [ "%.4f" %res_toy['tZq'][0][0] , "%.4f" %res_toy['tZq'][one_sigma][0][0] , "%.4f" %res_toy['tZq'][one_sigma][0][1] ] 
+
+
+
+outputfile = TFile("output_pseudo.root", "recreate");
+outputfile.cd()
+theBias0p5.Write()
+theBias0p6.Write()
+theBias0p7.Write()
+theBias0p8.Write()
+theBias0p9.Write()
+theBias1p0.Write()
+theBias1p1.Write()
+theBias1p2.Write()
+theBias1p3.Write()
+theBias1p4.Write()
+theBias1p5.Write()
+
+thePull0p5.Write()
+thePull0p6.Write()
+thePull0p7.Write()
+thePull0p8.Write()
+thePull0p9.Write()
+thePull1p0.Write()
+thePull1p1.Write()
+thePull1p2.Write()
+thePull1p3.Write()
+thePull1p4.Write()
+thePull1p5.Write()
+histo_graph.Write()
+graph_profile.Write()
+
+report = model_summary(model)
+#report.write_html('htmlout')
 
 
