@@ -233,7 +233,6 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   //---------------------------------------------
   //retrieve and add histograms
   //---------------------------------------------
-  
   int niter_data = 0;
   int niter_chan  = 0;
   cout << "channel " << channel << endl;
@@ -249,8 +248,8 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     for(unsigned int idatasampl = 0; idatasampl< dataSample_list.size() ; idatasampl++){
       
       //TString histo_Data_name   = varname+"_"+channel+"_"+selection+ "_"+dataSample_list[idatasampl];
-      TString histo_Data_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "_"+dataSample_list[idatasampl];
-      
+      TString histo_Data_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "__"+dataSample_list[idatasampl];
+      cout << histo_Data_name << endl;
       if( niter_data == 0 && niter_chan == 0){
         histo_data = (TH1F*)filechannel->Get(histo_Data_name);
         if(varname == "mWT") histo_data->Rebin(5);
@@ -274,7 +273,7 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     //--------------------
     for(unsigned int imc = 0; imc < mcSample_list.size(); imc++){
     
-      TString histo_mc_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "_"+ mcSample_list[imc];
+      TString histo_mc_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "__"+ mcSample_list[imc];
       TH1F * histo_tmp = (TH1F*)filechannel->Get(histo_mc_name);
       if(varname == "mWT") histo_tmp->Rebin(5);
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_mc_name << endl;
@@ -296,7 +295,7 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     //-----------------------------
     for(unsigned int idd = 0; idd < dataDrivenTemplates_list.size(); idd++){
     
-      TString histo_dd_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "_"+ dataDrivenTemplates_list[idd];
+      TString histo_dd_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "__"+ dataDrivenTemplates_list[idd];
       TH1F * histo_tmp = (TH1F*)filechannel->Get(histo_dd_name);
       if(varname == "mWT") histo_tmp->Rebin(5);
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_dd_name << endl;
@@ -368,7 +367,7 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     histo_dd->SetFillColor(kAzure-2);
     cout << "nDY " << nDY << endl;
     cout << "histo_dd->Integral() " << histo_dd->Integral() << endl;
-    histo_dd->Scale(nDY/histo_dd->Integral());
+    if(histo_dd->Integral() > 0.0001) histo_dd->Scale(nDY/histo_dd->Integral());
     the_stack_histo->Add(histo_dd);
   }
   
