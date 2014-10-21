@@ -276,15 +276,29 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
       TString histo_mc_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "__"+ mcSample_list[imc];
       TH1F * histo_tmp = (TH1F*)filechannel->Get(histo_mc_name);
       if(varname == "mWT") histo_tmp->Rebin(5);
+      
+      int numchan = -1;
+      
+      if(channel_list[ichan] == "mumumu" ) numchan = 0;
+      if(channel_list[ichan] == "mumue"  ) numchan = 1;
+      if(channel_list[ichan] == "eemu"   ) numchan = 2;
+      if(channel_list[ichan] == "eee"    ) numchan = 3;
+      
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_mc_name << endl;
-      if(niter_chan == 0){
-	if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) histo_tmp->Scale(sf_DY[0]);
-	if(applyDD && mcSample_list[imc] == "WZ"                                             ) histo_tmp->Scale(sf_WZ[0]);
-        histo_mcSamples.push_back(histo_tmp);
+      if(sumChannels){ 
+        if(niter_chan == 0){
+	  if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[0]); cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[0] << endl;}
+	  if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[0]); cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[0] << endl;}                             
+          histo_mcSamples.push_back(histo_tmp);
+        }else{
+	  if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[niter_chan]);cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[niter_chan] << endl;}
+	  if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[niter_chan]);cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[niter_chan] << endl;}
+          histo_mcSamples[imc]->Add(histo_mcSamples[imc], histo_tmp);
+        }
       }else{
-	if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) histo_tmp->Scale(sf_DY[niter_chan]);
-	if(applyDD && mcSample_list[imc] == "WZ"                                             ) histo_tmp->Scale(sf_WZ[niter_chan]);
-        histo_mcSamples[imc]->Add(histo_mcSamples[imc], histo_tmp);
+         if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[numchan]); cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[numchan] << endl;}
+	 if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[numchan]); cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[numchan] << endl; }                             
+         histo_mcSamples.push_back(histo_tmp); 
       }
         
     }
