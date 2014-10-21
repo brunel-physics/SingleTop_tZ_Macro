@@ -7,24 +7,26 @@ void TreeReader::Loop(TString sample)
    
    TFile * theoutputfile = new TFile( ("outputroot/histofile_"+sample+".root").Data() , "recreate");
    
-   initializeHisto(sample,                 true);
-   initializeHisto(sample+"__lept__plus",       false);
-   initializeHisto(sample+"__lept__minus",     false);
-   //initializeHisto(sample+"__trig__plus",       false);
-   //initializeHisto(sample+"__trig__minus",     false);
-   //initializeHisto(sample+"__PDF__plus",      false);
-   //initializeHisto(sample+"__PDF__minus",    false);
-   initializeHisto(sample+"__jes__plus",        false);
-   initializeHisto(sample+"__jes__minus",      false);
-   initializeHisto(sample+"__jer__plus",        false); 
-   initializeHisto(sample+"__jer__minus",      false);
-   initializeHisto(sample+"__metuncls__plus",   false);
-   initializeHisto(sample+"__metuncls__minus", false); 
+   
+    
+    
+   for(unsigned int i=0; i< systlist.size(); i++){
+     TString samplename = "";
+     if( systlist[i]== "") samplename = sample;
+     else                  samplename = sample+"__"+systlist[i];
+     
+     bool firstinit = false;
+     if(i==0) firstinit = true;
+     //cout << " iiii " << i << endl;
+     //cout << samplename << endl;
+     initializeHisto(samplename, firstinit);
+    }
+    
     
    cout << "starting loops on events " << endl;
    
    
- 
+   
    
    if (fChain == 0) return;
 
@@ -50,20 +52,8 @@ void TreeReader::Loop(TString sample)
       //"leptup", "leptdown", "trigup", "trigdown", "PDFup", "PDFdown" 
       //"jesup", "jesdown", "jerup", "jerdown", "metunclsup", "metunclsdown"  
       //----------------------------------------------------------------------
-      applyEventSel(thechannel, "",  sample);
-      applyEventSel(thechannel, "lept__plus",      sample);
-      applyEventSel(thechannel, "lept__minus",    sample);
-      //applyEventSel(thechannel, "trig__plus",      sample);
-      //applyEventSel(thechannel, "trig__minus",    sample);
-   //   applyEventSel(thechannel, "PDF__plus",     sample);
-   //   applyEventSel(thechannel, "PDF__minus",   sample);
-      applyEventSel(thechannel, "jes__plus",       sample);
-      applyEventSel(thechannel, "jes__minus",     sample);
-      applyEventSel(thechannel, "jer__plus",       sample); 
-      applyEventSel(thechannel, "jer__minus",     sample);
-      applyEventSel(thechannel, "metuncls__plus",  sample);
-      applyEventSel(thechannel, "metuncls__minus",sample); 
       
+      for(unsigned int isyst=0; isyst< systlist.size(); isyst++) applyEventSel(thechannel, systlist[isyst], sample);
       
       
       
@@ -94,10 +84,10 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       double met_pt    = smalltree_met_pt;
       double met_phi   = smalltree_met_phi;
       double evtweight = -1;
-      
+      //cout << "--------------" << sample << endl;
       TString thesample = sample;
       if(systtype != "") thesample = thesample + "__"+systtype;
-      
+      //cout << thesample << thesample << endl;
       //cout << "smalltree_met_pt   " << smalltree_met_pt<< endl;
       int iter_jets          = 0;
       float * jet_pt         = 0;
@@ -195,8 +185,15 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       
       
       //reconstruction of the W transverse mass
+      //cout << "smalltree_lept_flav[2] " << smalltree_lept_flav[2]  << endl;
+      
+      if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > isoEl &&  
+      		 (sample != "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
+      if(abs(smalltree_lept_flav[2]) == 13  && smalltree_lept_iso[2] > isoMu &&  
+      		 (sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
       
       
+      //reconstruction of the W transverse mass
       
       double mTW = pow(
 			 2*leptW.Pt()*met_pt*(1-cos(leptW.Phi() -  met_phi))
@@ -433,6 +430,14 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
              double cosThetaStar = cos(letp_WRF.Vect().Angle(theWcand_topRF.Vect()));
             
 	      tree_cosThetaStar = cosThetaStar;
+	      
+	      //store tree channel
+	      if(thechannel == "mumumu") tree_Channel = 0;
+	      if(thechannel == "mumue" ) tree_Channel = 1;
+	      if(thechannel == "eemu"  ) tree_Channel = 2;
+	      if(thechannel == "eee"   ) tree_Channel = 3;
+	      
+	      
 	      if(theTree_map[thesample] != 0)  theTree_map[thesample]->Fill();
 	      else cout << "wrong sample name given to TTree " << thesample <<endl;
 	      

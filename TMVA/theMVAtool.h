@@ -72,7 +72,9 @@ public :
    
    std::map<TString, TFile* > theOutputFileMap;
    
-   
+   //to apply scale factor when reading
+   std::vector<double > sf_DY, sf_DY_err;
+   std::vector<double > sf_WZ, sf_WZ_err;
    
    TMVA::Reader *reader; 
    

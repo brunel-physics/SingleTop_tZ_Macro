@@ -26,6 +26,14 @@ void setNjetSel(TH1F * thehisto, int njetsel){
 
 void ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::vector<TString> stytList, TString intputfilename, TString outputfilename){
   
+  
+  
+  
+  
+  
+  
+  
+  
   TFile * inputfile	  = new TFile( intputfilename.Data() );
 
 
@@ -34,8 +42,8 @@ void ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
   TH1F * histBdt_DataMuEG = (TH1F*)inputfile->Get(  (inputdistrib+"__DataMuEG").Data())->Clone();
   
   
-   histBdt_DataMu->Add(histBdt_DataEG);
-   histBdt_DataMu->Add(histBdt_DataMuEG);
+  histBdt_DataMu->Add(histBdt_DataEG);
+  histBdt_DataMu->Add(histBdt_DataMuEG);
   
   
   std::vector<TH1F* > distrib_MC;

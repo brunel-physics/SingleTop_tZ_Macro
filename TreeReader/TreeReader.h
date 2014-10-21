@@ -159,7 +159,7 @@ public :
    
    
   
-   TreeReader(TTree *tree=0, TString sample="");
+   TreeReader(TTree *tree=0, TString sample="", std::vector<TString> thesystlist = std::vector<TString>());
    virtual ~TreeReader();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -195,6 +195,7 @@ public :
    int numb_histo;
    
    void deleteHisto();
+   std::vector<TString> systlist;
    //------------------------------------
   //TTree and banches used for BDT
   //------------------------------------
@@ -232,7 +233,7 @@ public :
   
   float tree_EvtWeight;
   
-   
+  float isoEl, isoMu;
    
    
    
@@ -241,7 +242,7 @@ public :
 #endif
 
 #ifdef TreeReader_cxx
-TreeReader::TreeReader(TTree *tree, TString sample) : fChain(0) 
+TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesystlist) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -254,6 +255,9 @@ TreeReader::TreeReader(TTree *tree, TString sample) : fChain(0)
 
    }
    Init(tree);
+   systlist = thesystlist;
+   isoEl = 100.;
+   isoMu = 100.;
 }
 
 TreeReader::~TreeReader()

@@ -71,6 +71,19 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__metuncls__minus"); 
   
   
+  
+  sf_DY.push_back(0.77); sf_DY_err.push_back(0.64);
+  sf_DY.push_back(0.97); sf_DY_err.push_back(0.21); 
+  sf_DY.push_back(2.89); sf_DY_err.push_back(1.27);
+  sf_DY.push_back(1.39); sf_DY_err.push_back(0.23); 
+  
+  
+  sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.04);
+  sf_WZ.push_back(0.87); sf_WZ_err.push_back(0.05); 
+  sf_WZ.push_back(0.67); sf_WZ_err.push_back(0.04);
+  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);
+  
+  
 } 
 
 
@@ -216,21 +229,41 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars){
   
   
   unsigned int varsize = varList.size();
-   //-----------------------------------------------------
-   //for tZq signal
-   //-----------------------------------------------------
+  
+  
   input->cd();
   //cout << "sample " << sample << endl;
   TTree* theTree = (TTree*)input->Get("Ttree_"+sample);
   for (unsigned int ivar=0; ivar<varsize; ivar++) theTree->SetBranchAddress( varList[ivar].Data(), &(treevars[ivar]) );
   float theweight = 0;
   theTree->SetBranchAddress( "tree_EvtWeight", &theweight );
-  //cout << "theTree->GetEntries() " << theTree->GetEntries() << endl;
+  int theChannel = -1;
+  theTree->SetBranchAddress( "tree_Channel", &theChannel );
+  
   if(theTree == 0) cout << "no TTree found with name " << "Ttree_"+sample << endl;
   for(int i=0; i< theTree->GetEntries(); i++){
     theTree->GetEntry(i);
-    //cout << "in loop " << endl;
-    //cout << "Ttree_"+sample  << "  "  << varList[25] << "  " << treevars[25]<< endl;
+    
+    double sf_local = 1.;
+  
+    if(sample == "WZ" ){
+      //cout << "theChannel " << theChannel << endl;
+      if(theChannel == 0) sf_local = sf_WZ[0]; 
+      if(theChannel == 1) sf_local = sf_WZ[1]; 
+      if(theChannel == 2) sf_local = sf_WZ[2]; 
+      if(theChannel == 3) sf_local = sf_WZ[3]; 
+    } 
+    
+    if(sample == "Zjets" || sample ==  "DYToLL_M10-50"){
+      if(theChannel == 0) sf_local = sf_DY[0]; 
+      if(theChannel == 1) sf_local = sf_DY[1]; 
+      if(theChannel == 2) sf_local = sf_DY[2]; 
+      if(theChannel == 3) sf_local = sf_DY[3]; 
+    } 
+    //if(sample == "WZ") cout << "weight 1 " << theweight << endl;
+    theweight*=sf_local;
+    //if(sample == "WZ") cout << "weight 2 " << theweight << endl;
+    
     double mvaValue = reader->EvaluateMVA( "BDT");
     //cout << reader->EvaluateMVA( "BDT") << endl;
     fillHisto(sample, treevars, mvaValue, theweight);
