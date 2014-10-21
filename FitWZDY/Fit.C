@@ -42,14 +42,14 @@
 using namespace std;
 using namespace RooFit ;
 
-std::string channel = "eee";
+std::string channel = "eemu";
 int systematics 	  = -1;
 int systematics_TTbar	  = 0;
 int systematics_SingleTop = 0;
 int systematics_WW	  = 0;
 int systematics_ZZ	  = 0;
 
-TString selectionstep = "btag";
+TString selectionstep = "leptcut";
 //selectionstep = "jet";
 //selectionstep = "btag";
 
@@ -123,7 +123,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   std::vector<TH1F*> histo_List_Data;
   for (unsigned int i=0;i<Channels.size();i++)
   {
-    std::string histoname = (obs+"_"+Channels[i]+"_"+selection+"_"+Datasets[i]).Data();
+    std::string histoname = (obs+"_"+Channels[i]+"_"+selection+"__"+Datasets[i]).Data();
     std::cout << "Loading plot for data '" << histoname << "' ... " << std::endl;
     histo_List_Data.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List_Data[i]==0) { std::cout << "ERROR : plot not found" << std::endl; return false; }
@@ -139,7 +139,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for (unsigned int j=0; j<Channels.size();j++)
   for(unsigned int i=0; i<histoName_List.size(); i++)
   {
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"_"+histoName_List[i]).Data();
+    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List[i]).Data();
     std::cout << "Loading plot for MC '" << histoname << "' ... " << std::endl;
     histo_List.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ) );
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found" << std::endl; return false; }
@@ -168,7 +168,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for(unsigned int i=0; i<histoName_List_DY.size(); i++)
   { 
     f_data2->cd();
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"_"+histoName_List_DY[i]).Data();
+    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List_DY[i]).Data();
     std::cout << "Loading plot DY from data '" << histoname << "' ... " << std::endl;
     histo_List_DY.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found'" << std::endl; return false; }
@@ -182,7 +182,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for(unsigned int i=0; i<histoName_List_DY_MC.size(); i++)
   { 
     f_data->cd();
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"_"+histoName_List_DY_MC[i]).Data();
+    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List_DY_MC[i]).Data();
     std::cout << "Loading plot for DY from MC '" << histoname << "' ... " << std::endl;
     histo_List_DY_MC.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found'" << std::endl; return false; }
