@@ -186,7 +186,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       
       //reconstruction of the W transverse mass
       //cout << "smalltree_lept_flav[2] " << smalltree_lept_flav[2]  << endl;
-      
+      /*
       if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > isoEl &&  
       		 (sample != "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
       if(abs(smalltree_lept_flav[2]) == 13  && smalltree_lept_iso[2] > isoMu &&  
@@ -199,7 +199,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
         if(abs(smalltree_lept_flav[0]) == 11  && smalltree_lept_iso[0] > 0.1) return;
         if(abs(smalltree_lept_flav[1]) == 11  && smalltree_lept_iso[1] > 0.1) return;
         if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > 0.1) return;
-      }
+      }*/
       
       //reconstruction of the W transverse mass
       
