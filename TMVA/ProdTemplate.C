@@ -10,7 +10,7 @@
 #include "THStack.h"
 #include <iostream>
 
-
+bool doDD = true;
 
 void setNjetSel(TH1F * thehisto, int njetsel){
   
@@ -25,13 +25,6 @@ void setNjetSel(TH1F * thehisto, int njetsel){
  
 
 void ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::vector<TString> stytList, TString intputfilename, TString outputfilename){
-  
-  
-  
-  
-  
-  
-  
   
   
   TFile * inputfile	  = new TFile( intputfilename.Data() );
@@ -49,25 +42,41 @@ void ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
   std::vector<TH1F* > distrib_MC;
   std::vector<TH1F* > distrib_MC_sys;
   
-  
+  //deal with nominal templates
   for(unsigned int i=0; i<sampleList.size(); i++){ 
     cout << inputdistrib+"__"+sampleList[i]  << endl;
-    distrib_MC.push_back( (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]).Data() )->Clone() ); 
+    if(doDD && sampleList[i] == "Zjets") continue;
+    TH1F * tmp = (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]).Data() )->Clone();
+    if(sampleList[i] == "tZq") tmp->Scale(3.);
+    
+    distrib_MC.push_back( tmp ); 
   } 
   
   
-  
+  //deal with systematic templates
   for(unsigned int i=0; i<sampleList.size(); i++){
     if(sampleList[i] == "DataMu" || sampleList[i] == "DataEG" || sampleList[i] == "DataMuEG" ) continue;
+    if(doDD && sampleList[i] == "Zjets") continue;
     for(unsigned int j=0; j<stytList.size(); j++){
         cout <<  inputdistrib+"__"+sampleList[i]+""+stytList[j]   << endl;
-	distrib_MC_sys.push_back( (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]+""+stytList[j]).Data() )->Clone() );  
+	TH1F * tmp = (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]+""+stytList[j]).Data() )->Clone() ;
+	if(sampleList[i] == "tZq") tmp->Scale(3.);
+	distrib_MC_sys.push_back( tmp);  
     }
   }  
   
   
+  //deal with dd templates
+  TH1F * dataMu_Zenriched   = (TH1F*)inputfile->Get( (inputdistrib+"__"+"DataMuZenriched").Data() );
+  TH1F * dataMuEG_Zenriched = (TH1F*)inputfile->Get( (inputdistrib+"__"+"DataMuEGZenriched").Data() );
+  TH1F * dataEG_Zenriched   = (TH1F*)inputfile->Get( (inputdistrib+"__"+"DataEGZenriched").Data() );
   
-
+  TH1F * zJets_forNorm      = (TH1F*)inputfile->Get( (inputdistrib+"__"+"Zjets").Data() );
+   
+  dataMu_Zenriched->Add(dataMuEG_Zenriched);
+  dataMu_Zenriched->Add(dataEG_Zenriched);
+  
+  if(dataMu_Zenriched->Integral() > 0.0001) dataMu_Zenriched->Scale(zJets_forNorm->Integral()/dataMu_Zenriched->Integral());
    
   //for(unsigned int i=0; i<stytList.size(); i++) outputfilename+="_"+stytList[i];
   outputfilename ="template_theta.root"; 
@@ -82,6 +91,7 @@ void ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
   
   
   for(unsigned int i=0; i<distrib_MC.size(); i++)               distrib_MC[i]->Write();
+  if(doDD) dataMu_Zenriched->Write((inputdistrib+"__"+"Zjets").Data());
   for(unsigned int i=0; i<distrib_MC_sys.size(); i++)           distrib_MC_sys[i]->Write();
   
   

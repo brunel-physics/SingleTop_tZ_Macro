@@ -71,7 +71,7 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__metuncls__minus"); 
   
   
-  
+  /*
   sf_DY.push_back(0.77); sf_DY_err.push_back(0.64);
   sf_DY.push_back(0.97); sf_DY_err.push_back(0.21); 
   sf_DY.push_back(2.89); sf_DY_err.push_back(1.27);
@@ -81,7 +81,21 @@ theMVAtool::theMVAtool(){
   sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.04);
   sf_WZ.push_back(0.87); sf_WZ_err.push_back(0.05); 
   sf_WZ.push_back(0.67); sf_WZ_err.push_back(0.04);
-  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);
+  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);*/
+  
+  sf_DY.push_back(0.00);
+  sf_DY.push_back(1.17);
+  sf_DY.push_back(1.52);
+  sf_DY.push_back(1.32);
+
+
+  sf_WZ.push_back(0.95);
+  sf_WZ.push_back(0.77);
+  sf_WZ.push_back(0.66);
+  sf_WZ.push_back(1.13);
+
+  
+  
   
   
 } 
@@ -114,13 +128,22 @@ void theMVAtool::doTraining(){
   
   TFile *input_sig      = TFile::Open( "../TreeReader/outputroot/histofile_tZq.root" );
   TFile *input_wz       = TFile::Open( "../TreeReader/outputroot/histofile_WZ.root" );
+  TFile *input_DY1      = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );
+  TFile *input_DY2      = TFile::Open( "../TreeReader/outputroot/histofile_DataEGZenriched.root" );
+  TFile *input_DY3      = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );
   
   
   TTree *signal            = (TTree*)input_sig->Get("Ttree_tZq");
-  TTree *background     = (TTree*)input_wz->Get("Ttree_WZ");
+  TTree *background_WZ     = (TTree*)input_wz->Get("Ttree_WZ");
+  //TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataMuZenriched");
+  //TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataEGZenriched");
+  //TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuZenriched");
   
   factory->AddSignalTree    ( signal,	   1.);
-  factory->AddBackgroundTree( background,  1.);
+  factory->AddBackgroundTree( background_WZ,  1.);
+  //factory->AddBackgroundTree( background_DY1,  0.01);
+  //factory->AddBackgroundTree( background_DY2,  0.10);
+  //factory->AddBackgroundTree( background_DY3,  0.20);
   
  
   for(unsigned int i=0; i< varList.size() ; i++) factory->AddVariable( varList[i].Data(),    'F');

@@ -193,14 +193,25 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       		 (sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
       
       
+      
+      if(sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched"){
+      
+        if(abs(smalltree_lept_flav[0]) == 11  && smalltree_lept_iso[0] > 0.1) return;
+        if(abs(smalltree_lept_flav[1]) == 11  && smalltree_lept_iso[1] > 0.1) return;
+        if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > 0.1) return;
+      }
+      
       //reconstruction of the W transverse mass
       
       double mTW = pow(
-			 2*leptW.Pt()*met_pt*(1-cos(leptW.Phi() -  met_phi))
-			 ,0.5);
+         		2*leptW.Pt()*met_pt*(1-cos(leptW.Phi() -  met_phi))
+         		,0.5);
       //cout << "mTW " <<  mTW<< endl;
       //reconstruction of the Z invarian mass
       double InvMass_ll = Zcand.M();
+     
+     
+     
      
      int njets=0;
      int nbjets = 0;
@@ -308,15 +319,25 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
            fillHisto(thechannel, "CutFlow", "",  thesample, 2, evtweight);
 	   //----------------------------
 	   //no more than one btagged jet 
-	   if(nbjets <=1){
+	   if(nbjets <=2 && njets<=3 && mTW> 40 ){
 	  
+	     float HT = 0;
+	     float ST = 0;
+	     
              for(int ijet=0; ijet<iter_jets; ijet++){
                if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
                fillHisto(thechannel, "JetPt",     "afterbjetsel",  thesample,  jet_pt[ijet] , evtweight);
                fillHisto(thechannel, "JetEta",    "afterbjetsel",  thesample,  jet_eta[ijet] , evtweight);
+	       HT+= jet_pt[ijet];
+	       ST+= jet_pt[ijet];
              }
-     
-     
+             
+	     ST+= leptZ1.Pt()+leptZ1.Pt()+leptW.Pt();
+	     
+	     fillHisto(thechannel, "HT",       "afterbjetsel",  thesample,  HT , evtweight);
+	     fillHisto(thechannel, "ST",       "afterbjetsel",  thesample,  ST,  evtweight);
+	     
+             
              fillHisto(thechannel, "NJet",       "afterbjetsel",  thesample,  iter_jets , evtweight);
              fillHisto(thechannel, "NBJet",      "afterbjetsel",  thesample,   nbjets, evtweight);
      
@@ -337,7 +358,6 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
              fillHisto(thechannel, "LeptEtaW",   "afterbjetsel",  thesample,   leptW.Eta(),  evtweight);
      
              fillHisto(thechannel, "CutFlow", "",  thesample, 3, evtweight);
-	     
 	     
 	     
 	     
@@ -556,6 +576,8 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("LeptPtW",     "afterbjetsel",  sample.Data(),  100,0.,200);
   addHisto("LeptEtaW",    "afterbjetsel",  sample.Data(),  26, -2.5, 2.5 );
   
+  addHisto("HT",    "afterbjetsel",  sample.Data(),  50,0.,1000);
+  addHisto("ST",    "afterbjetsel",  sample.Data(),  50,0.,1000);
   
   cout << "#####################################" << endl;
   cout << "#####################################" << endl;

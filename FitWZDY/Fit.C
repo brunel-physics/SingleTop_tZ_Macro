@@ -42,16 +42,16 @@
 using namespace std;
 using namespace RooFit ;
 
-std::string channel = "eemu";
+std::string channel = "eee";
 int systematics 	  = -1;
 int systematics_TTbar	  = 0;
 int systematics_SingleTop = 0;
 int systematics_WW	  = 0;
 int systematics_ZZ	  = 0;
 
-TString selectionstep = "leptcut";
-//selectionstep = "jet";
-//selectionstep = "btag";
+//TString selectionstep = "leptcut";
+//TString selectionstep = "jet";
+TString selectionstep = "btag";
 
 
 

@@ -65,10 +65,10 @@
  std::vector<TString> syst_list;
  syst_list.push_back("leptup");
  syst_list.push_back("leptdown");
- syst_list.push_back("trigup");
- syst_list.push_back("trigdown");
- syst_list.push_back("PDFup");
- syst_list.push_back("PDFdown");
+ //syst_list.push_back("trigup");
+ //syst_list.push_back("trigdown");
+ //syst_list.push_back("PDFup");
+ //syst_list.push_back("PDFdown");
  syst_list.push_back("jesup");
  syst_list.push_back("jesdown");
  syst_list.push_back("jerup");
@@ -82,14 +82,16 @@
  //define list of systematics
  std::vector<TString> selectionStep_list;
  //selectionStep_list.push_back("afterleptsel");
- selectionStep_list.push_back("afterZsel");
+ //selectionStep_list.push_back("afterZsel");
+ selectionStep_list.push_back("afterbjetsel");
  
  
  //------------------------
  //define list of variables
  std::vector<TString> variables_list;
  //variables_list.push_back("InvM_ll");
- variables_list.push_back("mWT");
+ variables_list.push_back("ST");
+ variables_list.push_back("HT");
   
 
 
