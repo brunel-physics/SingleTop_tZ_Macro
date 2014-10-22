@@ -1,0 +1,102 @@
+This is a quick help for running the various steps of the analysis.
+Thoses steps are 
+
+	1) run over the samples and produce histograms and a simple TTree used for the training and reading of the BDT (TMBA),
+	2) run root macros for producing automaticallu histograms of data/MC comparisons,
+	3) use a sandalone class to perform the BDT training and reading,
+	4) use a root macro to create templates used by Theta,
+	5) run theta (WARNING : the theta cfg file is still not fully validated
+
+
+The end of the readme contains a to-do list.
+
+
+-----------------------------------------------------
+----->Step 1)
+-----------------------------------------------------
+
+got into the TreeReader and simply execute (the directory outputroot has to exist) :
+
+root -l runTreeReader.C
+
+
+It runs automatically over all the samples and for systematics variations (predefined). To add an histogram, add a line to the "initializeHisto" function, after the line 500.
+
+addHisto("varname",      "selection step",  sample.Data(),  nbin, xmin, xmax);
+
+
+ To fill the histograms, add a line to the function "applyEventSel"
+ 
+fillHisto(thechannel, "varname",	 "selection step",  thesample,  value,  evtweight);
+
+After running runTreeReader.C, one has to merged all the root files into one file, for simplicity :
+
+cd outputroot/
+hadd histofile_merged.root *.root
+
+
+
+-----------------------------------------------------
+----->Step 2)
+-----------------------------------------------------
+
+go to the PlotMaker directory and simply execute :
+
+root -l makePlots.C+
+
+List of samples, selection steps and histograms to be produced are configurable in "makePlots.C". Histgrams are stored as gif file in the "plots" directory.
+
+
+
+-----------------------------------------------------
+----->Step 3)
+-----------------------------------------------------
+
+For training and reading the BDT, go to the "TMVA" directory and type :
+
+root -l
+root [0] .L theMVAtool.C+
+root [1] theMVAtool tmva
+root [2] tmva.doTraining()  # creates weight for the BDT
+root [3] tmva.doReading() # read the TTree and calculate the BDT output for all events and all samples, produce templates (MVA distribution) 
+
+
+After running doReading(), one has to merged all the root files into one file, for simplicity :
+
+cd outputroot/
+hadd merged_all.root *.root
+
+
+
+-----------------------------------------------------
+----->Step 4)
+-----------------------------------------------------
+
+
+In the TMVA directory, use the "ProdTemplate.C" macro to put the BDT distribution histograms in a shape compliant with Theta naming conventions.
+Simply do :
+
+root -l ProdTemplate.C+
+
+
+-----------------------------------------------------
+----->Step 5)
+-----------------------------------------------------
+
+
+The theta configuration file is located in the "Theta" directory. For not, it is not working properly. So don't use it.
+
+
+
+
+-----------------------------------------------------
+----->   TO DO 
+-----------------------------------------------------
+
+	1- in TreeMaker, add the btagging reshaping (it has to be studied and implemented).
+	2- create a macro to perform data/MC comparisons of the BDT before and after the fit.
+	3- in theMVAtool, give the possibility to create one template per  channel (and not one for all channels summed). It has to be configurable.
+
+
+
+
