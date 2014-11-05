@@ -4,32 +4,32 @@
 theMVAtool::theMVAtool(){
   
   //constructor
-  varList.push_back("tree_cosThetaStar");
+  ////varList.push_back("tree_cosThetaStar");
   varList.push_back("tree_topMass");     
-  varList.push_back("tree_totMass");     
-  varList.push_back("tree_deltaPhilb");  
-  varList.push_back("tree_deltaRlb");    
-  varList.push_back("tree_deltaRTopZ");  
+  ////varList.push_back("tree_totMass");     
+  ////varList.push_back("tree_deltaPhilb");  
+  ////varList.push_back("tree_deltaRlb");    
+  //varList.push_back("tree_deltaRTopZ");  
   varList.push_back("tree_asym");        
-  varList.push_back("tree_Zpt");         
-  varList.push_back("tree_ZEta");        
-  varList.push_back("tree_topPt");       
-  varList.push_back("tree_topEta");      
-  varList.push_back("tree_NJets");       
+  //varList.push_back("tree_Zpt");         
+  //varList.push_back("tree_ZEta");        
+  //varList.push_back("tree_topPt");       
+  //varList.push_back("tree_topEta");      
+  //varList.push_back("tree_NJets");       
   varList.push_back("tree_NBJets");	 
-  varList.push_back("tree_deltaRZl");	 
-  varList.push_back("tree_deltaPhiZmet");
+  //varList.push_back("tree_deltaRZl");	 
+  //varList.push_back("tree_deltaPhiZmet");
   varList.push_back("tree_btagDiscri");  
   varList.push_back("tree_totPt");	
-  varList.push_back("tree_totEta");	
+  //varList.push_back("tree_totEta");	
   varList.push_back("tree_leptWPt");	 
-  varList.push_back("tree_leptWEta");	 
+  //varList.push_back("tree_leptWEta");	 
   varList.push_back("tree_leadJetPt");   
-  varList.push_back("tree_leadJetEta");  
-  varList.push_back("tree_deltaRZleptW");
-  varList.push_back("tree_deltaPhiZleptW");
-  varList.push_back("tree_met" );
-  varList.push_back("tree_mTW" );
+  //varList.push_back("tree_leadJetEta");  
+  //varList.push_back("tree_deltaRZleptW");
+  //varList.push_back("tree_deltaPhiZleptW");
+  //varList.push_back("tree_met" );
+  //varList.push_back("tree_mTW" );
   
   for(unsigned int i=0; i< varList.size() ; i++) theVarMap[varList[i]] = i;
   
@@ -47,6 +47,7 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("Zjets");
   samplelist.push_back("Wjets");
   samplelist.push_back("WZ");
+  samplelist.push_back("WZHF");
   samplelist.push_back("ZZ");
   samplelist.push_back("TbarsChan");
   samplelist.push_back("TsChan");
@@ -71,7 +72,7 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__metuncls__minus"); 
   
   
-  /*
+  
   sf_DY.push_back(0.77); sf_DY_err.push_back(0.64);
   sf_DY.push_back(0.97); sf_DY_err.push_back(0.21); 
   sf_DY.push_back(2.89); sf_DY_err.push_back(1.27);
@@ -81,18 +82,8 @@ theMVAtool::theMVAtool(){
   sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.04);
   sf_WZ.push_back(0.87); sf_WZ_err.push_back(0.05); 
   sf_WZ.push_back(0.67); sf_WZ_err.push_back(0.04);
-  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);*/
+  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);
   
-  sf_DY.push_back(0.00);
-  sf_DY.push_back(1.17);
-  sf_DY.push_back(1.52);
-  sf_DY.push_back(1.32);
-
-
-  sf_WZ.push_back(0.95);
-  sf_WZ.push_back(0.77);
-  sf_WZ.push_back(0.66);
-  sf_WZ.push_back(1.13);
 
   
   
@@ -126,21 +117,40 @@ void theMVAtool::doTraining(){
   
   
   
-  TFile *input_sig      = TFile::Open( "../TreeReader/outputroot/histofile_tZq.root" );
-  TFile *input_wz       = TFile::Open( "../TreeReader/outputroot/histofile_WZ.root" );
-  TFile *input_DY1      = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );
-  TFile *input_DY2      = TFile::Open( "../TreeReader/outputroot/histofile_DataEGZenriched.root" );
-  TFile *input_DY3      = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );
+  TFile *input_sig        = TFile::Open( "../TreeReader/outputroot/histofile_tZq.root" );
+  TFile *input_wz         = TFile::Open( "../TreeReader/outputroot/histofile_WZ.root" );
+  TFile *input_wzHF       = TFile::Open( "../TreeReader/outputroot/histofile_WZHF.root" );
   
   
-  TTree *signal            = (TTree*)input_sig->Get("Ttree_tZq");
-  TTree *background_WZ     = (TTree*)input_wz->Get("Ttree_WZ");
+  /*TFile *input_TTW        = TFile::Open( "../TreeReader/outputroot/histofile_TTW.root" );
+  TFile *input_TTZ        = TFile::Open( "../TreeReader/outputroot/histofile_TTZ.root" );
+  TFile *input_TT        = TFile::Open( "../TreeReader/outputroot/histofile_TT.root" );
+  TFile *input_DY1        = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );
+  TFile *input_DY2        = TFile::Open( "../TreeReader/outputroot/histofile_DataEGZenriched.root" );
+  TFile *input_DY3        = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );*/
+  
+  
+  TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
+  TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
+  TTree *background_WZHF     = (TTree*)input_wzHF->Get("Ttree_WZHF");
+  /*TTree *background_TT      = (TTree*)input_TT->Get("Ttree_TT");
+  TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_TTW");
+  TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_TTZ");*/
+  
+  
+  
   //TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataMuZenriched");
   //TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataEGZenriched");
   //TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuZenriched");
   
   factory->AddSignalTree    ( signal,	   1.);
-  factory->AddBackgroundTree( background_WZ,  1.);
+  factory->AddBackgroundTree( background_WZ,  0.102);
+  factory->AddBackgroundTree( background_WZHF,  0.898);
+  /*factory->AddBackgroundTree    (background_TT,        0.35);
+  factory->AddBackgroundTree    (background_TTW,       0.39);
+  factory->AddBackgroundTree    (background_TTZ,       0.26);*/
+  
+  
   //factory->AddBackgroundTree( background_DY1,  0.01);
   //factory->AddBackgroundTree( background_DY2,  0.10);
   //factory->AddBackgroundTree( background_DY3,  0.20);
@@ -159,9 +169,8 @@ void theMVAtool::doTraining(){
                                         "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
    
    
-   
-   //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=400:nEventsMin=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning:VarTransform=Decorrelate" );
-   //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning:VarTransform=Decorrelate" );
+   //for WZ
+   //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
    factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
  
@@ -196,7 +205,7 @@ void theMVAtool::doTraining(){
 // also fills histograms of the varList used into the BDT
 //---------------------------------------------------------------
 
-void theMVAtool::doReading(){
+void theMVAtool::doReading(float bdtcut){
   
   
    
@@ -235,7 +244,7 @@ void theMVAtool::doReading(){
          samplelist[i] == "DataMuZenriched" || samplelist[i] == "DataEGZenriched" || samplelist[i] == "DataMuEGZenriched") 
          && systlist[j] != "" ) continue;
       createHisto(samplelist[i]+systlist[j]);
-      loopInSample(input, samplelist[i]+systlist[j], treevars);
+      loopInSample(input, samplelist[i]+systlist[j], treevars, bdtcut);
       writeHisto(samplelist[i], systlist[j]);
     }
    
@@ -247,7 +256,7 @@ void theMVAtool::doReading(){
   
 }
 
-void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars){
+void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, float bdtcut){
   
   
   
@@ -289,6 +298,8 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars){
     
     double mvaValue = reader->EvaluateMVA( "BDT");
     //cout << reader->EvaluateMVA( "BDT") << endl;
+    if(mvaValue > bdtcut) continue;
+    //cout << "the bdt " << bdtcut << endl;
     fillHisto(sample, treevars, mvaValue, theweight);
   }
   

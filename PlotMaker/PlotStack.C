@@ -23,8 +23,8 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
      std::vector<TString> dataSample_list, 
      std::vector<TString> channel_list, std::vector<TString> mcSample_list, std::vector<TString > signalSample_list, std::vector<int> colorVector, std::vector< TString > dataDrivenTemplates_list, bool sumChannels){
   
-  
-  std::vector<double > sf_DY, sf_DY_err;
+
+  std::vector<double > sf_DY, sf_DY_err;  
   if(selection == "afterjetsel"){
     sf_DY.push_back(0.68); sf_DY_err.push_back(0.69);
     sf_DY.push_back(0.96); sf_DY_err.push_back(0.22);
@@ -65,6 +65,14 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   
   
   
+    /*sf_DY.push_back(1); sf_DY_err.push_back(0.69);
+    sf_DY.push_back(1); sf_DY_err.push_back(0.22);
+    sf_DY.push_back(1); sf_DY_err.push_back(1.46);
+    sf_DY.push_back(1); sf_DY_err.push_back(1.39);
+    sf_WZ.push_back(1); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1); sf_WZ_err.push_back(0.04);
+    sf_WZ.push_back(1); sf_WZ_err.push_back(0.07);*/
   
   
   TString channel = "";

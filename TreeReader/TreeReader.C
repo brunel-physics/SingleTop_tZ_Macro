@@ -3,17 +3,14 @@
 
 void TreeReader::Loop(TString sample)
 {
+   TString thesample  = sample;
+   TFile * theoutputfile = new TFile( ("outputroot/histofile_"+thesample+".root").Data() , "recreate");
    
-   
-   TFile * theoutputfile = new TFile( ("outputroot/histofile_"+sample+".root").Data() , "recreate");
-   
-   
-    
     
    for(unsigned int i=0; i< systlist.size(); i++){
      TString samplename = "";
-     if( systlist[i]== "") samplename = sample;
-     else                  samplename = sample+"__"+systlist[i];
+     if( systlist[i]== "") samplename = thesample;
+     else                  samplename = thesample+"__"+systlist[i];
      
      bool firstinit = false;
      if(i==0) firstinit = true;
@@ -53,7 +50,7 @@ void TreeReader::Loop(TString sample)
       //"jesup", "jesdown", "jerup", "jerdown", "metunclsup", "metunclsdown"  
       //----------------------------------------------------------------------
       
-      for(unsigned int isyst=0; isyst< systlist.size(); isyst++) applyEventSel(thechannel, systlist[isyst], sample);
+      for(unsigned int isyst=0; isyst< systlist.size(); isyst++) applyEventSel(thechannel, systlist[isyst], thesample);
       
       
       
@@ -70,7 +67,7 @@ void TreeReader::Loop(TString sample)
 
 
 
-void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sample){
+bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sample){
   
       
       
@@ -84,7 +81,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       double met_pt    = smalltree_met_pt;
       double met_phi   = smalltree_met_phi;
       double evtweight = -1;
-      //cout << "--------------" << sample << endl;
+      
       TString thesample = sample;
       if(systtype != "") thesample = thesample + "__"+systtype;
       //cout << thesample << thesample << endl;
@@ -130,6 +127,13 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	else if(systtype == "PDF__minus")    evtweight = smalltree_weight_PDFdown;
 	//cout << "evtweight "  << evtweight << endl;
 	
+        if(sample == "WZ" || sample == "WZHF" || sample == "tZq" || sample == "TTZ" || sample == "TTW" || sample == "ZZ"){
+          if(thechannel == "mumumu" ) evtweight *= 0.9871;
+          if(thechannel == "mumue"  ) evtweight *= 0.9001;
+          if(thechannel == "eemu"   ) evtweight *= 0.9451;
+          if(thechannel == "eee"    ) evtweight *= 0.9975;
+        }
+      
       }else if(systtype == "jes__plus"){
       
 	met_pt    = smalltree_met_jesup_pt;
@@ -186,20 +190,20 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       
       //reconstruction of the W transverse mass
       //cout << "smalltree_lept_flav[2] " << smalltree_lept_flav[2]  << endl;
-      /*
-      if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > isoEl &&  
-      		 (sample != "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
-      if(abs(smalltree_lept_flav[2]) == 13  && smalltree_lept_iso[2] > isoMu &&  
-      		 (sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return;
       
+      if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > isoEl &&  
+      		 (sample != "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return false;
+      if(abs(smalltree_lept_flav[2]) == 13  && smalltree_lept_iso[2] > isoMu &&  
+      		 (sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched" ) ) return false;
       
       
       if(sample!= "DataEGZenriched" && sample!= "DataMuEGZenriched" && sample!= "DataMuZenriched"){
       
-        if(abs(smalltree_lept_flav[0]) == 11  && smalltree_lept_iso[0] > 0.1) return;
-        if(abs(smalltree_lept_flav[1]) == 11  && smalltree_lept_iso[1] > 0.1) return;
-        if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > 0.1) return;
-      }*/
+        if(abs(smalltree_lept_flav[0]) == 11  && smalltree_lept_iso[0] > 0.1) return false;
+        if(abs(smalltree_lept_flav[1]) == 11  && smalltree_lept_iso[1] > 0.1) return false;
+        if(abs(smalltree_lept_flav[2]) == 11  && smalltree_lept_iso[2] > 0.1) return false;
+      }
+      
       
       //reconstruction of the W transverse mass
       
@@ -210,7 +214,21 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       //reconstruction of the Z invarian mass
       double InvMass_ll = Zcand.M();
      
+     //cout << "thesample " << thesample << endl;
      
+     bool contain_HF = false;
+     for(int ijet=0; ijet<iter_jets; ijet++){
+       if( abs(jet_flav[ijet]) == 5 || abs(jet_flav[ijet]) == 4){
+         contain_HF = true;
+         //cout << jet_flav[ijet] << endl;
+       } 
+       
+     }
+     //if(contain_HF) cout << "contain_HF " << contain_HF << endl;
+     //if( sample == "WZHF" ) return false;
+     
+     if(!contain_HF && sample == "WZHF" ) return false;
+     //if( contain_HF && sample == "WZ"   ) return false;
      
      
      int njets=0;
@@ -252,7 +270,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       //---------------------------------
       //apply dilepton invariant mass cut
        if( fabs(InvMass_ll-91) < 15){
-         
+       
          for(int ijet=0; ijet<iter_jets; ijet++){
            if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
            fillHisto(thechannel, "JetPt",     "afterZsel",  thesample,  jet_pt[ijet] , evtweight);
@@ -319,7 +337,7 @@ void TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
            fillHisto(thechannel, "CutFlow", "",  thesample, 2, evtweight);
 	   //----------------------------
 	   //no more than one btagged jet 
-	   if(nbjets <=2 && njets<=3 && mTW> 40 ){
+	   if(nbjets <=2 && njets<=2 && mTW> 40 ){
 	  
 	     float HT = 0;
 	     float ST = 0;

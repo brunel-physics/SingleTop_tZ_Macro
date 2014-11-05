@@ -20,7 +20,7 @@ def get_model(signalname):
     # For more info about this model and naming conventuion, see documentation
     # of build_model_from_rootfile.
 
-    model = build_model_from_rootfile('../TMVA/template_theta.root',  include_mc_uncertainties=True)
+    model = build_model_from_rootfile('../TMVA/TemplateRootFiles/MVA_theta.root',  include_mc_uncertainties=True)
     
       
     
@@ -35,11 +35,12 @@ def get_model(signalname):
     model.set_signal_processes('tZq')
     
     
-    model.add_lognormal_uncertainty('ZZ_rate',    math.log(1.3), 'ZZ')
-    model.add_lognormal_uncertainty('WZ_rate',    math.log(1.3), 'WZ')
+    model.add_lognormal_uncertainty('ZZ_rate',    math.log(1.1), 'ZZ')
+    model.add_lognormal_uncertainty('WZ_rate',    math.log(100.), 'WZ')
+    model.add_lognormal_uncertainty('WZHF_rate',    math.log(100.), 'WZHF')
     #model.distribution.set_distribution_parameters('WZ_rate', width=1000000) 
-    model.add_lognormal_uncertainty('Zjets_rate', math.log(10), 'Zjets')
-    model.add_lognormal_uncertainty('TT',         math.log(10), 'Zjets')
+    model.add_lognormal_uncertainty('Zjets_rate', math.log(2.), 'Zjets')
+    model.add_lognormal_uncertainty('TT',         math.log(2.), 'TT')
     model.add_lognormal_uncertainty('TTZ_rate',   math.log(1.3), 'TTZ')
     model.add_lognormal_uncertainty('TTW_rate',   math.log(1.3), 'TTW')
     
@@ -54,6 +55,7 @@ def get_model(signalname):
     
     
     for p in model.processes:
+    	if p == 'Zjets': continue
     	model.add_lognormal_uncertainty('lumi',        math.log(1.026), p)
         model.add_lognormal_uncertainty('TrigLept',    math.log(1.05), p)
    
@@ -124,7 +126,7 @@ print ["the interval is ", interval]
 print ["final cross section ", "%.1f" %tZq_fit, "-", "%.1f" %(syst_down*tZq_fit), "+", "%.1f" %(syst_up*tZq_fit)]
 
  
-resnll = nll_scan(model, 'data', n=1,  npoints=1000, range=[0.0, 10.], options = options)
+resnll = nll_scan(model, 'data', n=1,  npoints=10000, range=[0.0, 100.], options = options)
 
 print ["nll scan"]
 finalplot = resnll['tZq'][0]

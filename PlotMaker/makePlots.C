@@ -50,6 +50,7 @@
   mcSample_list.push_back("Zjets");         colorVector.push_back(kAzure-2);
   mcSample_list.push_back("tZq");           colorVector.push_back(kGreen+2);
   //mcSample_list.push_back("WW");            colorVector.push_back(13);
+  mcSample_list.push_back("WZHF");            colorVector.push_back(12);
   
   
   
@@ -81,17 +82,18 @@
  //--------------------------
  //define list of systematics
  std::vector<TString> selectionStep_list;
- //selectionStep_list.push_back("afterleptsel");
- //selectionStep_list.push_back("afterZsel");
+ selectionStep_list.push_back("afterleptsel");
+ selectionStep_list.push_back("afterZsel");
  selectionStep_list.push_back("afterbjetsel");
  
  
  //------------------------
  //define list of variables
  std::vector<TString> variables_list;
- //variables_list.push_back("InvM_ll");
- variables_list.push_back("ST");
- variables_list.push_back("HT");
+ variables_list.push_back("InvM_ll");
+ variables_list.push_back("mWT");
+ //variables_list.push_back("ST");
+ //variables_list.push_back("HT");
   
 
 

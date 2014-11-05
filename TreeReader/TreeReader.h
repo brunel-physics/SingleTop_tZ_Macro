@@ -173,7 +173,7 @@ public :
    void addHisto( TString var, TString selstep, TString sample, int nbins, float min, float max);
    void fillHisto(TString channel, TString var, TString selstep, TString sample, float val, float weight);
    
-   void applyEventSel(TString channel, TString systtype, TString sample);
+   bool applyEventSel(TString channel, TString systtype, TString sample);
    
    
    TString determineChannel(int leptflav1, int leptflav2, int leptflav3);
@@ -234,7 +234,9 @@ public :
   float tree_EvtWeight;
   
   float isoEl, isoMu;
-   
+  
+  
+  int nWZsample; 
    
    
 };
@@ -251,15 +253,17 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
       if (!f || !f->IsOpen()) {
          f = new TFile("../RootFiles/merged_proof.root");
       }
-      f->GetObject( ("SmallTree_"+sample).Data() ,tree);
+      if(sample == "WZHF") f->GetObject( "SmallTree_WZ" ,tree);
+      else f->GetObject( ("SmallTree_"+sample).Data() ,tree);
 
    }
    Init(tree);
    systlist = thesystlist;
-   //isoEl = 0.01;
-   //isoMu = 0.01;
    isoEl = 0.05;
-   isoMu = 0.12;
+   isoMu = 0.010;
+   //isoEl = 0.15; //0.05
+   //isoMu = 0.20; //0.12
+   nWZsample = 0;
 }
 
 TreeReader::~TreeReader()
@@ -365,6 +369,7 @@ void TreeReader::Init(TTree *tree)
    fChain->SetBranchAddress("smalltree_IChannel", &smalltree_IChannel, &b_smalltree_IChannel);
    
    Notify();
+   nWZsample = 0;
 }
 
 Bool_t TreeReader::Notify()

@@ -48,9 +48,9 @@ public :
    
    
    void doTraining();
-   void doReading();
+   void doReading(float bdtcut = 100.);
    
-   void loopInSample(TFile* input, TString sample, float *treevars);
+   void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut );
    
    //--------------------
    //deal with histograms

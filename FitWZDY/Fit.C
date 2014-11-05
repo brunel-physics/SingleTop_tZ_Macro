@@ -42,16 +42,16 @@
 using namespace std;
 using namespace RooFit ;
 
-std::string channel = "eee";
-int systematics 	  = -1;
-int systematics_TTbar	  = 0;
-int systematics_SingleTop = 0;
-int systematics_WW	  = 0;
-int systematics_ZZ	  = 0;
+std::string channel = "eemu";
+int systematics 	  = 1;
+int systematics_TTbar	  = 1;
+int systematics_SingleTop = 1;
+int systematics_WW	  = 1;
+int systematics_ZZ	  = 1;
 
-//TString selectionstep = "leptcut";
+TString selectionstep = "leptcut";
 //TString selectionstep = "jet";
-TString selectionstep = "btag";
+//TString selectionstep = "btag";
 
 
 
@@ -60,6 +60,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   // Opening the input file
   std::cout << "Opening the input file ..." << std::endl;
   std::string filename  = "../TreeReader/outputroot/histofile_merged.root"; // for nom sample
+  //std::string filename  = "../TreeReader/histofile_merged_trigweight.root"; // for nom sample
   std::string filename2 = "../TreeReader/outputroot/histofile_merged.root"; // Z enriched
   
   
@@ -150,13 +151,13 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
     if(systematics == -1 ) weightfactor = 0.7;
      
    // if(histoName_List[i] == "TT" &&  systematics_TTbar!=0     ) histo_List.back()->Scale( weightfactor);
-    if(histoName_List[i] == "TT" &&  systematics_TTbar!=0     ) histo_List.back()->Scale( weightfactor);
+    if(histoName_List[i] == "TT"       &&  systematics_TTbar!=0     ) histo_List.back()->Scale( weightfactor);
     if(histoName_List[i] == "TtW"      &&  systematics_SingleTop!=0 ) histo_List.back()->Scale( weightfactor);
     if(histoName_List[i] == "TbartW"   &&  systematics_SingleTop!=0 ) histo_List.back()->Scale( weightfactor);
     if(histoName_List[i] == "WW"       &&  systematics_WW!=0        ) histo_List.back()->Scale( weightfactor);
     if(histoName_List[i] == "ZZ"       &&  systematics_ZZ!=0        ) histo_List.back()->Scale( weightfactor);
     
-    if(histoName_List[i] == "TT" ) histo_List.back()->Scale( 0.1);
+    //if(histoName_List[i] == "TT" ) histo_List.back()->Scale( 0.1);
     
   }
 

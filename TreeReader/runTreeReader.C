@@ -94,8 +94,15 @@
   tree_WW.Loop("WW");
   delete tree_WW;
   
+  
+  //one for WZ +light
   TreeReader * tree_WZ = new TreeReader(tree, "WZ", systlist);
   tree_WZ.Loop("WZ");
+  delete tree_WZ;
+  
+  //one for WZ + HF
+  TreeReader * tree_WZ = new TreeReader(tree, "WZHF", systlist);
+  tree_WZ.Loop("WZHF");
   delete tree_WZ;
 
   TreeReader * tree_ZZ = new TreeReader(tree, "ZZ", systlist);
