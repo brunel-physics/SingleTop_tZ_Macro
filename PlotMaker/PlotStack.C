@@ -26,41 +26,41 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
 
   std::vector<double > sf_DY, sf_DY_err;  
   if(selection == "afterjetsel"){
-    sf_DY.push_back(0.68); sf_DY_err.push_back(0.69);
-    sf_DY.push_back(0.96); sf_DY_err.push_back(0.22);
-    sf_DY.push_back(3.89); sf_DY_err.push_back(1.46);
-    sf_DY.push_back(1.39); sf_DY_err.push_back(1.39);
+    sf_DY.push_back(0.0); sf_DY_err.push_back(0);
+    sf_DY.push_back(0.75); sf_DY_err.push_back(0);
+    sf_DY.push_back(1.47); sf_DY_err.push_back(0);
+    sf_DY.push_back(1.32); sf_DY_err.push_back(0);
   }else if (selection == "afterbjetsel"){
-    sf_DY.push_back(0.77); sf_DY_err.push_back(0.64);
-    sf_DY.push_back(0.97); sf_DY_err.push_back(0.21); 
-    sf_DY.push_back(2.89); sf_DY_err.push_back(1.27);
-    sf_DY.push_back(1.39); sf_DY_err.push_back(0.23); 
+    sf_DY.push_back(0); sf_DY_err.push_back(0);
+    sf_DY.push_back(1.34); sf_DY_err.push_back(0); 
+    sf_DY.push_back(0); sf_DY_err.push_back(0);
+    sf_DY.push_back(0.72); sf_DY_err.push_back(0); 
   
   }else{
-    sf_DY.push_back(1.91); sf_DY_err.push_back(0.45);
-    sf_DY.push_back(0.75); sf_DY_err.push_back(0.12); 
-    sf_DY.push_back(1.22); sf_DY_err.push_back(0.35);
-    sf_DY.push_back(1.14); sf_DY_err.push_back(0.13);
+    sf_DY.push_back(0); sf_DY_err.push_back(0);
+    sf_DY.push_back(0.71); sf_DY_err.push_back(0); 
+    sf_DY.push_back(2.88); sf_DY_err.push_back(0);
+    sf_DY.push_back(1.09); sf_DY_err.push_back(0);
   }
   
   
   std::vector<double > sf_WZ, sf_WZ_err;
   if(selection == "afterjetsel"){
-    sf_WZ.push_back(1.04); sf_WZ_err.push_back(0.05);
-    sf_WZ.push_back(0.90); sf_WZ_err.push_back(0.07);
-    sf_WZ.push_back(0.69); sf_WZ_err.push_back(0.04);
-    sf_WZ.push_back(1.20); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(0.97); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(0.60); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(1.19); sf_WZ_err.push_back(0);
   }else if (selection == "afterbjetsel"){
-    sf_WZ.push_back(1.03); sf_WZ_err.push_back(0.05);
-    sf_WZ.push_back(0.86); sf_WZ_err.push_back(0.07); 
-    sf_WZ.push_back(0.70); sf_WZ_err.push_back(0.06);
-    sf_WZ.push_back(1.17); sf_WZ_err.push_back(0.10); 
+    sf_WZ.push_back(1.00); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(0.90); sf_WZ_err.push_back(0); 
+    sf_WZ.push_back(0.56); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(1.18); sf_WZ_err.push_back(0); 
   
   }else{
-    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.04);
-    sf_WZ.push_back(0.87); sf_WZ_err.push_back(0.05); 
-    sf_WZ.push_back(0.67); sf_WZ_err.push_back(0.04);
-    sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1.06); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(0.93); sf_WZ_err.push_back(0); 
+    sf_WZ.push_back(0.70); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(1.10); sf_WZ_err.push_back(0);
   }
   
   
