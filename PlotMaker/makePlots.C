@@ -82,8 +82,8 @@
  //--------------------------
  //define list of systematics
  std::vector<TString> selectionStep_list;
- selectionStep_list.push_back("afterleptsel");
- selectionStep_list.push_back("afterZsel");
+// selectionStep_list.push_back("afterleptsel");
+// selectionStep_list.push_back("afterZsel");
  selectionStep_list.push_back("afterbjetsel");
  
  
@@ -92,6 +92,7 @@
  std::vector<TString> variables_list;
  variables_list.push_back("InvM_ll");
  variables_list.push_back("mWT");
+ variables_list.push_back("BJetCSV");
  //variables_list.push_back("ST");
  //variables_list.push_back("HT");
   

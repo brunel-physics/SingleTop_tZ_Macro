@@ -523,6 +523,7 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   else if(varname == "Njets")     histo_ratio_data->GetXaxis()->SetTitle("jet mult.");
   else if(varname == "NBjets")    histo_ratio_data->GetXaxis()->SetTitle("b-tagged jet mult.");
   else if(varname == "Met")	  histo_ratio_data->GetXaxis()->SetTitle("missing E_{T} [GeV]");
+  else if(varname == "BJetCSV")   histo_ratio_data->GetXaxis()->SetTitle("CSV discriminator");
   
   histo_ratio_data->SetMinimum(0.0);
   histo_ratio_data->SetMaximum(2.0);
@@ -536,8 +537,10 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   thegraph_ratio->Draw("e2same");
   
   TString end_name;
-  if(setlogy) end_name="_Logy.gif";
-  else end_name=".gif"; 
+//  if(setlogy) end_name="_Logy.gif";
+//  else end_name=".gif"; 
+  if(setlogy) end_name="_Logy.eps";
+  else end_name=".eps"; 
 
   TString outputname = "plots/"+varname+"_"+namechan+"_"+selection+end_name;
   if(sumChannels) outputname = "plots/"+varname+"_"+"all"+"_"+selection+end_name;

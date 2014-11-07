@@ -18,7 +18,11 @@ void TreeReader::Loop(TString sample)
      //cout << samplename << endl;
      initializeHisto(samplename, firstinit);
     }
-    
+
+   isData = (sample== "DataEGZenriched" || sample== "DataMuEGZenriched" || sample== "DataMuZenriched" ||
+	     sample== "DataEG" || sample== "DataMuEG" || sample== "DataMu");
+   SetUpCSVreweighting();
+   
     
    cout << "starting loops on events " << endl;
    
@@ -69,7 +73,7 @@ void TreeReader::Loop(TString sample)
 
 bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sample){
   
-      
+      bool applyCSV = 1;
       
       TLorentzVector leptZ1, leptZ2, leptW;
       
@@ -93,6 +97,9 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       float * jet_btagdiscri = 0;
       int   * jet_flav       = 0;
       
+      double wCSV = 1.;
+      wCSV = GetCSVweight(0,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+   
       evtweight = smalltree_evtweight;
       iter_jets      = smalltree_njets;
       jet_pt	     = smalltree_jet_pt;
@@ -178,6 +185,42 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       }else if(systtype == "metuncls__minus"){
 	met_pt    = smalltree_met_unclsdown_pt;
 	met_phi   = smalltree_met_unclsdown_phi;
+      }else if(systtype == "btag__JESup"){
+	wCSV = GetCSVweight(1,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__JESdown"){
+	wCSV = GetCSVweight(2,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFup"){
+	wCSV = GetCSVweight(3,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFdown"){
+	wCSV = GetCSVweight(4,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFStats1up"){
+	wCSV = GetCSVweight(5,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFStats1down"){
+	wCSV = GetCSVweight(6,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFStats2up"){
+	wCSV = GetCSVweight(7,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFStats2down"){
+	wCSV = GetCSVweight(8,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVCErr1up"){
+	wCSV = GetCSVweight(9,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVCErr1down"){
+	wCSV = GetCSVweight(10,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVCErr2up"){
+	wCSV = GetCSVweight(11,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVCErr2down"){
+	wCSV = GetCSVweight(12,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFup"){
+	wCSV = GetCSVweight(13,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVHFdown"){
+	wCSV = GetCSVweight(14,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFStats1up"){
+	wCSV = GetCSVweight(15,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFStats1down"){
+	wCSV = GetCSVweight(16,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFStats2up"){
+	wCSV = GetCSVweight(17,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "btag__CSVLFStats2down"){
+	wCSV = GetCSVweight(18,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
       }else{
         cout << "WARNING syst type not recognized !! " << endl;
 	cout << "correct syst types are " << endl;
@@ -185,6 +228,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	cout << "\"jes__plus\", \"jes__minus\", \"jer__plus\", \"jer__minus\", \"metuncls__plus\", \"metuncls__minus\" " << endl;      
       }
       
+      if( applyCSV ) evtweight *= wCSV;
+   
       TLorentzVector Zcand = leptZ1+leptZ2;
       
       
@@ -305,7 +350,27 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	 //------------------------
 	 //ask for at least one jet
 	 if(njets>=1){
-	  
+
+	   //store treeCSV channel
+//	   if(thechannel == "mumumu") treeCSV_Channel = 0;
+//	   if(thechannel == "mumue" ) treeCSV_Channel = 1;
+//	   if(thechannel == "eemu"  ) treeCSV_Channel = 2;
+//	   if(thechannel == "eee"   ) treeCSV_Channel = 3;
+	   
+//	   treeCSV_EvtWeight  =  evtweight;
+//	   treeCSV_jetN    = iter_jets;
+	   
+//	   for(int ijet=0; ijet<iter_jets; ijet++)
+//	      {
+//		 treeCSV_jetPt[ijet]    = jet_pt[ijet];
+//		 treeCSV_jetEta[ijet]    = jet_eta[ijet];
+//		 treeCSV_jetCSV[ijet]    = jet_btagdiscri[ijet];
+//		 treeCSV_jetFlav[ijet]    = jet_flav[ijet];
+//	      }	    
+	    
+//	   if(theTreeCSV_map[thesample] != 0)  theTreeCSV_map[thesample]->Fill();
+//	   else cout << "wrong sample name given to CSV TTree " << thesample <<endl; 
+	    
            for(int ijet=0; ijet<iter_jets; ijet++){
              if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
              fillHisto(thechannel, "JetPt",     "afterjetsel",  thesample,  jet_pt[ijet] , evtweight);
@@ -438,7 +503,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
   	     tree_deltaPhiZmet = (leptZ1+leptZ2).DeltaPhi(themet);
   	     if(nbjets >  0) tree_btagDiscri   = jet_btagdiscri[btagged_jet_idx[0]];
 	     else tree_btagDiscri   = jet_btagdiscri[0];
-	    
+
+	     fillHisto(thechannel, "BJetCSV",   "afterbjetsel",  thesample,   tree_btagDiscri,  evtweight);
  
   	     tree_NJets	    = float(njets);
 	  
@@ -596,7 +662,9 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   
   addHisto("HT",    "afterbjetsel",  sample.Data(),  50,0.,1000);
   addHisto("ST",    "afterbjetsel",  sample.Data(),  50,0.,1000);
-  
+
+  addHisto("BJetCSV",    "afterbjetsel",  sample.Data(),  30,0.,1.);
+   
   cout << "#####################################" << endl;
   cout << "#####################################" << endl;
   cout << " histograms  initialized             " << endl;
@@ -681,10 +749,40 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   tree_Channel        = -10000; 
   tree_SampleType     = -10000; 
   
+
+  //--------------------------------------//
+  //   Output CSV TTree
+  //--------------------------------------//
    
+//  TString treenameCSV = "TtreeCSV_"+sample;
+//  cout << treenameCSV << endl;
+//  TTree * TheTreeCSV = new TTree(treenameCSV.Data(),treenameCSV.Data());
+//  TheTreeCSV->Branch("treeCSV_jetN",        &treeCSV_jetN,        "treeCSV_jetN/I"      );
+//  TheTreeCSV->Branch("treeCSV_jetPt",       &treeCSV_jetPt,       "treeCSV_jetPt/F"     );
+//  TheTreeCSV->Branch("treeCSV_jetEta",      &treeCSV_jetEta,      "treeCSV_jetEta/F"    );
+//  TheTreeCSV->Branch("treeCSV_jetCSV",      &treeCSV_jetCSV,      "treeCSV_jetCSV/F"    );
+//  TheTreeCSV->Branch("treeCSV_jetFlav",     &treeCSV_jetFlav,     "treeCSV_jetFlav/I"   );
+     
+//  TheTreeCSV->Branch("treeCSV_EvtWeight",   &treeCSV_EvtWeight,   "treeCSV_EvtWeight/F" );
+//  TheTreeCSV->Branch("treeCSV_SampleType",  &treeCSV_SampleType,  "treeCSV_SampleType/I");
+//  TheTreeCSV->Branch("treeCSV_Channel",     &treeCSV_Channel,     "treeCSV_Channel/I"   );
+  
+//  theTreeCSV_list.push_back(TheTreeCSV);
+//  theTreeCSV_map[sample] = theTreeCSV_list.back();
    
-  
-  
+//  treeCSV_jetN        = -10000;
+   
+//  for(int i=0;i<1000;i++)
+//     {	
+//	treeCSV_jetPt[i]              = -10000;
+//	treeCSV_jetEta[i]      = -10000;
+//	treeCSV_jetCSV[i]      = -10000;
+//	treeCSV_jetFlav[i]      = -10000;
+//     }
+           
+//  treeCSV_EvtWeight      = -10000;
+//  treeCSV_Channel        = -10000;
+//  treeCSV_SampleType     = -10000;
 }
 
 
@@ -818,6 +916,203 @@ void TreeReader::deleteHisto(){
   
 }
 
+//SetUp CSV reweighting
+void TreeReader::SetUpCSVreweighting(){
+
+  // Do not set it up if we're running on collision data
+  if(isData){ return; }
+  f_CSVwgt_HF = new TFile ("../BTagCSV/CSVRW/csv_rwt_hf.root");
+  f_CSVwgt_LF = new TFile ("../BTagCSV/CSVRW/csv_rwt_lf.root");
+
+
+  // CSV reweighting
+  for( int iSys=0; iSys<9; iSys++ ){
+    TString syst_csv_suffix_hf = "final";
+    TString syst_csv_suffix_c = "final";
+    TString syst_csv_suffix_lf = "final";
+    
+    switch( iSys ){
+    case 0:
+      // this is the nominal case
+      break;
+    case 1:
+      // JESUp
+      syst_csv_suffix_hf = "final_JESUp"; syst_csv_suffix_lf = "final_JESUp";
+      syst_csv_suffix_c  = "final_cErr1Up";
+      break;
+    case 2:
+      // JESDown
+      syst_csv_suffix_hf = "final_JESDown"; syst_csv_suffix_lf = "final_JESDown";
+      syst_csv_suffix_c  = "final_cErr1Down";
+      break;
+    case 3:
+      // purity up
+      syst_csv_suffix_hf = "final_LFUp"; syst_csv_suffix_lf = "final_HFUp";
+      syst_csv_suffix_c  = "final_cErr2Up";
+      break;
+    case 4:
+      // purity down
+      syst_csv_suffix_hf = "final_LFDown"; syst_csv_suffix_lf = "final_HFDown";
+      syst_csv_suffix_c  = "final_cErr2Down";
+      break;
+    case 5:
+      // stats1 up
+      syst_csv_suffix_hf = "final_Stats1Up"; syst_csv_suffix_lf = "final_Stats1Up";
+      break;
+    case 6:
+      // stats1 down
+      syst_csv_suffix_hf = "final_Stats1Down"; syst_csv_suffix_lf = "final_Stats1Down";
+      break;
+    case 7:
+      // stats2 up
+      syst_csv_suffix_hf = "final_Stats2Up"; syst_csv_suffix_lf = "final_Stats2Up";
+      break;
+    case 8:
+      // stats2 down
+      syst_csv_suffix_hf = "final_Stats2Down"; syst_csv_suffix_lf = "final_Stats2Down";
+      break;
+    }
+
+    for( int iPt=0; iPt<6; iPt++ ) h_csv_wgt_hf[iSys][iPt] = (TH1D*)f_CSVwgt_HF->Get( Form("csv_ratio_Pt%i_Eta0_%s",iPt,syst_csv_suffix_hf.Data()) );
+
+    if( iSys<5 ){
+      for( int iPt=0; iPt<6; iPt++ ) c_csv_wgt_hf[iSys][iPt] = (TH1D*)f_CSVwgt_HF->Get( Form("c_csv_ratio_Pt%i_Eta0_%s",iPt,syst_csv_suffix_c.Data()) );
+    }
+    
+    for( int iPt=0; iPt<4; iPt++ ){
+      for( int iEta=0; iEta<3; iEta++ )h_csv_wgt_lf[iSys][iPt][iEta] = (TH1D*)f_CSVwgt_LF->Get( Form("csv_ratio_Pt%i_Eta%i_%s",iPt,iEta,syst_csv_suffix_lf.Data()) );
+    }
+  }
+
+}
+
+// Get event weight
+double TreeReader::GetCSVweight(const int iSys, int jet_n,
+				float *jet_pt,float *jet_eta,float *jet_btagdiscri,int *jet_flav){
+  if (isData) return 1.0;
+
+  int iSysHF = 0;
+  int iSysC = 0;
+  int iSysLF = 0;
+   
+  // systematic variations
+  // 1 HF/LF JESup iSysHF=1 iSysC=0 iSysLF=1
+  // 2 HF/LF JESdown iSysHF=2 iSysC=0 iSysLF=2
+  // 3 HF CSVLFup iSysHF=3 iSysC=0 iSysLF=0
+  // 4 HF CSVLFdown iSysHF=4 iSysC=0 iSysLF=0
+  // 5 HF CSVHFStats1up iSysHF=5 iSysC=0 iSysLF=0
+  // 6 HF CSVHFStats1down iSysHF=6 iSysC=0 iSysLF=0
+  // 7 HF CSVHFStats2up iSysHF=7 iSysC=0 iSysLF=0
+  // 8 HF CSVHFStats2down iSysHF=8 iSysC=0 iSysLF=0
+  // 9 C CSVCErr1up iSysHF=0 iSysC=1 iSysLF=0
+  // 10 C CSVCErr1down iSysHF=0 iSysC=2 iSysLF=0
+  // 11 C CSVCErr2up iSysHF=0 iSysC=3 iSysLF=0
+  // 12 C CSVCErr2down iSysHF=0 iSysC=4 iSysLF=0
+  // 13 LF CSVHFup iSysHF=0 iSysC=0 iSysLF=3
+  // 14 LF CSVHFdown iSysHF=0 iSysC=0 iSysLF=4
+  // 15 LF CSVLFStats1up iSysHF=0 iSysC=0 iSysLF=5
+  // 16 LF CSVLFStats1down iSysHF=0 iSysC=0 iSysLF=6
+  // 17 LF CSVLFStats2up iSysHF=0 iSysC=0 iSysLF=7
+  // 18 LF CSVLFStats2down iSysHF=0 iSysC=0 iSysLF=8
+  if( iSys == 1 ) {iSysHF=1; iSysC=0; iSysLF=1;}
+  else if( iSys == 2 ) {iSysHF=2; iSysC=0; iSysLF=2;}
+  else if( iSys == 3 ) {iSysHF=3; iSysC=0; iSysLF=0;}
+  else if( iSys == 4 ) {iSysHF=4; iSysC=0; iSysLF=0;}
+  else if( iSys == 5 ) {iSysHF=5; iSysC=0; iSysLF=0;}
+  else if( iSys == 6 ) {iSysHF=6; iSysC=0; iSysLF=0;}
+  else if( iSys == 7 ) {iSysHF=7; iSysC=0; iSysLF=0;}
+  else if( iSys == 8 ) {iSysHF=8; iSysC=0; iSysLF=0;}
+  else if( iSys == 9 ) {iSysHF=0; iSysC=1; iSysLF=0;}
+  else if( iSys == 10 ) {iSysHF=0; iSysC=2; iSysLF=0;}
+  else if( iSys == 11 ) {iSysHF=0; iSysC=3; iSysLF=0;}
+  else if( iSys == 12 ) {iSysHF=0; iSysC=4; iSysLF=0;}
+  else if( iSys == 13 ) {iSysHF=0; iSysC=0; iSysLF=3;}
+  else if( iSys == 14 ) {iSysHF=0; iSysC=0; iSysLF=4;}
+  else if( iSys == 15 ) {iSysHF=0; iSysC=0; iSysLF=5;}
+  else if( iSys == 16 ) {iSysHF=0; iSysC=0; iSysLF=6;}
+  else if( iSys == 17 ) {iSysHF=0; iSysC=0; iSysLF=7;}
+  else if( iSys == 18 ) {iSysHF=0; iSysC=0; iSysLF=8;}
+
+//  iSysHF=1; // JESup
+//  iSysHF=2; // JESdown
+//  iSysHF=3; // CSVLFup
+//  iSysHF=4; // CSVLFdown
+//  iSysHF=5; // CSVHFStats1up
+//  iSysHF=6; // CSVHFStats1down
+//  iSysHF=7; // CSVHFStats2up
+//  iSysHF=8; // CSVHFStats2down
+
+//  iSysC=1; // CSVCErr1up
+//  iSysC=2; // CSVCErr1down
+//  iSysC=3; // CSVCErr2up
+//  iSysC=4; // CSVCErr2down
+
+//  iSysLF=1; // JESup
+//  iSysLF=2; // JESdown
+//  iSysLF=3; // CSVHFup
+//  iSysLF=4; // CSVHFdown
+//  iSysLF=5; // CSVLFStats1up
+//  iSysLF=6; // CSVLFStats1down
+//  iSysLF=7; // CSVLFStats2up
+//  iSysLF=8; // CSVLFStats2down
+
+
+  double csvWgthf = 1.;
+  double csvWgtC  = 1.;
+  double csvWgtlf = 1.;
+
+  for( int ij=0;ij<jet_n;ij++){
+     
+    double csv = jet_btagdiscri[ij];
+    double jetPt = jet_pt[ij];
+    double jetAbsEta = fabs( jet_eta[ij] );
+    int flavor = abs( jet_flav[ij] );
+
+    if( jetPt < 20. || jetAbsEta > 2.5 ) continue;
+     
+    int iPt = -1; int iEta = -1;
+    if (jetPt >=19.99 && jetPt<30) iPt = 0;
+    else if (jetPt >=30 && jetPt<40) iPt = 1;
+    else if (jetPt >=40 && jetPt<60) iPt = 2;
+    else if (jetPt >=60 && jetPt<100) iPt = 3;
+    else if (jetPt >=100 && jetPt<160) iPt = 4;
+    else if (jetPt >=160 && jetPt<10000) iPt = 5;
+
+    if (jetAbsEta >=0 &&  jetAbsEta<0.8) iEta = 0;
+    else if ( jetAbsEta>=0.8 && jetAbsEta<1.6) iEta = 1;
+    else if ( jetAbsEta>=1.6 && jetAbsEta<2.41) iEta = 2;
+    // kskovpen hack - should change eta cut to 2.4 !
+    else if ( jetAbsEta>=2.41 && jetAbsEta<=2.5) iEta = 2;
+     
+    if (iPt < 0 || iEta < 0) std::cout << "Error, couldn't find Pt, Eta bins for this b-flavor jet, jetPt = " << jetPt << ", jetAbsEta = " << jetAbsEta << std::endl;
+
+    if (abs(flavor) == 5 ){
+      int useCSVBin = (csv>=0.) ? h_csv_wgt_hf[iSysHF][iPt]->FindBin(csv) : 1;
+      double iCSVWgtHF = h_csv_wgt_hf[iSysHF][iPt]->GetBinContent(useCSVBin);
+      if( iCSVWgtHF!=0 ) csvWgthf *= iCSVWgtHF;
+
+    }
+    else if( abs(flavor) == 4 ){
+      int useCSVBin = (csv>=0.) ? c_csv_wgt_hf[iSysC][iPt]->FindBin(csv) : 1;
+      double iCSVWgtC = c_csv_wgt_hf[iSysC][iPt]->GetBinContent(useCSVBin);
+      if( iCSVWgtC!=0 ) csvWgtC *= iCSVWgtC;
+
+    }
+    else {
+      if (iPt >=3) iPt=3;       /// [>60] 
+      int useCSVBin = (csv>=0.) ? h_csv_wgt_lf[iSysLF][iPt][iEta]->FindBin(csv) : 1;
+      double iCSVWgtLF = h_csv_wgt_lf[iSysLF][iPt][iEta]->GetBinContent(useCSVBin);
+      if( iCSVWgtLF!=0 ) csvWgtlf *= iCSVWgtLF;
+
+
+    }
+  }
+
+
+  double csvWgtTotal = csvWgthf * csvWgtC * csvWgtlf;
+
+  return csvWgtTotal;
+}
 
 
 

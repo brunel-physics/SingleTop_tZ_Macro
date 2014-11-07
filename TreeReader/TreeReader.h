@@ -31,6 +31,15 @@ class TreeReader {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
+
+   TFile *f_CSVwgt_HF;
+   TFile *f_CSVwgt_LF;
+   
+   TH1D *h_csv_wgt_hf[100][100];
+   TH1D *c_csv_wgt_hf[100][100];
+   TH1D *h_csv_wgt_lf[100][100][100];
+   
+   bool isData;
    
    // Declaration of leaf types
    Int_t           smalltree_nlepton;
@@ -174,7 +183,10 @@ public :
    void fillHisto(TString channel, TString var, TString selstep, TString sample, float val, float weight);
    
    bool applyEventSel(TString channel, TString systtype, TString sample);
-   
+
+   void SetUpCSVreweighting();
+   double GetCSVweight(const int iSys, int jet_n,
+		       float *jet_pt,float *jet_eta,float *jet_btagdiscri,int *jet_flav);
    
    TString determineChannel(int leptflav1, int leptflav2, int leptflav3);
    
@@ -238,7 +250,23 @@ public :
   
   int nWZsample; 
    
+
+   //------------------------------------------- 
+   //TTree and banches used for CSV re-weighting 
+   //--------------------------------------------
+//   std::vector<TTree *> theTreeCSV_list;
+//   std::map<TString, TTree *> theTreeCSV_map;
    
+//   int treeCSV_jetN;
+//   float treeCSV_jetPt[1000];
+//   float treeCSV_jetEta[1000];
+//   float treeCSV_jetCSV[1000];
+//   int treeCSV_jetFlav[1000];
+     
+//   int   treeCSV_SampleType;
+//   int   treeCSV_Channel;
+      
+//   float treeCSV_EvtWeight;
 };
 
 #endif
@@ -249,9 +277,9 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../RootFiles/merged_proof.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/backup_outputProof19-10-14_14-19_debug/merged_proof.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("../RootFiles/merged_proof.root");
+         f = new TFile("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/backup_outputProof19-10-14_14-19_debug/merged_proof.root");
       }
       if(sample == "WZHF") f->GetObject( "SmallTree_WZ" ,tree);
       else f->GetObject( ("SmallTree_"+sample).Data() ,tree);
@@ -264,6 +292,8 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
    //isoEl = 0.15; //0.05
    //isoMu = 0.20; //0.12
    nWZsample = 0;
+   
+   isData = 1;
 }
 
 TreeReader::~TreeReader()
