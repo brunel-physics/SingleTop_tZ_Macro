@@ -404,6 +404,12 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
      
 	  
            fillHisto(thechannel, "CutFlow", "",  thesample, 2, evtweight);
+	   
+	   
+	   
+	   
+	   
+	   
 	   //----------------------------
 	   //no more than one btagged jet 
 	   if(nbjets <=2 && njets<=2 && mTW> 40 ){
@@ -421,30 +427,6 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
              
 	     ST+= leptZ1.Pt()+leptZ1.Pt()+leptW.Pt();
 	     
-	     fillHisto(thechannel, "HT",       "afterbjetsel",  thesample,  HT , evtweight);
-	     fillHisto(thechannel, "ST",       "afterbjetsel",  thesample,  ST,  evtweight);
-	     
-             
-             fillHisto(thechannel, "NJet",       "afterbjetsel",  thesample,  iter_jets , evtweight);
-             fillHisto(thechannel, "NBJet",      "afterbjetsel",  thesample,   nbjets, evtweight);
-     
-     
-             fillHisto(thechannel, "mWT",        "afterbjetsel",  thesample,   mTW,          evtweight);
-             fillHisto(thechannel, "InvM_ll",    "afterbjetsel",  thesample,   InvMass_ll,   evtweight);
-             fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptZ1.Pt(),  evtweight);
-             fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptZ1.Eta(), evtweight);
-             fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptZ2.Pt(),  evtweight);
-             fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptZ2.Eta(), evtweight);
-             fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptW.Pt(),   evtweight);
-             fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptW.Eta(),  evtweight);
-             fillHisto(thechannel, "LeptPtZ1",   "afterbjetsel",  thesample,   leptZ1.Pt(),  evtweight);
-             fillHisto(thechannel, "LeptEtaZ1",  "afterbjetsel",  thesample,   leptZ1.Eta(), evtweight);
-             fillHisto(thechannel, "LeptPtZ2",   "afterbjetsel",  thesample,   leptZ2.Pt(),  evtweight);
-             fillHisto(thechannel, "LeptEtaZ2",  "afterbjetsel",  thesample,   leptZ2.Eta(), evtweight);
-             fillHisto(thechannel, "LeptPtW",    "afterbjetsel",  thesample,   leptW.Pt(),   evtweight);
-             fillHisto(thechannel, "LeptEtaW",   "afterbjetsel",  thesample,   leptW.Eta(),  evtweight);
-     
-             fillHisto(thechannel, "CutFlow", "",  thesample, 3, evtweight);
 	     
 	     
 	     
@@ -508,7 +490,6 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
   	     if(nbjets >  0) tree_btagDiscri   = jet_btagdiscri[btagged_jet_idx[0]];
 	     else tree_btagDiscri   = jet_btagdiscri[0];
 
-	     fillHisto(thechannel, "BJetCSV",   "afterbjetsel",  thesample,   tree_btagDiscri,  evtweight);
 	     
 	     
 	     
@@ -539,27 +520,62 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	  
              double cosThetaStar = cos(letp_WRF.Vect().Angle(theWcand_topRF.Vect()));
             
-             fillHisto(thechannel, "toppT",     "afterbjetsel",  thesample, tree_topPt,  evtweight);
-             fillHisto(thechannel, "ZpT",       "afterbjetsel",  thesample, 	   Zpt,  evtweight);
-             fillHisto(thechannel, "WpT",       "afterbjetsel",  thesample, tree_leptWPt   ,  evtweight);
-             fillHisto(thechannel, "MET",       "afterbjetsel",  thesample,  tree_met ,  evtweight);
-             fillHisto(thechannel, "totpT",     "afterbjetsel",  thesample,  tree_totPt, evtweight);
-	     fillHisto(thechannel, "DeltaPhiTopZ",     "afterbjetsel",  thesample, (leptZ1+leptZ2).DeltaPhi(topCand) , evtweight);
+             fillHisto(thechannel, "CutFlow", "",  thesample, 3, evtweight);
 	     
-	      tree_cosThetaStar = cosThetaStar;
+	     //cut on top mass
+	     if(tree_topMass < 260 && tree_totPt> 30){ 
+	       fillHisto(thechannel, "HT",       "afterbjetsel",  thesample,  HT , evtweight);
+	       fillHisto(thechannel, "ST",       "afterbjetsel",  thesample,  ST,  evtweight);
+	     
+             
+               fillHisto(thechannel, "NJet",       "afterbjetsel",  thesample,  iter_jets , evtweight);
+               fillHisto(thechannel, "NBJet",      "afterbjetsel",  thesample,   nbjets, evtweight);
+     
+     
+               fillHisto(thechannel, "mWT",        "afterbjetsel",  thesample,   mTW,          evtweight);
+               fillHisto(thechannel, "InvM_ll",    "afterbjetsel",  thesample,   InvMass_ll,   evtweight);
+               fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptZ1.Pt(),  evtweight);
+               fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptZ1.Eta(), evtweight);
+               fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptZ2.Pt(),  evtweight);
+               fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptZ2.Eta(), evtweight);
+               fillHisto(thechannel, "LeptPt",     "afterbjetsel",  thesample,   leptW.Pt(),   evtweight);
+               fillHisto(thechannel, "LeptEta",    "afterbjetsel",  thesample,   leptW.Eta(),  evtweight);
+               fillHisto(thechannel, "LeptPtZ1",   "afterbjetsel",  thesample,   leptZ1.Pt(),  evtweight);
+               fillHisto(thechannel, "LeptEtaZ1",  "afterbjetsel",  thesample,   leptZ1.Eta(), evtweight);
+               fillHisto(thechannel, "LeptPtZ2",   "afterbjetsel",  thesample,   leptZ2.Pt(),  evtweight);
+               fillHisto(thechannel, "LeptEtaZ2",  "afterbjetsel",  thesample,   leptZ2.Eta(), evtweight);
+               fillHisto(thechannel, "LeptPtW",    "afterbjetsel",  thesample,   leptW.Pt(),   evtweight);
+               fillHisto(thechannel, "LeptEtaW",   "afterbjetsel",  thesample,   leptW.Eta(),  evtweight);
+     
+	       fillHisto(thechannel, "BJetCSV",   "afterbjetsel",  thesample,   tree_btagDiscri,  evtweight);
+	         
+               fillHisto(thechannel, "CutFlow", "",  thesample, 4, evtweight);
+               fillHisto(thechannel, "toppT",     "afterbjetsel",  thesample, tree_topPt,  evtweight);
+               fillHisto(thechannel, "ZpT",       "afterbjetsel",  thesample, 	   Zpt,  evtweight);
+               fillHisto(thechannel, "WpT",       "afterbjetsel",  thesample, tree_leptWPt   ,  evtweight);
+               fillHisto(thechannel, "MET",       "afterbjetsel",  thesample,  tree_met ,  evtweight);
+               fillHisto(thechannel, "totpT",     "afterbjetsel",  thesample,  tree_totPt, evtweight);
+	       fillHisto(thechannel, "DeltaPhiTopZ",     "afterbjetsel",  thesample, (leptZ1+leptZ2).DeltaPhi(topCand) , evtweight);
+	     
+               fillHisto(thechannel, "topMass",     "afterbjetsel",  thesample, tree_topMass , evtweight);
+               fillHisto(thechannel, "ZMass",       "afterbjetsel",  thesample,  InvMass_ll, evtweight);
+               fillHisto(thechannel, "tZMass",      "afterbjetsel",  thesample, tree_totMass , evtweight);
+	     
+	        tree_cosThetaStar = cosThetaStar;
 	      
-	      //store tree channel
-	      if(thechannel == "mumumu") tree_Channel = 0;
-	      if(thechannel == "mumue" ) tree_Channel = 1;
-	      if(thechannel == "eemu"  ) tree_Channel = 2;
-	      if(thechannel == "eee"   ) tree_Channel = 3;
+	        //store tree channel
+	        if(thechannel == "mumumu") tree_Channel = 0;
+	        if(thechannel == "mumue" ) tree_Channel = 1;
+	        if(thechannel == "eemu"  ) tree_Channel = 2;
+	        if(thechannel == "eee"   ) tree_Channel = 3;
 	      
 	      
-	      if(theTree_map[thesample] != 0)  theTree_map[thesample]->Fill();
-	      else cout << "wrong sample name given to TTree " << thesample <<endl;
+	      
+	        if(theTree_map[thesample] != 0)  theTree_map[thesample]->Fill();
+	        else cout << "wrong sample name given to TTree " << thesample <<endl;
 	      
 	      //cout << thesample << endl;
-	    
+	    }// end top mass selection
 	  }//end btag selection	  
 	}//end jet selection
       }//end dilepton M cut
@@ -682,6 +698,9 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("MET",      "afterbjetsel",  sample.Data(),  50,0.,500);
   addHisto("totpT",    "afterbjetsel",  sample.Data(),  50,0.,500);
   addHisto("DeltaPhiTopZ",    "afterbjetsel",  sample.Data(),  50,0.,3.2);
+  addHisto("topMass",         "afterbjetsel",  sample.Data(),  50,0.,700);
+  addHisto("ZMass",           "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("tZMass",          "afterbjetsel",  sample.Data(),  70, 150,1000);
   
   
   
