@@ -207,6 +207,7 @@ void PlotFitResults(bool usePostFit, TString distrib, TString inputfilename, TSt
   hs->GetYaxis()->SetTitleSize(0.04);
   if(distrib=="NJetsNBjets") hs->SetMaximum(30000);
   if(distrib=="InvMass") hs->SetMaximum(8000);
+  if(distrib=="MVA_all") hs->SetMaximum(150);
   
   TFile * inputfile_data = new TFile(inputfilename);
   TH1F * hist_data	   = (TH1F*)inputfile_data->Get( (distrib+"__DATA").Data() )->Clone();
@@ -380,7 +381,7 @@ void PlotFitResults(){
 
    
   //PlotFitResults(postfit, "NJetsNBjets", "RootFiles/Jun22_Jet30_CSVT_TopPtLepSysMll_DD.root", "PreFit_NJetsNBjets_CSVT");
-  PlotFitResults(postfit, "MVA", "../TMVA/TemplateRootFiles/MVA_theta.root", "PostFitMVA");
+  PlotFitResults(postfit, "MVA_all", "../TMVA/TemplateRootFiles/MVA_all_theta.root", "PostFitMVA");
   
   //PlotFitResults(true, "InvMass");
 

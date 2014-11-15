@@ -72,22 +72,18 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__metuncls__minus"); 
   
   
-  
-  sf_DY.push_back(0.77); sf_DY_err.push_back(0.64);
-  sf_DY.push_back(0.97); sf_DY_err.push_back(0.21); 
-  sf_DY.push_back(2.89); sf_DY_err.push_back(1.27);
-  sf_DY.push_back(1.39); sf_DY_err.push_back(0.23); 
-  
-  
-  sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.04);
-  sf_WZ.push_back(0.87); sf_WZ_err.push_back(0.05); 
-  sf_WZ.push_back(0.67); sf_WZ_err.push_back(0.04);
-  sf_WZ.push_back(1.14); sf_WZ_err.push_back(0.07);
-  
 
   
+    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
+    sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
+    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
+    sf_DY.push_back(1.14); sf_DY_err.push_back(0.33); 
   
   
+    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
+    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1.13); sf_WZ_err.push_back(0.10); 
   
 } 
 
@@ -105,15 +101,15 @@ theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > t
  // to perform the training
 //---------------------------------------------------------------
 
-void theMVAtool::doTraining(){
+void theMVAtool::doTraining(TString channel){
 
  //---------------------------------------------------------------
   // This loads the library
   TMVA::Tools::Instance();
-  TString outfileName( "trainingBDT_tZq.root" );
+  TString outfileName( ("trainingBDT_"+channel+"_tZq_.root").Data() );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
   //TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
-  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
+  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
   
   
   
@@ -164,7 +160,16 @@ void theMVAtool::doTraining(){
   // Apply additional cuts on the signal and background samples (can be different)
    TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
    TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
-
+   
+   if(channel !="all"){
+     if     (channel == "mumumu") mycuts = "tree_Channel == 0";
+     else if(channel == "mumue" ) mycuts = "tree_Channel == 1";
+     else if(channel == "eemu"  ) mycuts = "tree_Channel == 2";
+     else if(channel == "eee"   ) mycuts = "tree_Channel == 3";
+     else cout << "WARNING wrong channel name while training " << endl;
+   }
+   
+   
    factory->PrepareTrainingAndTestTree( mycuts, mycutb,
                                         "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
    
@@ -205,7 +210,7 @@ void theMVAtool::doTraining(){
 // also fills histograms of the varList used into the BDT
 //---------------------------------------------------------------
 
-void theMVAtool::doReading(float bdtcut){
+void theMVAtool::doReading(float bdtcut, TString channel){
   
   
    
@@ -221,13 +226,13 @@ void theMVAtool::doReading(float bdtcut){
   for(unsigned int i=0; i< varList.size() ; i++) reader->AddVariable( varList[i].Data(),  &(treevars[i])  );
   
    
-  reader->BookMVA( "BDT", "weights/BDT_trainning_tzq_BDT.weights.xml" ); 
+  reader->BookMVA( "BDT", ("weights/BDT_trainning_"+channel+"_tzq_BDT.weights.xml").Data() ); 
   
  // cout << __LINE__ << "   SAMPLE SIZE " << samplelist.size() << endl;
   for(unsigned int i=0; i< samplelist.size(); i++){
     //cout << samplelist[i] << endl;
     TFile *input         = new TFile( ("../TreeReader/outputroot/histofile_"+samplelist[i]+".root").Data(), "read");
-    TFile * theoutputfile = new TFile(   ("outputroot/output_"+samplelist[i]+".root").Data(), "recreate");
+    TFile * theoutputfile = new TFile(   ("outputroot/output_"+channel+"_"+samplelist[i]+".root").Data(), "recreate");
     theOutputFileMap[samplelist[i]] = theoutputfile;
     
     
@@ -243,8 +248,8 @@ void theMVAtool::doReading(float bdtcut){
          (samplelist[i] == "DataMu" || samplelist[i] == "DataEG" || samplelist[i] == "DataMuEG" ||
          samplelist[i] == "DataMuZenriched" || samplelist[i] == "DataEGZenriched" || samplelist[i] == "DataMuEGZenriched") 
          && systlist[j] != "" ) continue;
-      createHisto(samplelist[i]+systlist[j]);
-      loopInSample(input, samplelist[i]+systlist[j], treevars, bdtcut);
+      createHisto(samplelist[i]+systlist[j], channel);
+      loopInSample(input, samplelist[i]+systlist[j], treevars, bdtcut, channel);
       writeHisto(samplelist[i], systlist[j]);
     }
    
@@ -254,9 +259,9 @@ void theMVAtool::doReading(float bdtcut){
   
   
   
-}
+} 
 
-void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, float bdtcut){
+void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel){
   
   
   
@@ -265,6 +270,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
   
   input->cd();
   //cout << "sample " << sample << endl;
+  //cout << "tree name " << "Ttree_"+sample  << endl;
   TTree* theTree = (TTree*)input->Get("Ttree_"+sample);
   for (unsigned int ivar=0; ivar<varsize; ivar++) theTree->SetBranchAddress( varList[ivar].Data(), &(treevars[ivar]) );
   float theweight = 0;
@@ -272,11 +278,26 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
   int theChannel = -1;
   theTree->SetBranchAddress( "tree_Channel", &theChannel );
   
+  int theSelChannel = -1;
+  if(     channel == "mumumu") theSelChannel = 0;
+  else if(channel == "mumue" ) theSelChannel = 1;
+  else if(channel == "eemu"  ) theSelChannel = 2;
+  else if(channel == "eee"   ) theSelChannel = 3;
+  
   if(theTree == 0) cout << "no TTree found with name " << "Ttree_"+sample << endl;
   for(int i=0; i< theTree->GetEntries(); i++){
     theTree->GetEntry(i);
     
     double sf_local = 1.;
+    
+    
+    /*cout << "----------------------" << endl;
+    cout << "channel " << channel << endl;
+    cout << "theChannel    " << theChannel << endl;
+    cout << "theSelChannel " <<  theSelChannel<< endl;*/
+    if(channel != "all" && theChannel != theSelChannel ) continue;
+    
+    //cout << "pass sel " << endl;
   
     if(sample == "WZ" ){
       //cout << "theChannel " << theChannel << endl;
@@ -313,7 +334,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
 
 
 
-void theMVAtool::createHisto(TString sample){
+void theMVAtool::createHisto(TString sample, TString channel){
   std::vector<TH1F*> histovect;
   for(unsigned int j=0; j<varList.size(); j++){  
     
@@ -349,12 +370,12 @@ void theMVAtool::createHisto(TString sample){
     
     
     if(nbins==1)  cout << "warning : no TH1F definition for variable " << varList[j] << endl;
-    TH1F * histo = new TH1F((varList[j]+"__"+sample).Data(), (varList[j]+"__"+sample).Data(), nbins, xmin, xmax);
+    TH1F * histo = new TH1F((varList[j]+"_"+channel+"__"+sample).Data(), (varList[j]+"_"+channel+"__"+sample).Data(), nbins, xmin, xmax);
     histovect.push_back(histo);
   }
   
   
-  TH1F * histo = new TH1F( ("MVA__"+sample).Data(), ("MVA__"+sample).Data(),  20, -1, 1);
+  TH1F * histo = new TH1F( ("MVA_"+channel+"__"+sample).Data(), ("MVA_"+channel+"__"+sample).Data(),  20, -1, 1);
   histovect.push_back(histo);
   theHistoMap[sample] = histovect;
   

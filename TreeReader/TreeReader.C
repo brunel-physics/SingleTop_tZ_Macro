@@ -233,6 +233,10 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       TLorentzVector Zcand = leptZ1+leptZ2;
       
       
+      double deltaR_LeptW_LeptZ1 = leptW.DeltaR(leptZ1);
+      double deltaR_LeptW_LeptZ2 = leptW.DeltaR(leptZ2);
+      
+      
       //reconstruction of the W transverse mass
       //cout << "smalltree_lept_flav[2] " << smalltree_lept_flav[2]  << endl;
       
@@ -314,7 +318,7 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       
       //---------------------------------
       //apply dilepton invariant mass cut
-       if( fabs(InvMass_ll-91) < 15){
+       if( fabs(InvMass_ll-91) < 15 && deltaR_LeptW_LeptZ1 > 0.1 && deltaR_LeptW_LeptZ2 > 0.1 ){
        
          for(int ijet=0; ijet<iter_jets; ijet++){
            if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
@@ -505,7 +509,9 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	     else tree_btagDiscri   = jet_btagdiscri[0];
 
 	     fillHisto(thechannel, "BJetCSV",   "afterbjetsel",  thesample,   tree_btagDiscri,  evtweight);
- 
+	     
+	     
+	     
   	     tree_NJets	    = float(njets);
 	  
 	
@@ -533,6 +539,13 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	  
              double cosThetaStar = cos(letp_WRF.Vect().Angle(theWcand_topRF.Vect()));
             
+             fillHisto(thechannel, "toppT",     "afterbjetsel",  thesample, tree_topPt,  evtweight);
+             fillHisto(thechannel, "ZpT",       "afterbjetsel",  thesample, 	   Zpt,  evtweight);
+             fillHisto(thechannel, "WpT",       "afterbjetsel",  thesample, tree_leptWPt   ,  evtweight);
+             fillHisto(thechannel, "MET",       "afterbjetsel",  thesample,  tree_met ,  evtweight);
+             fillHisto(thechannel, "totpT",     "afterbjetsel",  thesample,  tree_totPt, evtweight);
+	     fillHisto(thechannel, "DeltaPhiTopZ",     "afterbjetsel",  thesample, (leptZ1+leptZ2).DeltaPhi(topCand) , evtweight);
+	     
 	      tree_cosThetaStar = cosThetaStar;
 	      
 	      //store tree channel
@@ -653,16 +666,27 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("LeptPt",    "afterbjetsel",  sample.Data(),   100,0.,200);
   addHisto("LeptEta",   "afterbjetsel",  sample.Data(),   26, -2.5, 2.5 );
   
-  addHisto("LeptPtZ1",    "afterbjetsel",  sample.Data(),  100,0.,200);
-  addHisto("LeptEtaZ1",   "afterbjetsel",  sample.Data(),  26, -2.5, 2.5 );
-  addHisto("LeptPtZ2",    "afterbjetsel",  sample.Data(),  100,0.,200);
-  addHisto("LeptEtaZ2",   "afterbjetsel",  sample.Data(),  26, -2.5, 2.5 );
-  addHisto("LeptPtW",     "afterbjetsel",  sample.Data(),  100,0.,200);
-  addHisto("LeptEtaW",    "afterbjetsel",  sample.Data(),  26, -2.5, 2.5 );
+  addHisto("LeptPtZ1",    "afterbjetsel",  sample.Data(),  25,0.,200);
+  addHisto("LeptEtaZ1",   "afterbjetsel",  sample.Data(),  13, -2.5, 2.5 );
+  addHisto("LeptPtZ2",    "afterbjetsel",  sample.Data(),  25,0.,200);
+  addHisto("LeptEtaZ2",   "afterbjetsel",  sample.Data(),  13, -2.5, 2.5 );
+  addHisto("LeptPtW",     "afterbjetsel",  sample.Data(),  25,0.,200);
+  addHisto("LeptEtaW",    "afterbjetsel",  sample.Data(),  13, -2.5, 2.5 );
   
   addHisto("HT",    "afterbjetsel",  sample.Data(),  50,0.,1000);
   addHisto("ST",    "afterbjetsel",  sample.Data(),  50,0.,1000);
-
+  
+  addHisto("toppT",    "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("ZpT",      "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("WpT",      "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("MET",      "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("totpT",    "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("DeltaPhiTopZ",    "afterbjetsel",  sample.Data(),  50,0.,3.2);
+  
+  
+  
+  
+  
   addHisto("BJetCSV",    "afterbjetsel",  sample.Data(),  30,0.,1.);
    
   cout << "#####################################" << endl;

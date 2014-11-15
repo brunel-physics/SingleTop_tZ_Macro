@@ -20,7 +20,7 @@ def get_model(signalname):
     # For more info about this model and naming conventuion, see documentation
     # of build_model_from_rootfile.
 
-    model = build_model_from_rootfile('../TMVA/TemplateRootFiles/MVA_theta.root',  include_mc_uncertainties=True)
+    model = build_model_from_rootfile('../TMVA/TemplateRootFiles/MVA_all_theta.root',  include_mc_uncertainties=True)
     
       
     

@@ -26,46 +26,46 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
 
   std::vector<double > sf_DY, sf_DY_err;  
   if(selection == "afterjetsel"){
-    sf_DY.push_back(0.0); sf_DY_err.push_back(0);
-    sf_DY.push_back(0.75); sf_DY_err.push_back(0);
-    sf_DY.push_back(1.47); sf_DY_err.push_back(0);
-    sf_DY.push_back(1.32); sf_DY_err.push_back(0);
+    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
+    sf_DY.push_back(1.13); sf_DY_err.push_back(0.32);
+    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
+    sf_DY.push_back(1.14); sf_DY_err.push_back(0.33);
   }else if (selection == "afterbjetsel"){
-    sf_DY.push_back(0); sf_DY_err.push_back(0);
-    sf_DY.push_back(1.34); sf_DY_err.push_back(0); 
-    sf_DY.push_back(0); sf_DY_err.push_back(0);
-    sf_DY.push_back(0.72); sf_DY_err.push_back(0); 
+    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
+    sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
+    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
+    sf_DY.push_back(1.14); sf_DY_err.push_back(0.33); 
   
   }else{
-    sf_DY.push_back(0); sf_DY_err.push_back(0);
-    sf_DY.push_back(0.71); sf_DY_err.push_back(0); 
-    sf_DY.push_back(2.88); sf_DY_err.push_back(0);
-    sf_DY.push_back(1.09); sf_DY_err.push_back(0);
+    sf_DY.push_back(1.71); sf_DY_err.push_back(0.44);
+    sf_DY.push_back(0.83); sf_DY_err.push_back(0.15); 
+    sf_DY.push_back(1.45); sf_DY_err.push_back(0.39);
+    sf_DY.push_back(1.03); sf_DY_err.push_back(0.17);
   }
   
   
   std::vector<double > sf_WZ, sf_WZ_err;
   if(selection == "afterjetsel"){
-    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(0.97); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(0.60); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(1.19); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09);
+    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1.13); sf_WZ_err.push_back(0.10);
   }else if (selection == "afterbjetsel"){
-    sf_WZ.push_back(1.00); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(0.90); sf_WZ_err.push_back(0); 
-    sf_WZ.push_back(0.56); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(1.18); sf_WZ_err.push_back(0); 
+    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
+    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1.13); sf_WZ_err.push_back(0.10); 
   
   }else{
-    sf_WZ.push_back(1.06); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(0.93); sf_WZ_err.push_back(0); 
-    sf_WZ.push_back(0.70); sf_WZ_err.push_back(0);
-    sf_WZ.push_back(1.10); sf_WZ_err.push_back(0);
+    sf_WZ.push_back(1.00); sf_WZ_err.push_back(0.04);
+    sf_WZ.push_back(1.12); sf_WZ_err.push_back(0.06); 
+    sf_WZ.push_back(0.92); sf_WZ_err.push_back(0.04);
+    sf_WZ.push_back(1.10); sf_WZ_err.push_back(0.06);
   }
   
   
   
-    /*sf_DY.push_back(1); sf_DY_err.push_back(0.69);
+   /* sf_DY.push_back(1); sf_DY_err.push_back(0.69);
     sf_DY.push_back(1); sf_DY_err.push_back(0.22);
     sf_DY.push_back(1); sf_DY_err.push_back(1.46);
     sf_DY.push_back(1); sf_DY_err.push_back(1.39);
@@ -476,12 +476,13 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   
   qw->AddEntry(histo_data,         "Data" ,                "ep");
   for(unsigned int i=0; i<mcSample_list.size(); i++){
-    if(mcSample_list[i] == "tZq"       ) qw->AddEntry( histo_mcSamples[13],	"tZq"		 ,"f");
+    if(mcSample_list[i] == "tZq"       ) qw->AddEntry( histo_mcSamples[14],	"tZq"		 ,"f");
     if(mcSample_list[i] == "TbarsChan" ) qw->AddEntry( histo_mcSamples[5],	"single top"	 ,"f");
     if(mcSample_list[i] == "TT"        ) qw->AddEntry( histo_mcSamples[6],	"t#bar{t}"	 ,"f");
     if(mcSample_list[i] == "TTZ"       ) qw->AddEntry( histo_mcSamples[8],	"t#bar{t}V"	 ,"f");
-    if(mcSample_list[i] == "Zjets"     ) qw->AddEntry( histo_mcSamples[12],	"DY"		 ,"f");
+    if(mcSample_list[i] == "Zjets"     ) qw->AddEntry( histo_mcSamples[13],	"DY"		 ,"f");
     if(mcSample_list[i] == "WZ"        ) qw->AddEntry( histo_mcSamples[10],	"VV"		 ,"f");
+    if(mcSample_list[i] == "WZHF"      ) qw->AddEntry( histo_mcSamples[11],	"VVHF"		 ,"f");
   }
   
   qw->Draw();
@@ -537,10 +538,10 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   thegraph_ratio->Draw("e2same");
   
   TString end_name;
-//  if(setlogy) end_name="_Logy.gif";
-//  else end_name=".gif"; 
-  if(setlogy) end_name="_Logy.eps";
-  else end_name=".eps"; 
+  if(setlogy) end_name="_Logy.gif";
+  else end_name=".gif"; 
+  //if(setlogy) end_name="_Logy.eps";
+  //else end_name=".eps"; 
 
   TString outputname = "plots/"+varname+"_"+namechan+"_"+selection+end_name;
   if(sumChannels) outputname = "plots/"+varname+"_"+"all"+"_"+selection+end_name;

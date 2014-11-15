@@ -46,11 +46,11 @@
   mcSample_list.push_back("TTW");           colorVector.push_back(kRed+1);
   mcSample_list.push_back("WZ");            colorVector.push_back(13);
   mcSample_list.push_back("ZZ");            colorVector.push_back(13);
+  mcSample_list.push_back("WZHF");            colorVector.push_back(12);
   mcSample_list.push_back("DYToLL_M10-50"); colorVector.push_back(kAzure-2);
   mcSample_list.push_back("Zjets");         colorVector.push_back(kAzure-2);
   mcSample_list.push_back("tZq");           colorVector.push_back(kGreen+2);
   //mcSample_list.push_back("WW");            colorVector.push_back(13);
-  mcSample_list.push_back("WZHF");            colorVector.push_back(12);
   
   
   
@@ -64,7 +64,7 @@
  //--------------------------
  //define list of systematics
  std::vector<TString> syst_list;
- syst_list.push_back("leptup");
+ /*syst_list.push_back("leptup");
  syst_list.push_back("leptdown");
  //syst_list.push_back("trigup");
  //syst_list.push_back("trigdown");
@@ -75,30 +75,38 @@
  syst_list.push_back("jerup");
  syst_list.push_back("jerdown");
  syst_list.push_back("metunclsup");
- syst_list.push_back("metunclsdown");
+ syst_list.push_back("metunclsdown");*/
   
   
  
  //--------------------------
  //define list of systematics
  std::vector<TString> selectionStep_list;
-// selectionStep_list.push_back("afterleptsel");
-// selectionStep_list.push_back("afterZsel");
+ //selectionStep_list.push_back("afterleptsel");
+ //selectionStep_list.push_back("afterZsel");
  selectionStep_list.push_back("afterbjetsel");
  
  
  //------------------------
  //define list of variables
  std::vector<TString> variables_list;
- variables_list.push_back("InvM_ll");
- variables_list.push_back("mWT");
- variables_list.push_back("BJetCSV");
- //variables_list.push_back("ST");
- //variables_list.push_back("HT");
-  
+ //variables_list.push_back("InvM_ll");
+ //variables_list.push_back("mWT");
+ 
+ /*variables_list.push_back("BJetCSV");
+ variables_list.push_back("toppT");
+ variables_list.push_back("ZpT");
+ variables_list.push_back("MET");
+ variables_list.push_back("totpT");*/
+ variables_list.push_back("LeptPtZ1");
+ variables_list.push_back("LeptEtaZ1");
+ variables_list.push_back("LeptPtZ2");
+ variables_list.push_back("LeptEtaZ2");   
+ variables_list.push_back("LeptPtW");
+ variables_list.push_back("LeptEtaW");
+ variables_list.push_back("WpT");
+ variables_list.push_back("DeltaPhiTopZ");
 
-
-   
   for(int iselstep=0; iselstep < selectionStep_list.size(); iselstep++){
       //PlotStack("InvM_ll_",channel_list[ichan],"_afterleptsel", i, k);
     for(int ivar=0; ivar < variables_list.size(); ivar++){

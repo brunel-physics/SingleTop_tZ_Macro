@@ -277,9 +277,9 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/backup_outputProof19-10-14_14-19_debug/merged_proof.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../RootFiles/proof_merged_emudebug.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/backup_outputProof19-10-14_14-19_debug/merged_proof.root");
+         f = new TFile("../RootFiles/proof_merged_emudebug.root");
       }
       if(sample == "WZHF") f->GetObject( "SmallTree_WZ" ,tree);
       else f->GetObject( ("SmallTree_"+sample).Data() ,tree);
@@ -287,10 +287,10 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
    }
    Init(tree);
    systlist = thesystlist;
-   isoEl = 0.05;
-   isoMu = 0.010;
-   //isoEl = 0.15; //0.05
-   //isoMu = 0.20; //0.12
+   //isoEl = 0.10;
+   //isoMu = 0.12;
+   isoEl = 0.15; //0.05
+   isoMu = 0.20; //0.12
    nWZsample = 0;
    
    isData = 1;

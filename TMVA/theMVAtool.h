@@ -47,15 +47,15 @@ public :
    ~theMVAtool(){};
    
    
-   void doTraining();
-   void doReading(float bdtcut = 100.);
+   void doTraining(TString channel = "all");
+   void doReading(float bdtcut = 100., TString channel = "all");
    
-   void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut );
+   void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);
    
    //--------------------
    //deal with histograms
    //--------------------
-   void createHisto(TString sample);
+   void createHisto(TString sample, TString channel);
    void fillHisto(TString sample,  float* theVar, double mva, double weight=1);
    void writeHisto(TString sample, TString syst);
    void scaleHisto(TString sample, double thescale);
