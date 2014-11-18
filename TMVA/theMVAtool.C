@@ -371,11 +371,13 @@ void theMVAtool::createHisto(TString sample, TString channel){
     
     if(nbins==1)  cout << "warning : no TH1F definition for variable " << varList[j] << endl;
     TH1F * histo = new TH1F((varList[j]+"_"+channel+"__"+sample).Data(), (varList[j]+"_"+channel+"__"+sample).Data(), nbins, xmin, xmax);
+    histo->Sumw2();
     histovect.push_back(histo);
   }
   
   
   TH1F * histo = new TH1F( ("MVA_"+channel+"__"+sample).Data(), ("MVA_"+channel+"__"+sample).Data(),  20, -1, 1);
+  histo->Sumw2();
   histovect.push_back(histo);
   theHistoMap[sample] = histovect;
   

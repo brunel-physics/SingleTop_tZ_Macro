@@ -51,7 +51,7 @@ bool ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
     TH1F * tmp = (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]).Data() )->Clone();
     if(tmp == 0){ cout << "non existing histogram " <<  inputdistrib+"__"+sampleList[i] << endl; return false;}
     tmp->Sumw2();
-    if(sampleList[i] == "tZq") tmp->Scale(3.);
+    if(sampleList[i] == "tZq") tmp->Scale();
     distrib_MC.push_back( tmp ); 
   } 
   
@@ -144,9 +144,16 @@ void ProdTemplate(){
   
   
   
-  ProdTemplate("MVA_all", sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("MVA_all",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("MVA_mumumu", sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("MVA_mumue",  sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("MVA_eemu",   sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("MVA_eee",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  
+  
+  
   ////ProdTemplate("tree_cosThetaStar",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
-  ProdTemplate("tree_topMass_all",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
+  /*ProdTemplate("tree_topMass_all",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
  //// ProdTemplate("tree_totMass",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
   ////ProdTemplate("tree_deltaPhilb",       sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
   ////ProdTemplate("tree_deltaRlb",         sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
@@ -172,7 +179,7 @@ void ProdTemplate(){
   //ProdTemplate("tree_met",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	
   //ProdTemplate("tree_mTW",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	
 
-  
+  */
   
   
   

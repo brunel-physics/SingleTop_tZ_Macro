@@ -287,10 +287,14 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
    }
    Init(tree);
    systlist = thesystlist;
-   //isoEl = 0.10;
-   //isoMu = 0.12;
-   isoEl = 0.15; //0.05
-   isoMu = 0.20; //0.12
+   
+   
+   isoEl = 0.05;
+   isoMu = 0.20;
+   
+   
+   //isoEl = 0.15; //0.05
+   //isoMu = 0.20; //0.12
    nWZsample = 0;
    
    isData = 1;
