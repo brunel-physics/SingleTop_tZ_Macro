@@ -63,9 +63,9 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
 {
   // Opening the input file
   std::cout << "Opening the input file ..." << std::endl;
-  std::string filename  = "../TreeReader/outputroot/histofile_merged.root"; // for nom sample
+  std::string filename  = "../TreeReader/outputroot_withCSV/merged.root"; // for nom sample
   //std::string filename  = "../TreeReader/histofile_merged_trigweight.root"; // for nom sample
-  std::string filename2 = "../TreeReader/outputroot/histofile_merged.root"; // Z enriched
+  std::string filename2 = "../TreeReader/outputroot_withCSV/merged.root"; // Z enriched
   
   
   TFile *f_data   = new TFile(filename.c_str());
@@ -128,7 +128,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   std::vector<TH1F*> histo_List_Data;
   for (unsigned int i=0;i<Channels.size();i++)
   {
-    std::string histoname = (obs+"_"+Channels[i]+"_"+selection+"__"+Datasets[i]).Data();
+    std::string histoname = (TString(obs)+"_"+TString(Channels[i])+"_"+TString(selection)+"__"+TString(Datasets[i])).Data();
     std::cout << "Loading plot for data '" << histoname << "' ... " << std::endl;
     histo_List_Data.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List_Data[i]==0) { std::cout << "ERROR : plot not found" << std::endl; return false; }
@@ -144,7 +144,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for (unsigned int j=0; j<Channels.size();j++)
   for(unsigned int i=0; i<histoName_List.size(); i++)
   {
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List[i]).Data();
+    std::string histoname = (TString(obs)+"_"+TString(Channels[j])+"_"+TString(selection)+"__"+TString(histoName_List[i])).Data();
     std::cout << "Loading plot for MC '" << histoname << "' ... " << std::endl;
     histo_List.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ) );
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found" << std::endl; return false; }
@@ -173,7 +173,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for(unsigned int i=0; i<histoName_List_DY.size(); i++)
   { 
     f_data2->cd();
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List_DY[i]).Data();
+    std::string histoname = (TString(obs)+"_"+TString(Channels[j])+"_"+TString(selection)+"__"+TString(histoName_List_DY[i])).Data();
     std::cout << "Loading plot DY from data '" << histoname << "' ... " << std::endl;
     histo_List_DY.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found'" << std::endl; return false; }
@@ -187,7 +187,7 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
   for(unsigned int i=0; i<histoName_List_DY_MC.size(); i++)
   { 
     f_data->cd();
-    std::string histoname = (obs+"_"+Channels[j]+"_"+selection+"__"+histoName_List_DY_MC[i]).Data();
+    std::string histoname = (TString(obs)+"_"+TString(Channels[j])+"_"+TString(selection)+"__"+TString(histoName_List_DY_MC[i])).Data();
     std::cout << "Loading plot for DY from MC '" << histoname << "' ... " << std::endl;
     histo_List_DY_MC.push_back(dynamic_cast<TH1F*>( gROOT->FindObject(histoname.c_str()) ));
     if (histo_List.back()==0) {std::cout << "ERROR : plot not found'" << std::endl; return false; }
