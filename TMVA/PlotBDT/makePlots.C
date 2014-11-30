@@ -48,6 +48,9 @@
  //-----------------------------
  //define list of signal samples 
   std::vector<TString> signalSample_list;
+  std::vector<int> colorVectorSignal;
+//  signalSample_list.push_back("FCNCzut"); colorVectorSignal.push_back(kOrange+7);
+  signalSample_list.push_back("FCNCzct"); colorVectorSignal.push_back(kYellow+1);
   
   
   
@@ -104,7 +107,7 @@
    
    for(int ivar=0; ivar < variables_list.size(); ivar++){
         
-       PlotStack(variables_list[ivar], 0, dataSample_list,  mcSample_list, signalSample_list, colorVector, dataDrivenTemplates_list);
+       PlotStack(variables_list[ivar], 0, dataSample_list,  mcSample_list, signalSample_list, colorVector, colorVectorSignal, dataDrivenTemplates_list);
        
     }
     
