@@ -20,7 +20,7 @@ bool applyDD = true;
 
 
 bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_list, 
-    std::vector<TString> mcSample_list, std::vector<TString > signalSample_list, std::vector<int> colorVector, std::vector< TString > dataDrivenTemplates_list){
+	       std::vector<TString> mcSample_list, std::vector<TString > signalSample_list, std::vector<int> colorVector, std::vector<int> colorVectorSignal, std::vector< TString > dataDrivenTemplates_list){
   
 
   std::vector<double > sf_DY, sf_DY_err;  /*
@@ -305,6 +305,11 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
     for(unsigned int isign = 0; isign < signalSample_list.size(); isign++){
       TString histo_mc_name   = varname+"__"+ signalSample_list[isign];
       TH1F * histo_tmp = (TH1F*)filechannel->Get(histo_mc_name);
+       histo_tmp->SetFillStyle(0);
+       histo_tmp->SetFillColor(colorVectorSignal[isign]);
+       histo_tmp->SetLineColor(colorVectorSignal[isign]);
+       histo_tmp->SetLineWidth(2);
+       histo_tmp->SetMarkerColor(colorVectorSignal[isign]);
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_mc_name << endl;
       histo_mcSignal.push_back(histo_tmp);
     }
@@ -361,7 +366,10 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
   thegraph->SetFillColor(1);
   thegraph->Draw("e2same");
   
-  
+   for(unsigned int isign = 0; isign< histo_mcSignal.size(); isign++)
+     {	
+	histo_mcSignal[isign]->Draw("hist e1 same");
+     }      
   
   
   //-------------------
@@ -384,7 +392,7 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
   TString info_data = "eee, #mu#mu#mu, e#mu#mu, ee#mu channels";
   if(varname == "MVA_mumumu") info_data = "#mu#mu#mu";
   if(varname == "MVA_mumue")  info_data = "#mu#mue";
-  if(varname == "MVA_eeemu")  info_data = "ee#mu";
+  if(varname == "MVA_eemu")  info_data = "ee#mu";
   if(varname == "MVA_eee")    info_data = "eee";
   
   
@@ -416,6 +424,13 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
     if(mcSample_list[i] == "WZ"        ) qw->AddEntry( histo_mcSamples[3],	"VV"		 ,"f");
     if(mcSample_list[i] == "WZHF"        ) qw->AddEntry( histo_mcSamples[5],	"WZ+hf"		 ,"f");
   }
+   
+  for(unsigned int i=0; i<signalSample_list.size(); i++)
+     {	
+//	if(signalSample_list[i] == "FCNCzut"       ) qw->AddEntry( histo_mcSignal[0],       "FCNC Zut"               ,"lp");
+	if(signalSample_list[i] == "FCNCzct"       ) qw->AddEntry( histo_mcSignal[0],       "FCNC Zct"               ,"lp");
+     }
+   
   /*
   mcSample_list.push_back("TT");            colorVector.push_back(kRed-7);
   mcSample_list.push_back("TTZ");           colorVector.push_back(kRed+1);
@@ -470,6 +485,7 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
   else if(varname == "Njets")     histo_ratio_data->GetXaxis()->SetTitle("jet mult.");
   else if(varname == "NBjets")    histo_ratio_data->GetXaxis()->SetTitle("b-tagged jet mult.");
   else if(varname == "Met")	  histo_ratio_data->GetXaxis()->SetTitle("missing E_{T} [GeV]");
+  histo_ratio_data->GetXaxis()->SetTitle("BDT");
   
   histo_ratio_data->SetMinimum(0.0);
   histo_ratio_data->SetMaximum(2.0);
@@ -483,8 +499,10 @@ bool PlotStack(TString varname, bool setlogy,  std::vector<TString> dataSample_l
   thegraph_ratio->Draw("e2same");
   
   TString end_name;
-  if(setlogy) end_name="_Logy.gif";
-  else end_name=".gif"; 
+//  if(setlogy) end_name="_Logy.gif";
+//  else end_name=".gif"; 
+  if(setlogy) end_name="_Logy.eps";
+  else end_name=".eps"; 
 
   TString outputname = "plots/"+varname+end_name;
  
