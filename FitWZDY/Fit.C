@@ -53,9 +53,9 @@ int systematics_SingleTop = 0;
 int systematics_WW	  = 0;
 int systematics_ZZ	  = 0;
 
-//TString selectionstep = "leptcut";
+TString selectionstep = "leptcut";
 //TString selectionstep = "jet";
-TString selectionstep = "btag";
+//TString selectionstep = "btag";
 
 
 
@@ -63,9 +63,9 @@ bool ExtractHisto(std::string sel, std::string obs, std::string channel, TH1F*& 
 {
   // Opening the input file
   std::cout << "Opening the input file ..." << std::endl;
-  std::string filename  = "../TreeReader/outputroot_withCSV/merged.root"; // for nom sample
+  std::string filename  = "../TreeReader/outputroot_bjetFake/histofile_merged.root"; // for nom sample
   //std::string filename  = "../TreeReader/histofile_merged_trigweight.root"; // for nom sample
-  std::string filename2 = "../TreeReader/outputroot_withCSV/merged.root"; // Z enriched
+  std::string filename2 = "../TreeReader/outputroot_bjetFake/histofile_merged.root"; // Z enriched
   
   
   TFile *f_data   = new TFile(filename.c_str());
@@ -362,6 +362,7 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
   zMass_Data->SetMarkerStyle(20);
   zMass_Data->Draw("ep");
   zMass_Data->GetXaxis()->SetTitle("m_{T}(W)");
+  zMass_Data->SetTitle("");
   
   zMass_Data->Draw("epsame");
   cout << "line 323 " << endl;
@@ -370,7 +371,7 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
 
   //create a "frame" : a kind of TCanvas used to display the result of the fit
   RooPlot* frame = LL_Zmass->frame() ;
-
+   
   //plot the data on the frame
   histoLL_Zmass->plotOn(frame);
 
@@ -381,7 +382,9 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
 
   histoLL_Zmass->plotOn(frame);
   frame->Draw("hsame");
-
+   
+   std::cout << frame->chiSquare(3) << std::endl;
+   
   // Drawing legend
   TH1F * histoFitDY    = new TH1F("histoFitDY",    "histoFitDY",    0, 1, 100);
   TH1F * histoFitOther = new TH1F("histoFitOther", "histoFitOther", 0, 1, 100);
@@ -415,7 +418,8 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
   str << "SF fake = " << coeffModel.getVal()*zMass_Data->Integral()/(totMC_DY->Integral()) << " #pm " <<
     coeffModel.getError()*zMass_Data->Integral()/(totMC_DY->Integral()) << "";
 
-
+   std::cout << str.str() << std::endl;
+   
   TLatex *tex1 = new TLatex(50*aX+bX,75*aY+bY,str.str().c_str());
   tex1->SetTextSize(0.03);
   tex1->SetTextColor(1);
@@ -424,6 +428,8 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
   str << "SF non fake = " << (1.-coeffModel.getVal())*zMass_Data->Integral()/(totMC->Integral()) << " #pm " <<
     coeffModel.getError()*zMass_Data->Integral()/(totMC->Integral()) << "";
 
+   std::cout << str.str() << std::endl;
+   
   TLatex *tex2 = new TLatex(50*aX+bX,67*aY+bY,str.str().c_str());
   tex2->SetTextSize(0.03);
   tex2->SetTextColor(1);
@@ -433,6 +439,8 @@ std::pair<double, double >  LikelihoodFit(string channel, TH1F* zMass_Data, TH1F
   cout << "line 389 " << endl;
   //theApp->Run();
   
+   c1->Print("result.eps");
+   
   double count = 0;
   double count_data = 0;
   for(int ibin=0; ibin<totMC_DY->GetNbinsX()+2; ibin++){
