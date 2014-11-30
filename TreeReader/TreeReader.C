@@ -62,6 +62,7 @@ void TreeReader::Loop(TString sample)
    }
    
    
+   optHisto();
    theoutputfile->Write();
    deleteHisto();
    theoutputfile->Close();
@@ -107,7 +108,15 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       jet_phi	     = smalltree_jet_phi;
       jet_btagdiscri = smalltree_jet_btagdiscri;
       jet_flav       = smalltree_jet_flav;
-      
+
+      double trigSF = 1.;
+      if( applyTrigSF && !isData ) 
+        {
+	   if( thechannel == "mumumu" ) trigSF = sf_Trig[0];
+	   else if( thechannel == "mumue" ) trigSF = sf_Trig[1];
+	   else if( thechannel == "eemu" ) trigSF = sf_Trig[2];
+	   else if( thechannel == "eee" ) trigSF = sf_Trig[3];
+	}   
       
       if(systtype == "" || 
          systtype == "lept__plus" ||   systtype == "lept__minus" || 
@@ -133,14 +142,14 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	else if(systtype == "PDF__plus")     evtweight = smalltree_weight_PDFup;
 	else if(systtype == "PDF__minus")    evtweight = smalltree_weight_PDFdown;
 	//cout << "evtweight "  << evtweight << endl;
-	
+
         if(sample == "WZ" || sample == "WZHF" || sample == "tZq" || sample == "TTZ" || sample == "TTW" || sample == "ZZ"){
           if(thechannel == "mumumu" ) evtweight *= 0.9871;
           if(thechannel == "mumue"  ) evtweight *= 0.9001;
           if(thechannel == "eemu"   ) evtweight *= 0.9451;
           if(thechannel == "eee"    ) evtweight *= 0.9975;
         }
-      
+	 
       }else if(systtype == "jes__plus"){
       
 	met_pt    = smalltree_met_jesup_pt;
@@ -221,6 +230,22 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	wCSV = GetCSVweight(17,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
       }else if(systtype == "btag__CSVLFStats2down"){
 	wCSV = GetCSVweight(18,smalltree_njets,smalltree_jet_pt,smalltree_jet_eta,smalltree_jet_btagdiscri,smalltree_jet_flav);
+      }else if(systtype == "trig__plus"){
+	 if( applyTrigSF && !isData ) 
+	   {
+	      if( thechannel == "mumumu" ) trigSF = sf_Trig_err_plus[0];
+	      else if( thechannel == "mumue" ) trigSF = sf_Trig_err_plus[1];
+	      else if( thechannel == "eemu" ) trigSF = sf_Trig_err_plus[2];
+	      else if( thechannel == "eee" ) trigSF = sf_Trig_err_plus[3];
+	   }   
+      }else if(systtype == "trig__minus"){
+	 if( applyTrigSF && !isData )
+	   {
+	      if( thechannel == "mumumu" ) trigSF = sf_Trig_err_minus[0];
+	      else if( thechannel == "mumue" ) trigSF = sf_Trig_err_minus[1];
+	      else if( thechannel == "eemu" ) trigSF = sf_Trig_err_minus[2];
+	      else if( thechannel == "eee" ) trigSF = sf_Trig_err_minus[3];
+	   }   
       }else{
         cout << "WARNING syst type not recognized !! " << endl;
 	cout << "correct syst types are " << endl;
@@ -229,6 +254,7 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
       }
       
       if( applyCSV ) evtweight *= wCSV;
+      if( applyTrigSF && !isData ) evtweight *= trigSF;
    
       TLorentzVector Zcand = leptZ1+leptZ2;
       
@@ -284,7 +310,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
      int nbjets = 0;
      std::vector<int > btagged_jet_idx;
      for(int ijet=0; ijet<iter_jets; ijet++){
-       if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
+	// kskovpen: change eta cut to 2.4 for jets
+       if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.4) continue;
        njets++;
        fillHisto(thechannel, "JetPt",     "afterleptsel",  thesample,  jet_pt[ijet] , evtweight);
        fillHisto(thechannel, "JetEta",    "afterleptsel",  thesample,  jet_eta[ijet] , evtweight);
@@ -321,7 +348,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
        if( fabs(InvMass_ll-91) < 15 && deltaR_LeptW_LeptZ1 > 0.1 && deltaR_LeptW_LeptZ2 > 0.1 ){
        
          for(int ijet=0; ijet<iter_jets; ijet++){
-           if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
+	    // kskovpen: change eta cut to 2.4 for jets
+           if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.4) continue;     
            fillHisto(thechannel, "JetPt",     "afterZsel",  thesample,  jet_pt[ijet] , evtweight);
            fillHisto(thechannel, "JetEta",    "afterZsel",  thesample,  jet_eta[ijet] , evtweight);
          }
@@ -376,7 +404,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 //	   else cout << "wrong sample name given to CSV TTree " << thesample <<endl; 
 	    
            for(int ijet=0; ijet<iter_jets; ijet++){
-             if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
+	      // kskovpen: change eta cut to 2.4 for jets
+             if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.4) continue;     
              fillHisto(thechannel, "JetPt",     "afterjetsel",  thesample,  jet_pt[ijet] , evtweight);
              fillHisto(thechannel, "JetEta",    "afterjetsel",  thesample,  jet_eta[ijet] , evtweight);
            }
@@ -408,17 +437,22 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	   
 	   
 	   
-	   
+	    bool pass_mTW = 1;
+	    if((thechannel == "eee" || thechannel == "mumue") && mTW < 40) pass_mTW = 0;
+//	    if(mTW < 40) pass_mTW = 0;
 	   
 	   //----------------------------
 	   //no more than one btagged jet 
-	   if(nbjets <=2 && njets<=2 && mTW> 40 ){
-	  
+//	   if(nbjets <=1 && njets<=2 ){
+	   if(nbjets <=1 && pass_mTW ){
+//	   if(nbjets <=1 ){
+	      
 	     float HT = 0;
 	     float ST = 0;
 	     
              for(int ijet=0; ijet<iter_jets; ijet++){
-               if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.5) continue;     
+		// kskovpen: change eta cut to 2.4 for jets
+               if(jet_pt[ijet] < 30 || fabs(jet_eta[ijet]) > 2.4) continue;     
                fillHisto(thechannel, "JetPt",     "afterbjetsel",  thesample,  jet_pt[ijet] , evtweight);
                fillHisto(thechannel, "JetEta",    "afterbjetsel",  thesample,  jet_eta[ijet] , evtweight);
 	       HT+= jet_pt[ijet];
@@ -467,7 +501,8 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	  
              tree_topMass    = topCand.M();
              tree_totMass    = (topCand + (leptZ1+leptZ2)).M();
-             tree_deltaPhilb = fabs(leptW.DeltaPhi(bjet));
+	     tree_deltaPhilb = leptW.DeltaPhi(bjet);
+//             tree_deltaPhilb = fabs(leptW.DeltaPhi(bjet));
              tree_deltaRlb   = leptW.DeltaR(  bjet);
              tree_deltaRTopZ = (leptZ1+leptZ2).DeltaR(topCand);
 	     
@@ -499,7 +534,7 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
  
 	     tree_NBJets	    = float(nbjets);
 	  
-  	     tree_leptWPt        = leptW.Pt(); 
+  	     tree_leptWPt        = leptW.Pt();
 	     tree_leptWEta       = leptW.Eta();
   	     tree_leadJetPt      = bjet.Pt(); 
 	     tree_leadJetEta     = bjet.Eta();
@@ -531,6 +566,10 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
                fillHisto(thechannel, "NJet",       "afterbjetsel",  thesample,  iter_jets , evtweight);
                fillHisto(thechannel, "NBJet",      "afterbjetsel",  thesample,   nbjets, evtweight);
      
+	       fillHisto(thechannel, "asym",       "afterbjetsel",  thesample,  tree_asym , evtweight);
+	       fillHisto(thechannel, "leptWPt",       "afterbjetsel",  thesample,  tree_leptWPt , evtweight);
+	       fillHisto(thechannel, "leadJetPt",       "afterbjetsel",  thesample,  tree_leadJetPt , evtweight);
+	       fillHisto(thechannel, "leadJetEta",       "afterbjetsel",  thesample,  tree_leadJetEta , evtweight);
      
                fillHisto(thechannel, "mWT",        "afterbjetsel",  thesample,   mTW,          evtweight);
                fillHisto(thechannel, "InvM_ll",    "afterbjetsel",  thesample,   InvMass_ll,   evtweight);
@@ -551,18 +590,26 @@ bool TreeReader::applyEventSel(TString thechannel, TString systtype, TString sam
 	         
                fillHisto(thechannel, "CutFlow", "",  thesample, 4, evtweight);
                fillHisto(thechannel, "toppT",     "afterbjetsel",  thesample, tree_topPt,  evtweight);
-               fillHisto(thechannel, "ZpT",       "afterbjetsel",  thesample, 	   Zpt,  evtweight);
+	       fillHisto(thechannel, "topEta",     "afterbjetsel",  thesample, tree_topEta,  evtweight);
+               fillHisto(thechannel, "ZpT",       "afterbjetsel",  thesample, 	   tree_Zpt,  evtweight);
+	       fillHisto(thechannel, "ZEta",       "afterbjetsel",  thesample, 	   tree_ZEta,  evtweight);
                fillHisto(thechannel, "WpT",       "afterbjetsel",  thesample, tree_leptWPt   ,  evtweight);
                fillHisto(thechannel, "MET",       "afterbjetsel",  thesample,  tree_met ,  evtweight);
                fillHisto(thechannel, "totpT",     "afterbjetsel",  thesample,  tree_totPt, evtweight);
 	       fillHisto(thechannel, "DeltaPhiTopZ",     "afterbjetsel",  thesample, (leptZ1+leptZ2).DeltaPhi(topCand) , evtweight);
-	     
+	       fillHisto(thechannel, "deltaPhilb",     "afterbjetsel",  thesample, tree_deltaPhilb , evtweight);
+	       fillHisto(thechannel, "deltaPhiZmet",     "afterbjetsel",  thesample, tree_deltaPhiZmet , evtweight);
+	       fillHisto(thechannel, "deltaPhiZleptW",     "afterbjetsel",  thesample, tree_deltaPhiZleptW , evtweight);
+	       fillHisto(thechannel, "deltaRZleptW",     "afterbjetsel",  thesample, tree_deltaRZleptW , evtweight);
+
                fillHisto(thechannel, "topMass",     "afterbjetsel",  thesample, tree_topMass , evtweight);
                fillHisto(thechannel, "ZMass",       "afterbjetsel",  thesample,  InvMass_ll, evtweight);
                fillHisto(thechannel, "tZMass",      "afterbjetsel",  thesample, tree_totMass , evtweight);
 	     
 	        tree_cosThetaStar = cosThetaStar;
 	      
+	       fillHisto(thechannel, "cosThetaStar",      "afterbjetsel",  thesample, tree_cosThetaStar , evtweight);
+		
 	        //store tree channel
 	        if(thechannel == "mumumu") tree_Channel = 0;
 	        if(thechannel == "mumue" ) tree_Channel = 1;
@@ -620,7 +667,7 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("NJet",      "afterleptsel",  sample.Data(),  5,-0.5,4.5);
   addHisto("NBJet",     "afterleptsel",  sample.Data(),   5,-0.5,4.5);
   addHisto("mWT",       "afterleptsel",  sample.Data(),   100,0,200);
-  addHisto("InvM_ll",   "afterleptsel",  sample.Data(),   100,0,200);
+  addHisto("InvM_ll",   "afterleptsel",  sample.Data(),   30,60,120);
   addHisto("JetPt",     "afterleptsel",  sample.Data(),   100,0,300) ;
   addHisto("JetEta",    "afterleptsel",  sample.Data(),   26, -2.5, 2.5 ) ;
   addHisto("LeptPt",    "afterleptsel",  sample.Data(),   100,0.,200);
@@ -640,7 +687,7 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("NJet",      "afterZsel",  sample.Data(),  5,-0.5,4.5);
   addHisto("NBJet",     "afterZsel",  sample.Data(),   5,-0.5,4.5);
   addHisto("mWT",       "afterZsel",  sample.Data(),   100,0,200);
-  addHisto("InvM_ll",   "afterZsel",  sample.Data(),   100,0,200);
+  addHisto("InvM_ll",   "afterZsel",  sample.Data(),   30,60,120);
   addHisto("JetPt",     "afterZsel",  sample.Data(),   100,0,300) ;
   addHisto("JetEta",    "afterZsel",  sample.Data(),   26, -2.5, 2.5 ) ;
   addHisto("LeptPt",    "afterZsel",  sample.Data(),   100,0.,200);
@@ -659,7 +706,7 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("NJet",      "afterjetsel",  sample.Data(),  5,-0.5,4.5);
   addHisto("NBJet",     "afterjetsel",  sample.Data(),   5,-0.5,4.5);
   addHisto("mWT",       "afterjetsel",  sample.Data(),   100,0,200);
-  addHisto("InvM_ll",   "afterjetsel",  sample.Data(),   100,0,200);
+  addHisto("InvM_ll",   "afterjetsel",  sample.Data(),   30,60,120);
   addHisto("JetPt",     "afterjetsel",  sample.Data(),   100,0,300) ;
   addHisto("JetEta",    "afterjetsel",  sample.Data(),   26, -2.5, 2.5 ) ;
   addHisto("LeptPt",    "afterjetsel",  sample.Data(),   100,0.,200);
@@ -676,7 +723,7 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("NJet",      "afterbjetsel",  sample.Data(),  5,-0.5,4.5);
   addHisto("NBJet",     "afterbjetsel",  sample.Data(),   5,-0.5,4.5);
   addHisto("mWT",       "afterbjetsel",  sample.Data(),   100,0,200);
-  addHisto("InvM_ll",   "afterbjetsel",  sample.Data(),   100,0,200);
+  addHisto("InvM_ll",   "afterbjetsel",  sample.Data(),   30,60,120);
   addHisto("JetPt",     "afterbjetsel",  sample.Data(),   100,0,300) ;
   addHisto("JetEta",    "afterbjetsel",  sample.Data(),   26, -2.5, 2.5 ) ;
   addHisto("LeptPt",    "afterbjetsel",  sample.Data(),   100,0.,200);
@@ -692,19 +739,28 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
   addHisto("HT",    "afterbjetsel",  sample.Data(),  50,0.,1000);
   addHisto("ST",    "afterbjetsel",  sample.Data(),  50,0.,1000);
   
-  addHisto("toppT",    "afterbjetsel",  sample.Data(),  50,0.,500);
-  addHisto("ZpT",      "afterbjetsel",  sample.Data(),  50,0.,500);
+  addHisto("toppT",    "afterbjetsel",  sample.Data(),  30,0.,400);
+  addHisto("topEta",    "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
+  addHisto("ZpT",      "afterbjetsel",  sample.Data(),  30,0.,400);
+  addHisto("ZEta",      "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
   addHisto("WpT",      "afterbjetsel",  sample.Data(),  50,0.,500);
-  addHisto("MET",      "afterbjetsel",  sample.Data(),  50,0.,500);
-  addHisto("totpT",    "afterbjetsel",  sample.Data(),  50,0.,500);
-  addHisto("DeltaPhiTopZ",    "afterbjetsel",  sample.Data(),  50,0.,3.2);
-  addHisto("topMass",         "afterbjetsel",  sample.Data(),  50,0.,700);
+  addHisto("MET",      "afterbjetsel",  sample.Data(),  30,0.,200);
+  addHisto("totpT",    "afterbjetsel",  sample.Data(),  30,0.,500);
+  addHisto("DeltaPhiTopZ",    "afterbjetsel",  sample.Data(),  30,0.,3.2);
+  addHisto("deltaPhilb",    "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
+  addHisto("deltaPhiZmet",    "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
+  addHisto("deltaPhiZleptW",    "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
+  addHisto("deltaRZleptW",    "afterbjetsel",  sample.Data(),  30,0.,4.5);
+  addHisto("topMass",         "afterbjetsel",  sample.Data(),  30,0.,300);
   addHisto("ZMass",           "afterbjetsel",  sample.Data(),  50,0.,500);
   addHisto("tZMass",          "afterbjetsel",  sample.Data(),  70, 150,1000);
   
-  
-  
-  
+  addHisto("asym",         "afterbjetsel",  sample.Data(),  30,-3.2,3.2);
+  addHisto("leptWPt",         "afterbjetsel",  sample.Data(),  30,0.,200.);
+  addHisto("leadJetPt",         "afterbjetsel",  sample.Data(),  30,0.,200.);
+  addHisto("leadJetEta",         "afterbjetsel",  sample.Data(),  25,-3.2,3.2);
+      
+  addHisto("cosThetaStar",         "afterbjetsel",  sample.Data(),  30,-1.,1.);
   
   addHisto("BJetCSV",    "afterbjetsel",  sample.Data(),  30,0.,1.);
    
@@ -826,6 +882,13 @@ void TreeReader::initializeHisto(TString sample, bool isfirstset){
 //  treeCSV_EvtWeight      = -10000;
 //  treeCSV_Channel        = -10000;
 //  treeCSV_SampleType     = -10000;
+
+   sf_Trig[0] = 0.9871; sf_Trig_err_plus[0] = 0.0242; sf_Trig_err_minus[0] = 0.0212;
+   sf_Trig[1] = 0.9001; sf_Trig_err_plus[1] = 0.0565; sf_Trig_err_minus[1] = 0.0422;
+   sf_Trig[2] = 0.9451; sf_Trig_err_plus[2] = 0.0394; sf_Trig_err_minus[2] = 0.0408;
+   sf_Trig[3] = 0.9975; sf_Trig_err_plus[3] = 0.0455; sf_Trig_err_minus[3] = 0.0354;
+   
+   applyTrigSF = 1;
 }
 
 
@@ -943,6 +1006,7 @@ TString TreeReader::determineChannel(int leptflav1, int leptflav2, int leptflav3
 
 void TreeReader::deleteHisto(){
    cout << __LINE__ << endl;
+
    /*for(unsigned int i=0; i<histo_list_mmm.size(); i++){
      
      delete  histo_list_mmm[i];
@@ -957,6 +1021,25 @@ void TreeReader::deleteHisto(){
    cout << __LINE__ << endl;
   
   
+}
+
+void TreeReader::optHisto(){
+   for(unsigned int i=0;i<histo_list_mmm.size();i++)
+     {
+	AddBin(histo_list_mmm[i]);
+     }   
+   for(unsigned int i=0;i<histo_list_mme.size();i++)
+     {
+	AddBin(histo_list_mme[i]);
+     }   
+   for(unsigned int i=0;i<histo_list_eem.size();i++)
+     {
+	AddBin(histo_list_eem[i]);
+     }   
+   for(unsigned int i=0;i<histo_list_eee.size();i++)
+     {
+	AddBin(histo_list_eee[i]);
+     }   
 }
 
 //SetUp CSV reweighting
@@ -1111,7 +1194,7 @@ double TreeReader::GetCSVweight(const int iSys, int jet_n,
     double jetAbsEta = fabs( jet_eta[ij] );
     int flavor = abs( jet_flav[ij] );
 
-    if( jetPt < 20. || jetAbsEta > 2.5 ) continue;
+    if( jetPt < 20. || jetAbsEta > 2.4 ) continue;
      
     int iPt = -1; int iEta = -1;
     if (jetPt >=19.99 && jetPt<30) iPt = 0;
@@ -1125,7 +1208,7 @@ double TreeReader::GetCSVweight(const int iSys, int jet_n,
     else if ( jetAbsEta>=0.8 && jetAbsEta<1.6) iEta = 1;
     else if ( jetAbsEta>=1.6 && jetAbsEta<2.41) iEta = 2;
     // kskovpen hack - should change eta cut to 2.4 !
-    else if ( jetAbsEta>=2.41 && jetAbsEta<=2.5) iEta = 2;
+//    else if ( jetAbsEta>=2.41 && jetAbsEta<=2.5) iEta = 2;
      
     if (iPt < 0 || iEta < 0) std::cout << "Error, couldn't find Pt, Eta bins for this b-flavor jet, jetPt = " << jetPt << ", jetAbsEta = " << jetAbsEta << std::endl;
 
@@ -1153,9 +1236,23 @@ double TreeReader::GetCSVweight(const int iSys, int jet_n,
 
 
   double csvWgtTotal = csvWgthf * csvWgtC * csvWgtlf;
-
+   
   return csvWgtTotal;
 }
 
-
+void TreeReader::AddBin(TH1F *h)
+{
+   // Add overflow and underflow bins
+   Int_t x_nbins = h->GetXaxis()->GetNbins();
+   h->SetBinContent(1,h->GetBinContent(0)+h->GetBinContent(1));
+   h->SetBinError(1,TMath::Sqrt(pow(h->GetBinError(0),2)+pow(h->GetBinError(1),2)));
+   h->SetBinContent(x_nbins,h->GetBinContent(x_nbins)+h->GetBinContent(x_nbins+1));
+   h->SetBinError(x_nbins,TMath::Sqrt(pow(h->GetBinError(x_nbins),2)+
+				      pow(h->GetBinError(x_nbins+1),2)));
+   // Set overflow and underflow bins to 0
+   h->SetBinContent(0,0.);
+   h->SetBinError(0,0.);
+   h->SetBinContent(x_nbins+1,0.);
+   h->SetBinError(x_nbins+1,0.);
+}
 
