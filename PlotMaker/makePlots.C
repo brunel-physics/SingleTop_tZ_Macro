@@ -2,6 +2,8 @@
 
 {
 
+ gROOT->SetBatch(1);
+   
  gROOT->ProcessLine(".L PlotStack.C+");
  gROOT->SetStyle("Plain");
  gStyle->SetPalette(1);
@@ -57,6 +59,9 @@
  //-----------------------------
  //define list of signal samples 
   std::vector<TString> signalSample_list;
+  std::vector<int> colorVectorSignal;
+  signalSample_list.push_back("FCNCzut");           colorVectorSignal.push_back(kOrange+7);
+  signalSample_list.push_back("FCNCzct");           colorVectorSignal.push_back(kYellow+1);
   
   
   
@@ -64,13 +69,13 @@
  //--------------------------
  //define list of systematics
  std::vector<TString> syst_list;
- /*syst_list.push_back("leptup");
+/* syst_list.push_back("leptup");
  syst_list.push_back("leptdown");
- //syst_list.push_back("trigup");
- //syst_list.push_back("trigdown");
+ syst_list.push_back("trigup");
+ syst_list.push_back("trigdown");*/
  //syst_list.push_back("PDFup");
  //syst_list.push_back("PDFdown");
- syst_list.push_back("jesup");
+/* syst_list.push_back("jesup");
  syst_list.push_back("jesdown");
  syst_list.push_back("jerup");
  syst_list.push_back("jerdown");
@@ -82,30 +87,50 @@
  //--------------------------
  //define list of systematics
  std::vector<TString> selectionStep_list;
- //selectionStep_list.push_back("afterleptsel");
- //selectionStep_list.push_back("afterZsel");
+// selectionStep_list.push_back("afterleptsel");
+// selectionStep_list.push_back("afterZsel");
+// selectionStep_list.push_back("afterjetsel");
  selectionStep_list.push_back("afterbjetsel");
  
  
  //------------------------
  //define list of variables
  std::vector<TString> variables_list;
- //variables_list.push_back("InvM_ll");
- //variables_list.push_back("mWT");
- 
- /*variables_list.push_back("BJetCSV");
+ variables_list.push_back("InvM_ll");
+ variables_list.push_back("mWT");
+ variables_list.push_back("BJetCSV");
+   
+ variables_list.push_back("topMass");
+ variables_list.push_back("asym");
+ variables_list.push_back("NJet");
+ variables_list.push_back("NBJet");
+ variables_list.push_back("totpT");
+ variables_list.push_back("leptWPt");
+ variables_list.push_back("leadJetPt");
+ variables_list.push_back("leadJetEta");
+ variables_list.push_back("cosThetaStar");
+ variables_list.push_back("deltaPhilb");
+ variables_list.push_back("deltaPhiZmet");
+ variables_list.push_back("deltaPhiZleptW");
+ variables_list.push_back("deltaRZleptW");
+ variables_list.push_back("topEta");
  variables_list.push_back("toppT");
+ variables_list.push_back("ZpT");
+ variables_list.push_back("ZEta");
+ variables_list.push_back("MET");
+
+/* variables_list.push_back("toppT");
  variables_list.push_back("ZpT");
  variables_list.push_back("MET");
  variables_list.push_back("totpT");*/
- variables_list.push_back("LeptPtZ1");
+/* variables_list.push_back("LeptPtZ1");
  variables_list.push_back("LeptEtaZ1");
  variables_list.push_back("LeptPtZ2");
  variables_list.push_back("LeptEtaZ2");   
  variables_list.push_back("LeptPtW");
  variables_list.push_back("LeptEtaW");
  variables_list.push_back("WpT");
- variables_list.push_back("DeltaPhiTopZ");
+ variables_list.push_back("DeltaPhiTopZ");*/
 
   for(int iselstep=0; iselstep < selectionStep_list.size(); iselstep++){
       //PlotStack("InvM_ll_",channel_list[ichan],"_afterleptsel", i, k);
@@ -113,9 +138,9 @@
         
       for (int ichan=0; ichan<channel_list.size(); ichan++) {
 	  //PlotStack(variables_list[ivar],  channel_list[ichan],  selectionStep_list[iselstep] , 0,  1);
-	  PlotStack(variables_list[ivar],  channel_list[ichan],  selectionStep_list[iselstep] , 0, dataSample_list,  channel_list, mcSample_list, signalSample_list, colorVector, dataDrivenTemplates_list, false);
+	  PlotStack(variables_list[ivar],  channel_list[ichan],  selectionStep_list[iselstep] , 0, dataSample_list,  channel_list, mcSample_list, signalSample_list, colorVector, colorVectorSignal, dataDrivenTemplates_list, false);
       }
-       PlotStack(variables_list[ivar],  "",  selectionStep_list[iselstep] , 0, dataSample_list,  channel_list, mcSample_list, signalSample_list, colorVector, dataDrivenTemplates_list, true);
+       PlotStack(variables_list[ivar],  "",  selectionStep_list[iselstep] , 0, dataSample_list,  channel_list, mcSample_list, signalSample_list, colorVector, colorVectorSignal, dataDrivenTemplates_list, true);
     }
    } // end loop jchan
    
