@@ -38,6 +38,9 @@ public :
    TH1D *h_csv_wgt_hf[100][100];
    TH1D *c_csv_wgt_hf[100][100];
    TH1D *h_csv_wgt_lf[100][100][100];
+
+   bool applyTrigSF;
+   double sf_Trig[4], sf_Trig_err_plus[4], sf_Trig_err_minus[4];
    
    bool isData;
    
@@ -187,6 +190,8 @@ public :
    void SetUpCSVreweighting();
    double GetCSVweight(const int iSys, int jet_n,
 		       float *jet_pt,float *jet_eta,float *jet_btagdiscri,int *jet_flav);
+
+   void AddBin(TH1F *h);
    
    TString determineChannel(int leptflav1, int leptflav2, int leptflav3);
    
@@ -207,6 +212,7 @@ public :
    int numb_histo;
    
    void deleteHisto();
+   void optHisto();
    std::vector<TString> systlist;
    //------------------------------------
   //TTree and banches used for BDT
@@ -277,9 +283,11 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../RootFiles/proof_merged_emudebug.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/FilesToBeUsed/proof_FCNCzut.root");
+//      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/FilesToBeUsed/proof_merged_jer_debugged.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("../RootFiles/proof_merged_emudebug.root");
+         f = new TFile("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/FilesToBeUsed/proof_FCNCzut.root");
+//	 f = new TFile("/opt/sbg/data/safe1/cms/jandrea/UpdateFramework_2013_08_22/CMSSW_5_3_11/src/IPHCAnalysis/NTuple/macros/SingleTopZ/FilesToBeUsed/proof_merged_jer_debugged.root");
       }
       if(sample == "WZHF") f->GetObject( "SmallTree_WZ" ,tree);
       else f->GetObject( ("SmallTree_"+sample).Data() ,tree);
@@ -289,7 +297,7 @@ TreeReader::TreeReader(TTree *tree, TString sample, std::vector<TString> thesyst
    systlist = thesystlist;
    
    
-   isoEl = 0.05;
+   isoEl = 0.15;
    isoMu = 0.20;
    
    
