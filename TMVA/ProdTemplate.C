@@ -51,7 +51,7 @@ bool ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
     TH1F * tmp = (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]).Data() )->Clone();
     if(tmp == 0){ cout << "non existing histogram " <<  inputdistrib+"__"+sampleList[i] << endl; return false;}
     tmp->Sumw2();
-    if(sampleList[i] == "tZq") tmp->Scale();
+//    if(sampleList[i] == "tZq") tmp->Scale();
     distrib_MC.push_back( tmp ); 
   } 
   
@@ -64,7 +64,7 @@ bool ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
         cout <<  inputdistrib+"__"+sampleList[i]+""+stytList[j]   << endl;
 	TH1F * tmp = (TH1F*)inputfile->Get( (inputdistrib+"__"+sampleList[i]+""+stytList[j]).Data() )->Clone() ;
         tmp->Sumw2();
-	if(sampleList[i] == "tZq") tmp->Scale(3.);
+//	if(sampleList[i] == "tZq") tmp->Scale(3.);
 	distrib_MC_sys.push_back( tmp);  
     }
   }  
@@ -108,6 +108,8 @@ void ProdTemplate(){
   
   std::vector<TString> sampleList;
   
+  sampleList.push_back("FCNCzut");
+  sampleList.push_back("FCNCzct");
   sampleList.push_back("tZq");
   sampleList.push_back("TTZ");
   sampleList.push_back("TTW");
@@ -128,18 +130,18 @@ void ProdTemplate(){
   
   std::vector<TString> systList;
   //systList.push_back("");  
-  systList.push_back("__lept__plus");
-  systList.push_back("__lept__minus");
+//  systList.push_back("__lept__plus");
+//  systList.push_back("__lept__minus");
   //systList.push_back("__trig__plus");
   //systList.push_back("__trig__minus");
   //systList.push_back("__PDF__plus");
   //systList.push_back("__PDF__minus");
-  systList.push_back("__jes__plus");
-  systList.push_back("__jes__minus");
-  systList.push_back("__jer__plus"); 
-  systList.push_back("__jer__minus");
-  systList.push_back("__metuncls__plus");
-  systList.push_back("__metuncls__minus"); 
+//  systList.push_back("__jes__plus");
+//  systList.push_back("__jes__minus");
+//  systList.push_back("__jer__plus"); 
+//  systList.push_back("__jer__minus");
+//  systList.push_back("__metuncls__plus");
+//  systList.push_back("__metuncls__minus"); 
   
   
   
