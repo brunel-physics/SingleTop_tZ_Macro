@@ -21,10 +21,11 @@ bool applyDD = true;
 
 bool PlotStack(TString varname, TString namechan, TString selection, bool setlogy,
      std::vector<TString> dataSample_list, 
-     std::vector<TString> channel_list, std::vector<TString> mcSample_list, std::vector<TString > signalSample_list, std::vector<int> colorVector, std::vector< TString > dataDrivenTemplates_list, bool sumChannels){
+	       std::vector<TString> channel_list, std::vector<TString> mcSample_list, std::vector<TString > signalSample_list, std::vector<int> colorVector, std::vector<int> colorVectorSignal, std::vector< TString > dataDrivenTemplates_list, bool sumChannels){
   
 
-  std::vector<double > sf_DY, sf_DY_err;  
+/* by jeremy
+ std::vector<double > sf_DY, sf_DY_err;  
   if(selection == "afterjetsel"){
     sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
     sf_DY.push_back(1.13); sf_DY_err.push_back(0.32);
@@ -61,11 +62,40 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     sf_WZ.push_back(1.12); sf_WZ_err.push_back(0.06); 
     sf_WZ.push_back(0.92); sf_WZ_err.push_back(0.04);
     sf_WZ.push_back(1.10); sf_WZ_err.push_back(0.06);
+  }*/
+  
+
+   // by kskovpen
+ std::vector<double > sf_DY, sf_DY_err;
+ std::vector<double > sf_WZ, sf_WZ_err;
+   
+  if(selection == "afterjetsel" || selection == "afterbjetsel"){
+    sf_DY.push_back(0.31); sf_DY_err.push_back(0.62); // mumumu
+    sf_DY.push_back(1.01); sf_DY_err.push_back(0.34); // mumue
+    sf_DY.push_back(2.73); sf_DY_err.push_back(1.40); // eemu
+    sf_DY.push_back(1.04); sf_DY_err.push_back(0.33); // eee
+  }else{
+    sf_DY.push_back(1.61); sf_DY_err.push_back(0.45);
+    sf_DY.push_back(0.86); sf_DY_err.push_back(0.17);
+    sf_DY.push_back(1.44); sf_DY_err.push_back(0.42);
+    sf_DY.push_back(0.98); sf_DY_err.push_back(0.17);
   }
   
   
+  if(selection == "afterjetsel" || selection == "afterbjetsel"){
+    sf_WZ.push_back(0.93); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.18); sf_WZ_err.push_back(0.09);
+    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
+    sf_WZ.push_back(1.05); sf_WZ_err.push_back(0.09);
+  }else{
+    sf_WZ.push_back(1.00); sf_WZ_err.push_back(0.04);
+    sf_WZ.push_back(1.24); sf_WZ_err.push_back(0.06);
+    sf_WZ.push_back(0.97); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.10); sf_WZ_err.push_back(0.06);
+  }
+
   
-   /* sf_DY.push_back(1); sf_DY_err.push_back(0.69);
+/*    sf_DY.push_back(1); sf_DY_err.push_back(0.69);
     sf_DY.push_back(1); sf_DY_err.push_back(0.22);
     sf_DY.push_back(1); sf_DY_err.push_back(1.46);
     sf_DY.push_back(1); sf_DY_err.push_back(1.39);
@@ -294,20 +324,49 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
       
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_mc_name << endl;
       if(sumChannels){ 
-        if(niter_chan == 0){
-	  if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[0]); cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[0] << endl;}
-	  if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[0]); cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[0] << endl;}                             
-          histo_mcSamples.push_back(histo_tmp);
-        }else{
-	  if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[niter_chan]);cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[niter_chan] << endl;}
-	  if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[niter_chan]);cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[niter_chan] << endl;}
-          histo_mcSamples[imc]->Add(histo_mcSamples[imc], histo_tmp);
-        }
-      }else{
-         if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) {histo_tmp->Scale(sf_DY[numchan]); cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[numchan] << endl;}
-	 if(applyDD && mcSample_list[imc] == "WZ"                                             ) {histo_tmp->Scale(sf_WZ[numchan]); cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[numchan] << endl; }                             
-         histo_mcSamples.push_back(histo_tmp); 
+        if(niter_chan == 0)
+	   {
+	      if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) 
+		{
+		   histo_tmp->Scale(sf_DY[0]); 
+		   cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[0] << endl;
+		}
+	      if(applyDD && mcSample_list[imc] == "WZ" ) 
+		{
+		   histo_tmp->Scale(sf_WZ[0]); 
+		   cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[0] << endl;
+		}
+	      histo_mcSamples.push_back(histo_tmp);
+	   }
+	 else
+	   {
+	      if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) 
+		{
+		   histo_tmp->Scale(sf_DY[niter_chan]);
+		   cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[niter_chan] << endl;
+		}
+	      if(applyDD && mcSample_list[imc] == "WZ" )
+		{
+		   histo_tmp->Scale(sf_WZ[niter_chan]);
+		   cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[niter_chan] << endl;
+		}
+	      histo_mcSamples[imc]->Add(histo_mcSamples[imc], histo_tmp);
+	   }
       }
+       else
+	 {
+	    if(applyDD && mcSample_list[imc] == "DYToLL_M10-50" || mcSample_list[imc] == "Zjets" ) 
+	      {
+		 histo_tmp->Scale(sf_DY[numchan]); 
+		 cout << " DY scale of channel " << channel_list[ichan] << " with " << sf_DY[numchan] << endl;
+	      }
+	    if(applyDD && mcSample_list[imc] == "WZ" )
+	      {
+		 histo_tmp->Scale(sf_WZ[numchan]); 
+		 cout << " WZ scale of channel " << channel_list[ichan] << " with " << sf_WZ[numchan] << endl; 
+	      }
+	    histo_mcSamples.push_back(histo_tmp); 
+	 }
         
     }
     
@@ -336,14 +395,23 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     //------------------------
   
     for(unsigned int isign = 0; isign < signalSample_list.size(); isign++){
-      TString histo_mc_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "_"+ signalSample_list[isign];
+      TString histo_mc_name   = varname+"_"+channel_list[ichan]+"_"+selection+ "__"+ signalSample_list[isign];
       TH1F * histo_tmp = (TH1F*)filechannel->Get(histo_mc_name);
+       histo_tmp->SetFillStyle(0);
+       histo_tmp->SetFillColor(colorVectorSignal[isign]);
+       histo_tmp->SetLineColor(colorVectorSignal[isign]);
+       histo_tmp->SetLineWidth(2);
+       histo_tmp->SetMarkerColor(colorVectorSignal[isign]);
+       
       if(histo_tmp == 0)  cout << "  no existing histo with name  " << histo_mc_name << endl;
       if(niter_chan == 0){
+	if(varname == "mWT") histo_tmp->Rebin(5);
         histo_mcSignal.push_back(histo_tmp);
       }else{
-        histo_mcSignal[isign]->Add(histo_mcSignal[isign], histo_tmp);
+	if(varname == "mWT") histo_tmp->Rebin(5);
+        histo_mcSignal[isign]->Add(histo_mcSignal[isign], histo_tmp);	 
       }
+       
     }
   
   
@@ -421,14 +489,17 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   //add here systematic uncertainties
   for (int ibin=0; ibin<histo_syst_MC->GetNbinsX(); ibin++) {
     //histo_syst_MC->SetBinError(ibin, histo_syst_MC->GetBinError(ibin)+histo_syst_MC->GetBinError(ibin)*0.025);
-    
   }
   TGraphErrors *thegraph = new TGraphErrors(histo_syst_MC);
   thegraph->SetFillStyle(3005);
   thegraph->SetFillColor(1);
   thegraph->Draw("e2same");
   
-  
+
+   for(unsigned int isign = 0; isign< histo_mcSignal.size(); isign++)
+     {	
+	histo_mcSignal[isign]->Draw("hist e1 same");
+     }   
   
   //-------------------
   //legend and captions
@@ -450,8 +521,8 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   TString info_data; 
   if (namechan=="eee")    info_data = "eee channel";
   if (namechan=="emumu")  info_data = "e#mu#mu channel";
-  if (namechan=="mumue")  info_data = "#mu#mu e channel";
-  if (namechan=="mumumu") info_data = "#mu#mu #mu channel";
+  if (namechan=="mumue")  info_data = "#mu#mue channel";
+  if (namechan=="mumumu") info_data = "#mu#mu#mu channel";
   if (sumChannels )    info_data = "eee, #mu#mu#mu, e#mu#mu, ee#mu channels";
   
   
@@ -484,7 +555,12 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
     if(mcSample_list[i] == "WZ"        ) qw->AddEntry( histo_mcSamples[10],	"VV"		 ,"f");
     if(mcSample_list[i] == "WZHF"      ) qw->AddEntry( histo_mcSamples[11],	"VVHF"		 ,"f");
   }
-  
+
+  for(unsigned int i=0; i<signalSample_list.size(); i++){
+    if(signalSample_list[i] == "FCNCzut"       ) qw->AddEntry( histo_mcSignal[0],	"FCNC Zut"		 ,"lp");
+    if(signalSample_list[i] == "FCNCzct"       ) qw->AddEntry( histo_mcSignal[1],	"FCNC Zct"		 ,"lp");
+  }
+   
   qw->Draw();
   
   //--------------------------
@@ -520,11 +596,26 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   TGraphErrors *thegraph_ratio = new TGraphErrors(thegraph_tmp->GetN(), thegraph_tmp->GetX() , theY ,  thegraph_tmp->GetEX(),     thegraph_tmp->GetEY() );
   thegraph_ratio->SetFillStyle(3005);
   thegraph_ratio->SetFillColor(1);
-  if(varname == "InvM_ll") 	  histo_ratio_data->GetXaxis()->SetTitle("M_{ll} [GeV/c^{-1}]");
-  else if(varname == "Njets")     histo_ratio_data->GetXaxis()->SetTitle("jet mult.");
-  else if(varname == "NBjets")    histo_ratio_data->GetXaxis()->SetTitle("b-tagged jet mult.");
-  else if(varname == "Met")	  histo_ratio_data->GetXaxis()->SetTitle("missing E_{T} [GeV]");
+  if(varname == "InvM_ll") 	  histo_ratio_data->GetXaxis()->SetTitle("M_{ll} [GeV]");
+  else if(varname == "NJet")     histo_ratio_data->GetXaxis()->SetTitle("Number of jets");
+  else if(varname == "NBJet")    histo_ratio_data->GetXaxis()->SetTitle("Number of b-tagged jets");
+  else if(varname == "MET")	  histo_ratio_data->GetXaxis()->SetTitle("Missing E_{T} [GeV]");
   else if(varname == "BJetCSV")   histo_ratio_data->GetXaxis()->SetTitle("CSV discriminator");
+  else if(varname == "asym")   histo_ratio_data->GetXaxis()->SetTitle("q_{W}|#eta_{W}|");
+  else if(varname == "topMass")   histo_ratio_data->GetXaxis()->SetTitle("Top quark mass");
+  else if(varname == "cosThetaStar")   histo_ratio_data->GetXaxis()->SetTitle("cos #Theta *");
+  else if(varname == "deltaPhilb")   histo_ratio_data->GetXaxis()->SetTitle("#Delta #phi (l-b)");
+  else if(varname == "deltaPhiZleptW")   histo_ratio_data->GetXaxis()->SetTitle("#Delta #phi (Z-l_{W})");
+  else if(varname == "deltaPhiZmet")   histo_ratio_data->GetXaxis()->SetTitle("#Delta #phi (Z-MET)");
+  else if(varname == "deltaRZleptW")   histo_ratio_data->GetXaxis()->SetTitle("#Delta R (Z-l_{W})");
+  else if(varname == "leadJetEta")   histo_ratio_data->GetXaxis()->SetTitle("Leading jet #eta");
+  else if(varname == "leadJetPt")   histo_ratio_data->GetXaxis()->SetTitle("Leading jet P_{T} [GeV]");
+  else if(varname == "leptWPt")   histo_ratio_data->GetXaxis()->SetTitle("l_{W} P_{T} [GeV]");
+  else if(varname == "mWT")   histo_ratio_data->GetXaxis()->SetTitle("m_{T}(W) [GeV]");
+  else if(varname == "topEta")   histo_ratio_data->GetXaxis()->SetTitle("Top quark #eta");
+  else if(varname == "toppT")   histo_ratio_data->GetXaxis()->SetTitle("Top quark P_{T} [GeV]");
+  else if(varname == "ZEta")   histo_ratio_data->GetXaxis()->SetTitle("Z #eta");
+  else if(varname == "ZpT")   histo_ratio_data->GetXaxis()->SetTitle("Z P_{T} [GeV]");
   
   histo_ratio_data->SetMinimum(0.0);
   histo_ratio_data->SetMaximum(2.0);
@@ -538,10 +629,10 @@ bool PlotStack(TString varname, TString namechan, TString selection, bool setlog
   thegraph_ratio->Draw("e2same");
   
   TString end_name;
-  if(setlogy) end_name="_Logy.gif";
-  else end_name=".gif"; 
-  //if(setlogy) end_name="_Logy.eps";
-  //else end_name=".eps"; 
+//  if(setlogy) end_name="_Logy.gif";
+//  else end_name=".gif"; 
+  if(setlogy) end_name="_Logy.eps";
+  else end_name=".eps"; 
 
   TString outputname = "plots/"+varname+"_"+namechan+"_"+selection+end_name;
   if(sumChannels) outputname = "plots/"+varname+"_"+"all"+"_"+selection+end_name;
