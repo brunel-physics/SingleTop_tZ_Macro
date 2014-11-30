@@ -4,32 +4,33 @@
 theMVAtool::theMVAtool(){
   
   //constructor
-  ////varList.push_back("tree_cosThetaStar");
+  ///varList.push_back("tree_cosThetaStar");
   varList.push_back("tree_topMass");     
   ////varList.push_back("tree_totMass");     
-  ////varList.push_back("tree_deltaPhilb");  
+  varList.push_back("tree_deltaPhilb");  
   ////varList.push_back("tree_deltaRlb");    
   //varList.push_back("tree_deltaRTopZ");  
   varList.push_back("tree_asym");        
-  //varList.push_back("tree_Zpt");         
-  //varList.push_back("tree_ZEta");        
-  //varList.push_back("tree_topPt");       
-  //varList.push_back("tree_topEta");      
-  //varList.push_back("tree_NJets");       
+  varList.push_back("tree_Zpt");         
+  varList.push_back("tree_ZEta");        
+  varList.push_back("tree_topPt");       
+  varList.push_back("tree_topEta");      
+  varList.push_back("tree_NJets");       
   varList.push_back("tree_NBJets");	 
   //varList.push_back("tree_deltaRZl");	 
-  //varList.push_back("tree_deltaPhiZmet");
-  varList.push_back("tree_btagDiscri");  
-  varList.push_back("tree_totPt");	
-  //varList.push_back("tree_totEta");	
-  varList.push_back("tree_leptWPt");	 
-  //varList.push_back("tree_leptWEta");	 
+  varList.push_back("tree_deltaPhiZmet");
+  varList.push_back("tree_btagDiscri");
+//  varList.push_back("tree_BJetCSV");
+//  varList.push_back("tree_totPt");	
+//  varList.push_back("tree_totEta");	
+  varList.push_back("tree_leptWPt");
+  varList.push_back("tree_leptWEta");
   varList.push_back("tree_leadJetPt");   
-  //varList.push_back("tree_leadJetEta");  
-  //varList.push_back("tree_deltaRZleptW");
-  //varList.push_back("tree_deltaPhiZleptW");
-  //varList.push_back("tree_met" );
-  //varList.push_back("tree_mTW" );
+  varList.push_back("tree_leadJetEta");  
+  varList.push_back("tree_deltaRZleptW");
+  varList.push_back("tree_deltaPhiZleptW");
+  varList.push_back("tree_met" );
+  varList.push_back("tree_mTW" );
   
   for(unsigned int i=0; i< varList.size() ; i++) theVarMap[varList[i]] = i;
   
@@ -40,6 +41,8 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("DataMuEGZenriched");
   samplelist.push_back("DataMuZenriched");
   samplelist.push_back("tZq");
+  samplelist.push_back("FCNCzct");
+  samplelist.push_back("FCNCzut");
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
@@ -58,32 +61,32 @@ theMVAtool::theMVAtool(){
   //samplelist.push_back("WW");
   
   systlist.push_back("");  
-  systlist.push_back("__lept__plus");
-  systlist.push_back("__lept__minus");
+//  systlist.push_back("__lept__plus");
+//  systlist.push_back("__lept__minus");
   //systlist.push_back("__trig__plus");
   //systlist.push_back("__trig__minus");
   //systlist.push_back("__PDF__plus");
   //systlist.push_back("__PDF__minus");*/
-  systlist.push_back("__jes__plus");
-  systlist.push_back("__jes__minus");
-  systlist.push_back("__jer__plus"); 
-  systlist.push_back("__jer__minus");
-  systlist.push_back("__metuncls__plus");
-  systlist.push_back("__metuncls__minus"); 
+//  systlist.push_back("__jes__plus");
+//  systlist.push_back("__jes__minus");
+//  systlist.push_back("__jer__plus"); 
+//  systlist.push_back("__jer__minus");
+//  systlist.push_back("__metuncls__plus");
+//  systlist.push_back("__metuncls__minus"); 
   
   
 
   
-    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
-    sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
-    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
-    sf_DY.push_back(1.14); sf_DY_err.push_back(0.33); 
+    sf_DY.push_back(0.31); sf_DY_err.push_back(0.62);
+    sf_DY.push_back(1.01); sf_DY_err.push_back(0.34);
+    sf_DY.push_back(2.73); sf_DY_err.push_back(1.40);
+    sf_DY.push_back(1.04); sf_DY_err.push_back(0.33);
   
   
-    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
-    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
+    sf_WZ.push_back(0.93); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.18); sf_WZ_err.push_back(0.09);
     sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
-    sf_WZ.push_back(1.13); sf_WZ_err.push_back(0.10); 
+    sf_WZ.push_back(1.05); sf_WZ_err.push_back(0.09);
   
 } 
 
@@ -106,14 +109,17 @@ void theMVAtool::doTraining(TString channel){
  //---------------------------------------------------------------
   // This loads the library
   TMVA::Tools::Instance();
-  TString outfileName( ("trainingBDT_"+channel+"_tZq_.root").Data() );
+  TString outfileName( ("trainingBDT_"+channel+"_FCNCzct_.root").Data() );
+//  TString outfileName( ("trainingBDT_"+channel+"_tZq_.root").Data() );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
   //TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
-  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
+//  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
+  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_FCNCzct", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
   
   
   
-  TFile *input_sig        = TFile::Open( "../TreeReader/outputroot/histofile_tZq.root" );
+  TFile *input_sig        = TFile::Open( "../TreeReader/outputroot/histofile_FCNCzct.root" );
+//  TFile *input_sig        = TFile::Open( "../TreeReader/outputroot/histofile_tZq.root" );
   TFile *input_wz         = TFile::Open( "../TreeReader/outputroot/histofile_WZ.root" );
   TFile *input_wzHF       = TFile::Open( "../TreeReader/outputroot/histofile_WZHF.root" );
   
@@ -126,7 +132,8 @@ void theMVAtool::doTraining(TString channel){
   TFile *input_DY3        = TFile::Open( "../TreeReader/outputroot/histofile_DataMuZenriched.root" );*/
   
   
-  TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
+  TTree *signal              = (TTree*)input_sig->Get("Ttree_FCNCzct");
+//  TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
   TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
   TTree *background_WZHF     = (TTree*)input_wzHF->Get("Ttree_WZHF");
   /*TTree *background_TT      = (TTree*)input_TT->Get("Ttree_TT");
@@ -226,7 +233,8 @@ void theMVAtool::doReading(float bdtcut, TString channel){
   for(unsigned int i=0; i< varList.size() ; i++) reader->AddVariable( varList[i].Data(),  &(treevars[i])  );
   
    
-  reader->BookMVA( "BDT", ("weights/BDT_trainning_"+channel+"_tzq_BDT.weights.xml").Data() ); 
+  reader->BookMVA( "BDT", ("weights/BDT_trainning_"+channel+"_FCNCzct_BDT.weights.xml").Data() );
+//  reader->BookMVA( "BDT", ("weights/BDT_trainning_"+channel+"_tzq_BDT.weights.xml").Data() );
   
  // cout << __LINE__ << "   SAMPLE SIZE " << samplelist.size() << endl;
   for(unsigned int i=0; i< samplelist.size(); i++){
@@ -240,7 +248,6 @@ void theMVAtool::doReading(float bdtcut, TString channel){
     //loop over systematics
     //---------------------
    cout <<  "processing sample " <<  samplelist[i]  << endl;
-   
    
     for(unsigned int j=0; j<systlist.size(); j++){
      // cout << __LINE__  << "  " << samplelist[i]+systlist[j] << endl;
