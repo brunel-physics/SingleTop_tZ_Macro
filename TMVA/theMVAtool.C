@@ -172,8 +172,8 @@ void theMVAtool::doTraining(TString channel){
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
 
   TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
-  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
-  TTree *background_ww         = (TTree*)input_ww->Get("Ttree_WW.root");
+  //  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
+  //  TTree *background_ww         = (TTree*)input_ww->Get("Ttree_WW.root");
 
   TTree *background_TT      = (TTree*)input_TT->Get("Ttree_TT");
   TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_TTW");
@@ -186,7 +186,7 @@ void theMVAtool::doTraining(TString channel){
   TTree *background_TtChan     = (TTree*)input_TtChan->Get("Ttree_TtChan.root");
   */
   TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
-  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Tree_ZZ");
+  //  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Tree_ZZ");
   
   TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEG");
   TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataEGZenriched");
