@@ -139,13 +139,13 @@ void ProdTemplate(){
 //  systList.push_back("__metuncls__plus");
 //  systList.push_back("__metuncls__minus"); 
   
-/*
-  ProdTemplate("MVA_all",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+
+  ProdTemplate("MVA_all",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");/*
   ProdTemplate("MVA_mumumu", sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
   ProdTemplate("MVA_mumue",  sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
   ProdTemplate("MVA_eemu",   sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
-  ProdTemplate("MVA_eee",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
-*/
+  ProdTemplate("MVA_eee",    sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");*/
+
 
   ProdTemplate("tree_topMass_all",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
   ProdTemplate("tree_Zpt_all",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
