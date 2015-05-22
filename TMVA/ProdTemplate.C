@@ -29,7 +29,6 @@ bool ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
   
   TFile * inputfile	  = new TFile( intputfilename.Data() );
 
-
   TH1F * histBdt_DataMu   = (TH1F*)inputfile->Get(  (inputdistrib+"__DataMu").Data())->Clone();
   TH1F * histBdt_DataEG   = (TH1F*)inputfile->Get(  (inputdistrib+"__DataEG").Data())->Clone();
   TH1F * histBdt_DataMuEG = (TH1F*)inputfile->Get(  (inputdistrib+"__DataMuEG").Data())->Clone();

@@ -128,16 +128,12 @@ void theMVAtool::doTraining(TString channel){
  //---------------------------------------------------------------
   // This loads the library
   TMVA::Tools::Instance();
-  //  TString outfileName( ("trainingBDT_"+channel+"_FCNCzct_.root").Data() );
   TString outfileName( ("trainingBDT_"+channel+"_tZq_.root").Data() );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
-  //TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
   TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
-//  TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_FCNCzct", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
   
   
   
-  //  TFile *input_sig        = TFile::Open( "../TreeReader/outputroot/histofile_FCNCzct.root" );
   TFile *input_sig        = TFile::Open( "inputroot/histofile_tZq.root" );
 
   TFile *input_wz         = TFile::Open( "inputroot/histofile_WZ.root" );
