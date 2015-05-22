@@ -67,12 +67,10 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
-  //  samplelist.push_back("DYToLL_M10-50");
   samplelist.push_back("Zjets");
-  //  samplelist.push_back("Wjets");
+  samplelist.push_back("Wjets");
   samplelist.push_back("WZ");
-  //  samplelist.push_back("WZHF");
-  //  samplelist.push_back("ZZ");
+  samplelist.push_back("ZZ");
   //  samplelist.push_back("TbarsChan");
   //  samplelist.push_back("TsChan");
   //  samplelist.push_back("TtChan");
@@ -157,7 +155,7 @@ void theMVAtool::doTraining(TString channel){
   TFile *input_TtChan     = TFile::Open( "inputroot/histofile_TtChan.root");
   */
   TFile *input_Zjets      = TFile::Open( "inputroot/histofile_Zjets.root");
-//  TFile *input_ZZ         = TFile::Open( "inputroot/histofile_ZZ.root");
+  TFile *input_ZZ         = TFile::Open( "inputroot/histofile_ZZ.root");
 
   TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEG.root" );
   TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
@@ -172,7 +170,7 @@ void theMVAtool::doTraining(TString channel){
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
 
   TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
-  //  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
+  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
   //  TTree *background_ww         = (TTree*)input_ww->Get("Ttree_WW.root");
 
   TTree *background_TT      = (TTree*)input_TT->Get("Ttree_TT");
@@ -186,7 +184,7 @@ void theMVAtool::doTraining(TString channel){
   TTree *background_TtChan     = (TTree*)input_TtChan->Get("Ttree_TtChan.root");
   */
   TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
-  //  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Tree_ZZ");
+  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Ttree_ZZ");
   
   TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEG");
   TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataEGZenriched");
@@ -196,24 +194,24 @@ void theMVAtool::doTraining(TString channel){
   TTree *background_DY6     = (TTree*)input_DY6->Get("Ttree_DataMuZenriched");
   //  TTree *background_DY7     = (TTree*)input_DY7->Get("Ttree_DYToLL_M10-50");
   
-  factory->AddSignalTree (signal, 1.);
+  factory->AddSignalTree (signal, 1.0);
 
-  factory->AddBackgroundTree (background_WZ,  0.102);
-//  factory->AddBackgroundTree (background_wJets, 0.102);
+  factory->AddBackgroundTree (background_WZ,  0.102); // Correct weight? Stage one says dataset weight is 0.0?
+  //  factory->AddBackgroundTree (background_wJets, 0.102);
 //  factory->AddBackgroundTree (background_ww, 0.102);
   
-  factory->AddBackgroundTree (background_TT,  0.35);
-  factory->AddBackgroundTree (background_TTW, 0.39);
-  factory->AddBackgroundTree (background_TTZ, 0.26);
+  factory->AddBackgroundTree (background_TT,  0.70);
+  factory->AddBackgroundTree (background_TTW, 0.39); // Correct weight?
+  factory->AddBackgroundTree (background_TTZ, 0.26); // Correct weight?
     
-  //  factory->AddBackgroundTree (background_TbarsChan, 0.35);
+  //  factory->AddBackgroundTree (background_TbarsChan, 0.2);
   //  factory->AddBackgroundTree (background_TbartChan, 0.35);
   //  factory->AddBackgroundTree (background_TbartW, 0.35);
-  //  factory->AddBackgroundTree (background_TsChan, 0.35);
+  //  factory->AddBackgroundTree (background_TsChan, 0.30);
   //  factory->AddBackgroundTree (background_TtChan, 0.35);
   
   factory->AddBackgroundTree (background_Zjets, 0.30);
-//  factory->AddBackgroundTree (background_ZZ, 0.30);
+  factory->AddBackgroundTree (background_ZZ, 0.30);
   
   factory->AddBackgroundTree (background_DY1,  0.01);
   factory->AddBackgroundTree (background_DY2,  0.10);
