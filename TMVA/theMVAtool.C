@@ -79,7 +79,7 @@ theMVAtool::theMVAtool(){
   //  samplelist.push_back("TbartW");
   //  samplelist.push_back("WW");
   
-  systlist.push_back("");/*
+  systlist.push_back("");
   systlist.push_back("__lept__plus");
   systlist.push_back("__lept__minus");
   systlist.push_back("__trig__plus");
@@ -91,8 +91,8 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__jer__plus"); 
   systlist.push_back("__jer__minus");
   systlist.push_back("__metuncls__plus");
-  systlist.push_back("__metuncls__minus");*/
-  
+  systlist.push_back("__metuncls__minus");
+			 
 			 
 
   
@@ -192,22 +192,22 @@ void theMVAtool::doTraining(TString channel){
   
   factory->AddSignalTree (signal, 1.0);
 
-  factory->AddBackgroundTree (background_WZ,  0.102); // Correct weight? Stage one says dataset weight is 0.0?
-  //  factory->AddBackgroundTree (background_wJets, 0.102);
+  factory->AddBackgroundTree (background_WZ,  0.0); // Correct weight? Stage one says dataset weight is 0.0?
+  //  factory->AddBackgroundTree (background_wJets, 1.2);
 //  factory->AddBackgroundTree (background_ww, 0.102);
   
   factory->AddBackgroundTree (background_TT,  0.70);
-  factory->AddBackgroundTree (background_TTW, 0.39); // Correct weight?
-  factory->AddBackgroundTree (background_TTZ, 0.26); // Correct weight?
+  factory->AddBackgroundTree (background_TTW, 0.0); // Correct weight?
+  factory->AddBackgroundTree (background_TTZ, 0.0); // Correct weight?
     
   //  factory->AddBackgroundTree (background_TbarsChan, 0.2);
-  //  factory->AddBackgroundTree (background_TbartChan, 0.35);
-  //  factory->AddBackgroundTree (background_TbartW, 0.35);
+  //  factory->AddBackgroundTree (background_TbartChan, 0.3);
+  //  factory->AddBackgroundTree (background_TbartW, 0.4);
   //  factory->AddBackgroundTree (background_TsChan, 0.30);
-  //  factory->AddBackgroundTree (background_TtChan, 0.35);
+  //  factory->AddBackgroundTree (background_TtChan, 0.30);
   
-  factory->AddBackgroundTree (background_Zjets, 0.30);
-  factory->AddBackgroundTree (background_ZZ, 0.30);
+  factory->AddBackgroundTree (background_Zjets, 2.5);
+  factory->AddBackgroundTree (background_ZZ, 0.0);
   
   factory->AddBackgroundTree (background_DY1,  0.01);
   factory->AddBackgroundTree (background_DY2,  0.10);
@@ -215,7 +215,7 @@ void theMVAtool::doTraining(TString channel){
   factory->AddBackgroundTree (background_DY4,  0.20);
   factory->AddBackgroundTree (background_DY5,  0.20);
   factory->AddBackgroundTree (background_DY6,  0.20);
-  //  factory->AddBackgroundTree (background_DY7,  0.20);
+  //  factory->AddBackgroundTree (background_DY7,  2.4);
   
  
   for(unsigned int i=0; i< varList.size() ; i++) factory->AddVariable( varList[i].Data(),    'F');
