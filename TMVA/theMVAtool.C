@@ -62,21 +62,20 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("DataMuEGZenriched");
   samplelist.push_back("DataMuZenriched");
   samplelist.push_back("tZq");
-  //  samplelist.push_back("FCNCzct");
-  //  samplelist.push_back("FCNCzut");
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
+  samplelist.push_back("DYToLL_M10-50");
   samplelist.push_back("Zjets");
   samplelist.push_back("Wjets");
   samplelist.push_back("WZ");
   samplelist.push_back("ZZ");
-  //  samplelist.push_back("TbarsChan");
-  //  samplelist.push_back("TsChan");
-  //  samplelist.push_back("TtChan");
-  //  samplelist.push_back("TbartChan");
-  //  samplelist.push_back("TtW");
-  //  samplelist.push_back("TbartW");
+  samplelist.push_back("TbarsChan");
+   samplelist.push_back("TsChan");
+   samplelist.push_back("TtChan");
+  samplelist.push_back("TbartChan");
+  samplelist.push_back("TtW");
+  samplelist.push_back("TbartW");
   //  samplelist.push_back("WW");
   
   systlist.push_back("");
@@ -93,19 +92,34 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__metuncls__plus");
   systlist.push_back("__metuncls__minus");
 			 
-			 
+  sf_DY.push_back(0.057); sf_DY_err.push_back(0.00057);
+  sf_DY.push_back(0.612); sf_DY_err.push_back(0.0051);
+  sf_DY.push_back(0.0637); sf_DY_err.push_back(0.0005);
+  sf_DY.push_back(9.216); sf_DY_err.push_back(0.0011);
+  
+  sf_WZ.push_back(1.153); sf_WZ_err.push_back(0.04);
+  sf_WZ.push_back(1.267); sf_WZ_err.push_back(0.06);
+  sf_WZ.push_back(1.928); sf_WZ_err.push_back(0.20);
+  sf_WZ.push_back(1.135); sf_WZ_err.push_back(0.04);
 
+  /* These are from the lepton selection stage calculations
+  sf_WZ.push_back(1.204); sf_WZ_err.push_back(0.04);
+  sf_WZ.push_back(1.267); sf_WZ_err.push_back(0.06);
+  sf_WZ.push_back(1.051); sf_WZ_err.push_back(0.05);
+  sf_WZ.push_back(1.167); sf_WZ_err.push_back(0.04);*/
+  /*    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
+    sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
+    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
+    sf_DY.push_back(0.754); sf_DY_err.push_back(0.03); 
   
-    sf_DY.push_back(0.31); sf_DY_err.push_back(0.62);
-    sf_DY.push_back(1.01); sf_DY_err.push_back(0.34);
-    sf_DY.push_back(2.73); sf_DY_err.push_back(1.40);
-    sf_DY.push_back(1.04); sf_DY_err.push_back(0.33);
   
-  
-    sf_WZ.push_back(0.93); sf_WZ_err.push_back(0.05);
-    sf_WZ.push_back(1.18); sf_WZ_err.push_back(0.09);
+    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
+    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
     sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
-    sf_WZ.push_back(1.05); sf_WZ_err.push_back(0.09);
+    sf_WZ.push_back(1.651); sf_WZ_err.push_back(0.03); 
+  */
+			 			 
+
   
 } 
 
@@ -152,17 +166,13 @@ void theMVAtool::doTraining(TString channel){
   */
   TFile *input_Zjets      = TFile::Open( "inputroot/histofile_Zjets.root");
   TFile *input_ZZ         = TFile::Open( "inputroot/histofile_ZZ.root");
-
-  TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEG.root" );
-  TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
-  TFile *input_DY3        = TFile::Open( "inputroot/histofile_DataMuEG.root" );
-  TFile *input_DY4        = TFile::Open( "inputroot/histofile_DataMuEGZenriched.root" );
-  TFile *input_DY5        = TFile::Open( "inputroot/histofile_DataMu.root" );
-  TFile *input_DY6        = TFile::Open( "inputroot/histofile_DataMuZenriched.root" );
-  //  TFile *input_DY7        = TFile::Open( "inputroot/histofile_DYToLL_M10-50.root" );
+  
+  TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
+  TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataMuEGZenriched.root" );
+  TFile *input_DY3        = TFile::Open( "inputroot/histofile_DataMuZenriched.root" );
+  //  TFile *input_DY4        = TFile::Open( "inputroot/histofile_DYToLL_M10-50.root" );
 
   
-  //  TTree *signal              = (TTree*)input_sig->Get("Ttree_FCNCzct");
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
 
   TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
@@ -182,40 +192,37 @@ void theMVAtool::doTraining(TString channel){
   TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
   TTree *background_ZZ    = (TTree*)input_ZZ->Get("Ttree_ZZ");
   
-  TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEG");
-  TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataEGZenriched");
-  TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuEG");
-  TTree *background_DY4     = (TTree*)input_DY4->Get("Ttree_DataMuEGZenriched");
-  TTree *background_DY5     = (TTree*)input_DY5->Get("Ttree_DataMu");
-  TTree *background_DY6     = (TTree*)input_DY6->Get("Ttree_DataMuZenriched");
-  //  TTree *background_DY7     = (TTree*)input_DY7->Get("Ttree_DYToLL_M10-50");
-  
+  TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEGZenriched");
+  TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataMuEGZenriched");
+  TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuZenriched");
+  //  TTree *background_DY4     = (TTree*)input_DY4->Get("Ttree_DYToLL_M10-50");
+
   factory->AddSignalTree (signal, 1.0);
 
-  factory->AddBackgroundTree (background_WZ,  0.0); // Correct weight? Stage one says dataset weight is 0.0?
+  //  factory->AddBackgroundTree (background_WZ,  0.102); 
+  factory->AddBackgroundTree (background_WZ,  1.0); 
+
   //  factory->AddBackgroundTree (background_wJets, 1.2);
 //  factory->AddBackgroundTree (background_ww, 0.102);
   
-  factory->AddBackgroundTree (background_TT,  0.70);
-  factory->AddBackgroundTree (background_TTW, 0.0); // Correct weight?
-  factory->AddBackgroundTree (background_TTZ, 0.0); // Correct weight?
-    
+  factory->AddBackgroundTree (background_TT,  0.35);
+  factory->AddBackgroundTree (background_TTW, 0.39); 
+  factory->AddBackgroundTree (background_TTZ, 1.0); 
+  //  factory->AddBackgroundTree (background_TTZ, 0.26);     
+
   //  factory->AddBackgroundTree (background_TbarsChan, 0.2);
   //  factory->AddBackgroundTree (background_TbartChan, 0.3);
   //  factory->AddBackgroundTree (background_TbartW, 0.4);
   //  factory->AddBackgroundTree (background_TsChan, 0.30);
   //  factory->AddBackgroundTree (background_TtChan, 0.30);
   
-  factory->AddBackgroundTree (background_Zjets, 2.5);
-  factory->AddBackgroundTree (background_ZZ, 0.0);
+  //  factory->AddBackgroundTree (background_Zjets, 2.5);
+  //  factory->AddBackgroundTree (background_ZZ, 0.0);
   
   factory->AddBackgroundTree (background_DY1,  0.01);
   factory->AddBackgroundTree (background_DY2,  0.10);
   factory->AddBackgroundTree (background_DY3,  0.20);
-  factory->AddBackgroundTree (background_DY4,  0.20);
-  factory->AddBackgroundTree (background_DY5,  0.20);
-  factory->AddBackgroundTree (background_DY6,  0.20);
-  //  factory->AddBackgroundTree (background_DY7,  2.4);
+  //  factory->AddBackgroundTree (background_DY4, 2.50);
   
  
   for(unsigned int i=0; i< varList.size() ; i++) factory->AddVariable( varList[i].Data(),    'F');
