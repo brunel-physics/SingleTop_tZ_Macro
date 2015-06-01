@@ -61,7 +61,7 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("DataEGZenriched");
   samplelist.push_back("DataMuEGZenriched");
   samplelist.push_back("DataMuZenriched");
-  //  samplelist.push_back("tZq");
+  samplelist.push_back("tZq");
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
@@ -79,6 +79,23 @@ theMVAtool::theMVAtool(){
   //  samplelist.push_back("WW");
   
   systlist.push_back("");
+  systlist.push_back("__pileup__plus");
+  systlist.push_back("__pileup__minus");
+  systlist.push_back("__trig__plus");
+  systlist.push_back("__trig__minus");
+  systlist.push_back("__bTag__plus");
+  systlist.push_back("__bTag__minus");
+  systlist.push_back("__pdf__plus");
+  systlist.push_back("__pdf__minus");
+  systlist.push_back("__jes__plus");
+  systlist.push_back("__jes__minus");
+  systlist.push_back("__jer__plus"); 
+  systlist.push_back("__jer__minus");
+  systlist.push_back("__met__plus");
+  systlist.push_back("__met__minus"); 
+
+  // Original Systematics
+  /*
   systlist.push_back("__lept__plus");
   systlist.push_back("__lept__minus");
   systlist.push_back("__trig__plus");
@@ -91,6 +108,8 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__jer__minus");
   systlist.push_back("__metuncls__plus");
   systlist.push_back("__metuncls__minus");
+  */
+
 			 
   sf_DY.push_back(0.057); sf_DY_err.push_back(0.00057);
   sf_DY.push_back(0.612); sf_DY_err.push_back(0.0051);
@@ -151,8 +170,8 @@ void theMVAtool::doTraining(TString channel){
   TFile *input_sig        = TFile::Open( "inputroot/histofile_tZq.root" );
 
   TFile *input_wz         = TFile::Open( "inputroot/histofile_WZ.root" );
-  TFile *input_wJets      = TFile::Open( "inputroot/histofile_Wjets.root");
-  TFile *input_ww         = TFile::Open( "inputroot/histofile_WW.root");
+  //  TFile *input_wJets      = TFile::Open( "inputroot/histofile_Wjets.root");
+  //  TFile *input_ww         = TFile::Open( "inputroot/histofile_WW.root");
   
   TFile *input_TTW        = TFile::Open( "inputroot/histofile_TTW.root" );
   TFile *input_TTZ        = TFile::Open( "inputroot/histofile_TTZ.root" );
@@ -167,16 +186,16 @@ void theMVAtool::doTraining(TString channel){
   //  TFile *input_Zjets      = TFile::Open( "inputroot/histofile_Zjets.root");
   //  TFile *input_ZZ         = TFile::Open( "inputroot/histofile_ZZ.root");
   
-  TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
-  TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataMuEGZenriched.root" );
-  TFile *input_DY3        = TFile::Open( "inputroot/histofile_DataMuZenriched.root" );
+  //  TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
+  //  TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataMuEGZenriched.root" );
+  //  TFile *input_DY3        = TFile::Open( "inputroot/histofile_DataMuZenriched.root" );
   //  TFile *input_DY4        = TFile::Open( "inputroot/histofile_DYToLL_M10-50.root" );
 
   
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
 
   TTree *background_WZ       = (TTree*)input_wz->Get("Ttree_WZ");
-  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
+  //  TTree *background_wJets      = (TTree*)input_wJets->Get("Ttree_Wjets.root");
   //  TTree *background_ww         = (TTree*)input_ww->Get("Ttree_WW.root");
 
   TTree *background_TT      = (TTree*)input_TT->Get("Ttree_TT");
@@ -192,9 +211,9 @@ void theMVAtool::doTraining(TString channel){
   //  TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
   //  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Ttree_ZZ");
   
-  TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEGZenriched");
-  TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataMuEGZenriched");
-  TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuZenriched");
+  //  TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEGZenriched");
+  //  TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataMuEGZenriched");
+  //  TTree *background_DY3     = (TTree*)input_DY3->Get("Ttree_DataMuZenriched");
   //  TTree *background_DY4     = (TTree*)input_DY4->Get("Ttree_DYToLL_M10-50");
 
   factory->AddSignalTree (signal, 1.0);
@@ -249,7 +268,7 @@ void theMVAtool::doTraining(TString channel){
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=800:nEventsMin=100:MaxDepth=2:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
    //Default: NTrees= 100,nEventsMin=100,MaxDepth=3
    //Duncan's copy: NTrees= 800,nEventsMin=100,MaxDepth=2
@@ -419,26 +438,26 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="tree_topPt")	   {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_topEta")        {nbins = 10; xmin = -2.5;xmax = 2.5;};
     if(varList[j]=="tree_btagDiscri")    {nbins = 10; xmin = 0;   xmax = 1;};
-    //    if(varList[j]=="tree_totPt")	   {nbins = 20; xmin = 0;   xmax = 500;};
-    //    if(varList[j]=="tree_totEta")        {nbins = 10; xmin = -2.5;xmax = 2.5;};
+    if(varList[j]=="tree_totPt")	   {nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_totEta")        {nbins = 10; xmin = -2.5;xmax = 2.5;};
     if(varList[j]=="tree_leptWPt")       {nbins = 20; xmin = 0;   xmax = 350;};
     if(varList[j]=="tree_leptWEta")      {nbins = 10; xmin = -2.5;xmax = 2.5;};    
     if(varList[j]=="tree_leadJetPt")     {nbins = 20; xmin = 0;   xmax = 500;};	      
     if(varList[j]=="tree_leadJetEta")    {nbins = 20; xmin = -2.5; xmax = 2.5;};	       
-    //    if(varList[j]=="tree_met"){     nbins = 10; xmin = 0;   xmax = 200;};	   
-    //    if(varList[j]=="tree_mTW"){     nbins = 10; xmin = 0;   xmax = 200;};
+    if(varList[j]=="tree_met"){     nbins = 10; xmin = 0;   xmax = 200;};	   
+    if(varList[j]=="tree_mTW"){     nbins = 10; xmin = 0;   xmax = 200;};
     if(varList[j]=="tree_NJets"){     nbins = 10; xmin = 0;   xmax = 200;};
     if(varList[j]=="tree_NBJets"){     nbins = 10; xmin = 0;   xmax = 200;};
-    //    if(varList[j]=="tree_totPtVec"){nbins = 20; xmin = 0;   xmax = 500;};
-    //    if(varList[j]=="tree_totVecM"){nbins = 20; xmin = 0;   xmax = 500;};
-    //    if(varList[j]=="tree_lepPt") {nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_totPtVec"){nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_totVecM"){nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_lepPt") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_lepMetPt") {nbins = 20; xmin = 0;   xmax = 500;};
-    //    if(varList[j]=="tree_totPt2Jet") {nbins = 20; xmin = 0;   xmax = 500;};
-    //    if(varList[j]=="tree_leadJetbTag") {nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_totPt2Jet") {nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_leadJetbTag") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_secJetbTag") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_secJetPt") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_secJetEta") {nbins = 20; xmin = 0;   xmax = 500;};
-    /*    if(varList[j]=="tree_wzdelR") {nbins = 20; xmin = 0;   xmax = 500;};
+    if(varList[j]=="tree_wzdelR") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_jjdelR") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_zjminR") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_ZlepWdelPhi") {nbins = 20; xmin = 0;   xmax = 500;};
@@ -455,7 +474,7 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="tree_jetHt") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_lepMetHt") {nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="tree_totHtOverPt") {nbins = 20; xmin = 0;   xmax = 500;};
-    if(varList[j]=="tree_zMass") {nbins = 20; xmin = 0;   xmax = 500;};*/
+    if(varList[j]=="tree_zMass") {nbins = 20; xmin = 0;   xmax = 500;};
     
     if(nbins==1)  cout << "warning : no TH1F definition for variable " << varList[j] << endl;
     TH1F * histo = new TH1F((varList[j]+"_"+channel+"__"+sample).Data(), (varList[j]+"_"+channel+"__"+sample).Data(), nbins, xmin, xmax);
