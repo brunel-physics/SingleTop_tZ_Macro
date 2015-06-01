@@ -106,26 +106,46 @@ bool ProdTemplate(TString inputdistrib, std::vector<TString> sampleList, std::ve
 void ProdTemplate(){
   
   std::vector<TString> sampleList;
-  
+
   sampleList.push_back("tZq");
   sampleList.push_back("TTZ");
   sampleList.push_back("TTW");
   sampleList.push_back("TT");
+  sampleList.push_back("DYToLL_M10-50");
   sampleList.push_back("Zjets");
   sampleList.push_back("Wjets");
   sampleList.push_back("WZ");
   sampleList.push_back("ZZ");
-  //  sampleList.push_back("TbarsChan");
-  //  sampleList.push_back("TsChan");
-  //  sampleList.push_back("TtChan");
-  //  sampleList.push_back("TbartChan");
-  //  sampleList.push_back("TtW");
-  //  sampleList.push_back("TbartW");
-  //  sampleList.push_back("WW");
-  //sampleList.push_back("DYToLL_M10-50");
+  sampleList.push_back("TbarsChan");
+  sampleList.push_back("TsChan");
+  sampleList.push_back("TtChan");
+  sampleList.push_back("TbartChan");
+  sampleList.push_back("TtW");
+  sampleList.push_back("TbartW");
+  //  samplelist.push_back("WW");
   
   std::vector<TString> systList;
-  systList.push_back("");  
+
+  systList.push_back("");
+  systList.push_back("__pileup__plus");
+  systList.push_back("__pileup__minus");
+  systList.push_back("__trig__plus");
+  systList.push_back("__trig__minus");
+  systList.push_back("__bTag__plus");
+  systList.push_back("__bTag__minus");
+  systList.push_back("__pdf__plus");
+  systList.push_back("__pdf__minus");
+  systList.push_back("__jes__plus");
+  systList.push_back("__jes__minus");
+  systList.push_back("__jer__plus"); 
+  systList.push_back("__jer__minus");
+  systList.push_back("__met__plus");
+  systList.push_back("__met__minus"); 
+
+
+  //Original Systematics List
+
+  //  systList.push_back("");  
 //  systList.push_back("__lept__plus");
 //  systList.push_back("__lept__minus");
   //systList.push_back("__trig__plus");
@@ -148,24 +168,52 @@ void ProdTemplate(){
 
 
   ProdTemplate("tree_topMass_all",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
-  ProdTemplate("tree_Zpt_all",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //ProdTemplate("tree_Zpt_all",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
   ProdTemplate("tree_Zeta_all",             sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
-  ProdTemplate("tree_topPt_all",            sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");    
+  //ProdTemplate("tree_topPt_all",            sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");    
   ProdTemplate("tree_topEta_all",           sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");   
-  ProdTemplate("tree_NJets_all",            sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");    
-  ProdTemplate("tree_NBJets_all",           sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");   
+  //ProdTemplate("tree_NJets_all",            sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");    
+  //ProdTemplate("tree_NBJets_all",           sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");   
   ProdTemplate("tree_btagDiscri_all",       sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //ProdTemplate("tree_totPt_all", sampleList, systList, "outputroot/output_merged.root", "merged_theta");
+  //ProdTemplate("tree_totEta_all", sampleList, systList, "outputroot/output_merged.root", "merged_theta");
   ProdTemplate("tree_leptWPt_all",          sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");  
   ProdTemplate("tree_leptWEta_all",         sampleList,  systList,  "outputroot/output_merged.root", "merged_theta"); 
-  ProdTemplate("tree_leadJetPt_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_leadJetPt_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
   ProdTemplate("tree_leadJetEta_all",       sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
-  ProdTemplate("tree_lepMetPt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_met_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_mTW_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+
+  //User Added
+  //  ProdTemplate("tree_totPtVec_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_totVecM_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_lepPt_all",        sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	  
+  //  ProdTemplate("tree_lepMetPt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_totPt2Jet_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_leadJetbTag_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
   ProdTemplate("tree_secJetbTag_all",   sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");   
   ProdTemplate("tree_secJetPt_all",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	
   ProdTemplate("tree_secJetEta_all",              sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");	
+  ProdTemplate("tree_wzdelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_jjdelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_zjminR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_zlepWdelPhi_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_ZmetdelPhi_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_ZlepWdelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("tree_lbDelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_lbDelPhi_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("tree_zlb1DelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  ProdTemplate("tree_zlb1DelPhi_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");  
+  //  ProdTemplate("tree_zlb2DelR_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+    ProdTemplate("tree_zlb2DelPhi_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");  
+  ProdTemplate("tree_totHt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");  
+  //  ProdTemplate("tree_lepHt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_jetHt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_lepMetHt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_totHtOverPt_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
+  //  ProdTemplate("tree_zMass_all",     sampleList,  systList,  "outputroot/output_merged.root", "merged_theta");
 
   
-  
-  
+
   
 }
