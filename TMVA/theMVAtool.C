@@ -205,8 +205,8 @@ void theMVAtool::doTraining(TString channel){
   //  factory->AddBackgroundTree (background_wJets, 1.2);
 //  factory->AddBackgroundTree (background_ww, 0.102);
   
-  factory->AddBackgroundTree (background_TT,  0.35);
-  factory->AddBackgroundTree (background_TTW, 0.39); 
+//  factory->AddBackgroundTree (background_TT,  0.35);
+//  factory->AddBackgroundTree (background_TTW, 0.39); 
   factory->AddBackgroundTree (background_TTZ, 1.0); 
   //  factory->AddBackgroundTree (background_TTZ, 0.26);     
 
@@ -219,9 +219,9 @@ void theMVAtool::doTraining(TString channel){
   //  factory->AddBackgroundTree (background_Zjets, 2.5);
   //  factory->AddBackgroundTree (background_ZZ, 0.0);
   
-  factory->AddBackgroundTree (background_DY1,  0.01);
-  factory->AddBackgroundTree (background_DY2,  0.10);
-  factory->AddBackgroundTree (background_DY3,  0.20);
+  //  factory->AddBackgroundTree (background_DY1,  0.01);
+  //  factory->AddBackgroundTree (background_DY2,  0.10);
+  //  factory->AddBackgroundTree (background_DY3,  0.20);
   //  factory->AddBackgroundTree (background_DY4, 2.50);
   
  
@@ -251,7 +251,8 @@ void theMVAtool::doTraining(TString channel){
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
    factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
- 
+   //Default: NTrees= 100,nEventsMin=100,MaxDepth=3
+   //Duncan's copy: NTrees= 800,nEventsMin=100,MaxDepth=2
 
    // Train MVAs using the set of training events
    factory->TrainAllMethods();
