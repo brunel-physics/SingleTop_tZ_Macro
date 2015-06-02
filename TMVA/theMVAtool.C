@@ -302,7 +302,7 @@ void theMVAtool::doTraining(TString inDir, TString channel){
 // also fills histograms of the varList used into the BDT
 //---------------------------------------------------------------
 
-void theMVAtool::doReading(TString inDir, TString channel, float bdtcut){
+void theMVAtool::doReading(TString inDir, TString outDir,TString channel, float bdtcut){
   
   //void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString outDir){
    
@@ -321,8 +321,8 @@ void theMVAtool::doReading(TString inDir, TString channel, float bdtcut){
   // cout << __LINE__ << "   SAMPLE SIZE " << samplelist.size() << endl;
   for(unsigned int i=0; i< samplelist.size(); i++){
     // cout << "samplelist[" << i << "]: " << samplelist[i] << endl;
-    TFile *input         = new TFile( ("inputroot/histofile_"+samplelist[i]+".root").Data(), "read");
-    TFile * theoutputfile = new TFile(   ("outputroot/output_"+channel+"_"+samplelist[i]+".root").Data(), "recreate");
+    TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
+    TFile * theoutputfile = new TFile(   (outDir+"output_"+channel+"_"+samplelist[i]+".root").Data(), "recreate");
     theOutputFileMap[samplelist[i]] = theoutputfile;
     
 
