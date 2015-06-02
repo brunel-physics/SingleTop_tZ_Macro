@@ -47,8 +47,8 @@ public :
    ~theMVAtool(){};
    
    
-   void doTraining(TString channel = "all");
-   void doReading(float bdtcut = 100., TString channel = "all");
+   void doTraining(TString indir = "inDir/", TString channel = "all");
+   void doReading(TString indir = , TString channel = "all", float bdtcut = 100.);
    
    void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);
    

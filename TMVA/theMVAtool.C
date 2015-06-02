@@ -156,7 +156,7 @@ theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > t
  // to perform the training
 //---------------------------------------------------------------
 
-void theMVAtool::doTraining(TString channel){
+void theMVAtool::doTraining(TString inDir, TString channel){
 
  //---------------------------------------------------------------
   // This loads the library
@@ -167,29 +167,28 @@ void theMVAtool::doTraining(TString channel){
   
   
   
-  TFile *input_sig        = TFile::Open( "inputroot/histofile_tZq.root" );
+  TFile *input_sig        = TFile::Open( inDir+"histofile_tZq.root" );
 
-  TFile *input_wz         = TFile::Open( "inputroot/histofile_WZ.root" );
-  //  TFile *input_wJets      = TFile::Open( "inputroot/histofile_Wjets.root");
-  //  TFile *input_ww         = TFile::Open( "inputroot/histofile_WW.root");
+  TFile *input_wz         = TFile::Open( inDir+"histofile_WZ.root" );
+  //  TFile *input_wJets      = TFile::Open( inDir+"histofile_WW.root");
   
-  TFile *input_TTW        = TFile::Open( "inputroot/histofile_TTW.root" );
-  TFile *input_TTZ        = TFile::Open( "inputroot/histofile_TTZ.root" );
-  TFile *input_TT         = TFile::Open( "inputroot/histofile_TT.root" );
+  TFile *input_TTW        = TFile::Open( inDir+"inputroot/histofile_TTW.root" );
+  TFile *input_TTZ        = TFile::Open( inDir+"histofile_TTZ.root" );
+  TFile *input_TT         = TFile::Open( inDir+"inputroot/histofile_TT.root" );
   /* 
-  TFile *input_TbarsChan  = TFile::Open( "inputroot/histofile_TbarsChan.root");
-  TFile *input_TbartChan  = TFile::Open( "inputroot/histofile_TbartChan.root");
-  TFile *input_TbartW     = TFile::Open( "inputroot/histofile_TbartW.root");
-  TFile *input_TsChan     = TFile::Open( "inputroot/histofile_TsChan.root");
-  TFile *input_TtChan     = TFile::Open( "inputroot/histofile_TtChan.root");
+  TFile *input_TbarsChan  = TFile::Open( inDir+"histofile_TbarsChan.root");
+  TFile *input_TbartChan  = TFile::Open( inDir+"histofile_TbartChan.root");
+  TFile *input_TbartW     = TFile::Open( inDir+"histofile_TbartW.root");
+  TFile *input_TsChan     = TFile::Open( inDir+"histofile_TsChan.root");
+  TFile *input_TtChan     = TFile::Open( inDir+"histofile_TtChan.root");
   */
-  //  TFile *input_Zjets      = TFile::Open( "inputroot/histofile_Zjets.root");
-  //  TFile *input_ZZ         = TFile::Open( "inputroot/histofile_ZZ.root");
+  //  TFile *input_Zjets      = TFile::Open( inDir+"histofile_Zjets.root");
+  //  TFile *input_ZZ         = TFile::Open( inDir+"histofile_ZZ.root");
   
-  //  TFile *input_DY1        = TFile::Open( "inputroot/histofile_DataEGZenriched.root" );
-  //  TFile *input_DY2        = TFile::Open( "inputroot/histofile_DataMuEGZenriched.root" );
-  //  TFile *input_DY3        = TFile::Open( "inputroot/histofile_DataMuZenriched.root" );
-  //  TFile *input_DY4        = TFile::Open( "inputroot/histofile_DYToLL_M10-50.root" );
+  //  TFile *input_DY1        = TFile::Open( inDir+"histofile_DataEGZenriched.root" );
+  //  TFile *input_DY2        = TFile::Open( inDir+"histofile_DataMuEGZenriched.root" );
+  //  TFile *input_DY3        = TFile::Open( inDir+"histofile_DataMuZenriched.root" );
+  //  TFile *input_DY4        = TFile::Open( inDir+"histofile_DYToLL_M10-50.root" );
 
   
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
@@ -303,7 +302,7 @@ void theMVAtool::doTraining(TString channel){
 // also fills histograms of the varList used into the BDT
 //---------------------------------------------------------------
 
-void theMVAtool::doReading(float bdtcut, TString channel){
+void theMVAtool::doReading(TString inDir, TString channel, float bdtcut){
   
   //void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString outDir){
    
