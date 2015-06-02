@@ -156,7 +156,7 @@ theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > t
  // to perform the training
 //---------------------------------------------------------------
 
-void theMVAtool::doTraining(TString inDir, TString channel){
+void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
 
  //---------------------------------------------------------------
   // This loads the library
@@ -267,7 +267,7 @@ void theMVAtool::doTraining(TString inDir, TString channel){
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=800:nEventsMin=100:MaxDepth=2:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees="+bdtTrees+":nEventsMin=100:MaxDepth=2:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
    //Default: NTrees= 100,nEventsMin=100,MaxDepth=3
    //Duncan's copy: NTrees= 800,nEventsMin=100,MaxDepth=2
@@ -303,9 +303,7 @@ void theMVAtool::doTraining(TString inDir, TString channel){
 //---------------------------------------------------------------
 
 void theMVAtool::doReading(TString inDir, TString outDir,TString channel, float bdtcut){
-  
-  //void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString outDir){
-   
+     
   // This loads the library
   TMVA::Tools::Instance();
   
