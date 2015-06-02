@@ -172,9 +172,9 @@ void theMVAtool::doTraining(TString inDir, TString channel){
   TFile *input_wz         = TFile::Open( inDir+"histofile_WZ.root" );
   //  TFile *input_wJets      = TFile::Open( inDir+"histofile_WW.root");
   
-  TFile *input_TTW        = TFile::Open( inDir+"inputroot/histofile_TTW.root" );
+  TFile *input_TTW        = TFile::Open( inDir+"histofile_TTW.root" );
   TFile *input_TTZ        = TFile::Open( inDir+"histofile_TTZ.root" );
-  TFile *input_TT         = TFile::Open( inDir+"inputroot/histofile_TT.root" );
+  TFile *input_TT         = TFile::Open( inDir+"histofile_TT.root" );
   /* 
   TFile *input_TbarsChan  = TFile::Open( inDir+"histofile_TbarsChan.root");
   TFile *input_TbartChan  = TFile::Open( inDir+"histofile_TbartChan.root");
