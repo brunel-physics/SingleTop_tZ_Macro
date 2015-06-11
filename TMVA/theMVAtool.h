@@ -47,8 +47,8 @@ public :
    ~theMVAtool(){};
    
    
-   void doTraining(TString indir = "inputroot/met0mtw0", TString channel = "all", TString bdtTrees = "100");
-   void doReading(TString indir = "inputroot/met0mtw0", TString outDir = "outputroot/met0mtw0", TString channel = "all", float bdtcut = 100.0);
+   void doTraining(TString indir = "inputroot/met0mtw0/", TString channel = "all", TString bdtTrees = "100");
+   void doReading(TString indir = "inputroot/met0mtw0/", TString outDir = "outputroot/met0mtw0/", TString channel = "all", float bdtcut = 100.0);
    
    void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);
    
