@@ -254,7 +254,7 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
    
    if(channel !="all"){
      if     (channel == "mumumu") mycuts = "tree_Channel == 0";
-     else if(channel == "mumue" ) mycuts = "tree_Channel == 1";
+     else if(channel == "emumu" ) mycuts = "tree_Channel == 1";
      else if(channel == "eemu"  ) mycuts = "tree_Channel == 2";
      else if(channel == "eee"   ) mycuts = "tree_Channel == 3";
      else cout << "WARNING wrong channel name while training " << endl;
@@ -367,7 +367,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
   
   int theSelChannel = -1;
   if(     channel == "mumumu") theSelChannel = 0;
-  else if(channel == "mumue" ) theSelChannel = 1;
+  else if(channel == "emumu" ) theSelChannel = 1;
   else if(channel == "eemu"  ) theSelChannel = 2;
   else if(channel == "eee"   ) theSelChannel = 3;
   
