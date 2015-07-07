@@ -9,11 +9,11 @@ theMVAtool::theMVAtool(){
   //  varList.push_back("tree_Zpt");         // Duncan commented this out
   varList.push_back("tree_Zeta");        
   //  varList.push_back("tree_topPt");       // Duncan commented this out
-  varList.push_back("tree_topEta");      
+  //  varList.push_back("tree_topEta");      
   //  varList.push_back("tree_NJets");       // Duncan commented this out
   //  varList.push_back("tree_NBJets");	     // Duncan commented this out
   varList.push_back("tree_btagDiscri");
-  //  varList.push_back("tree_totPt");	
+  varList.push_back("tree_totPt");	
   //  varList.push_back("tree_totEta");	
   varList.push_back("tree_leptWPt");
   varList.push_back("tree_leptWEta");
@@ -31,15 +31,15 @@ theMVAtool::theMVAtool(){
   //  varList.push_back("tree_leadJetbTag");
   varList.push_back("tree_secJetbTag");
   varList.push_back("tree_secJetPt");
-  varList.push_back("tree_secJetEta");
+  //  varList.push_back("tree_secJetEta");   // Duncan commented this out
   varList.push_back("tree_wzdelR");          // Duncan uncommented this
-  //  varList.push_back("tree_jjdelR");
+  varList.push_back("tree_jjdelR");
   //  varList.push_back("tree_zjminR");
   //  varList.push_back("tree_ZlepWdelPhi");
   //  varList.push_back("tree_ZmetdelPhi");
   //  varList.push_back("tree_ZlepWdelR");
   varList.push_back("tree_lbDelR");          // Duncan uncommented this
-  //  varList.push_back("tree_lbDelPhi");
+  varList.push_back("tree_lbDelPhi");
   varList.push_back("tree_zlb1DelR");        // Duncan uncommented this
   varList.push_back("tree_zlb1DelPhi");      // Duncan uncommented this 
   //  varList.push_back("tree_zlb2DelR");
@@ -182,8 +182,8 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
   TFile *input_TsChan     = TFile::Open( inDir+"histofile_TsChan.root");
   TFile *input_TtChan     = TFile::Open( inDir+"histofile_TtChan.root");
   */
-  //  TFile *input_Zjets      = TFile::Open( inDir+"histofile_Zjets.root");
-  //  TFile *input_ZZ         = TFile::Open( inDir+"histofile_ZZ.root");
+  TFile *input_Zjets      = TFile::Open( inDir+"histofile_Zjets.root");
+  TFile *input_ZZ         = TFile::Open( inDir+"histofile_ZZ.root");
   
   //  TFile *input_DY1        = TFile::Open( inDir+"histofile_DataEGZenriched.root" );
   //  TFile *input_DY2        = TFile::Open( inDir+"histofile_DataMuEGZenriched.root" );
@@ -207,8 +207,8 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
   TTree *background_TsChan     = (TTree*)input_TsChan->Get("Ttree_TsChan.root");
   TTree *background_TtChan     = (TTree*)input_TtChan->Get("Ttree_TtChan.root");
   */
-  //  TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
-  //  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Ttree_ZZ");
+  TTree *background_Zjets = (TTree*)input_Zjets->Get("Ttree_Zjets");
+  TTree *background_ZZ    = (TTree*)input_ZZ->Get("Ttree_ZZ");
   
   //  TTree *background_DY1     = (TTree*)input_DY1->Get("Ttree_DataEGZenriched");
   //  TTree *background_DY2     = (TTree*)input_DY2->Get("Ttree_DataMuEGZenriched");
