@@ -125,18 +125,18 @@ theMVAtool::theMVAtool(){
   sf_WZ.push_back(1.204); sf_WZ_err.push_back(0.04);
   sf_WZ.push_back(1.267); sf_WZ_err.push_back(0.06);
   sf_WZ.push_back(1.051); sf_WZ_err.push_back(0.05);
-  sf_WZ.push_back(1.167); sf_WZ_err.push_back(0.04);*/
-  /*    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
+  sf_WZ.push_back(1.167); sf_WZ_err.push_back(0.04);
+      sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
     sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
     sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
     sf_DY.push_back(0.754); sf_DY_err.push_back(0.03); 
-  
-  
+  */
+  /*
     sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
     sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
     sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
-    sf_WZ.push_back(1.651); sf_WZ_err.push_back(0.03); 
-  */
+    sf_WZ.push_back(1.651); sf_WZ_err.push_back(0.03); */
+  
 			 			 
 
   
@@ -156,7 +156,7 @@ theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > t
  // to perform the training
 //---------------------------------------------------------------
 
-void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
+void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees, TString bdtDepth){
 
  //---------------------------------------------------------------
   // This loads the library
@@ -189,7 +189,6 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
   //  TFile *input_DY2        = TFile::Open( inDir+"histofile_DataMuEGZenriched.root" );
   //  TFile *input_DY3        = TFile::Open( inDir+"histofile_DataMuZenriched.root" );
   //  TFile *input_DY4        = TFile::Open( inDir+"histofile_DYToLL_M10-50.root" );
-
   
   TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
 
@@ -225,8 +224,9 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
   
 //  factory->AddBackgroundTree (background_TT,  0.35);
 //  factory->AddBackgroundTree (background_TTW, 0.39); 
+
   factory->AddBackgroundTree (background_TTZ, 1.0); 
-  //  factory->AddBackgroundTree (background_TTZ, 0.26);     
+//    factory->AddBackgroundTree (background_TTZ, 0.26);     
 
   //  factory->AddBackgroundTree (background_TbarsChan, 0.2);
   //  factory->AddBackgroundTree (background_TbartChan, 0.3);
@@ -267,7 +267,7 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees){
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees="+bdtTrees+":nEventsMin=100:MaxDepth=2:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees="+bdtTrees+":nEventsMin=100:MaxDepth="+bdtDepth+":BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
    //Default: NTrees= 100,nEventsMin=100,MaxDepth=3
    //Duncan's copy: NTrees= 800,nEventsMin=100,MaxDepth=2
