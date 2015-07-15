@@ -110,7 +110,7 @@ void ProdTemplate(){
   sampleList.push_back("tZq");
   sampleList.push_back("TTZ");
   sampleList.push_back("TTW");
-  //  sampleList.push_back("TT");
+  sampleList.push_back("TT");
   //  sampleList.push_back("DYToLL_M10-50");
   sampleList.push_back("Zjets");
   //  sampleList.push_back("Wjets");
@@ -122,7 +122,7 @@ void ProdTemplate(){
   //  sampleList.push_back("TbartChan");
   //  sampleList.push_back("TtW");
   //  sampleList.push_back("TbartW");
-  //  samplelist.push_back("WW");
+  //sampleList.push_back("WW");
   
   std::vector<TString> systList;
 
