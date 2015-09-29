@@ -6,45 +6,43 @@ theMVAtool::theMVAtool(){
   //constructor
 
   varList.push_back("tree_topMass");     
-  //  varList.push_back("tree_Zpt");         // Duncan commented this out
+  //  varList.push_back("tree_Zpt"); 
   varList.push_back("tree_Zeta");        
-  //  varList.push_back("tree_topPt");       // Duncan commented this out
+  //  varList.push_back("tree_topPt");
   //  varList.push_back("tree_topEta");      
-  //  varList.push_back("tree_NJets");       // Duncan commented this out
-  //  varList.push_back("tree_NBJets");	     // Duncan commented this out
+  //  varList.push_back("tree_NJets");   
+  //  varList.push_back("tree_NBJets");	  
   varList.push_back("tree_btagDiscri");
   varList.push_back("tree_totPt");	
   //  varList.push_back("tree_totEta");	
   varList.push_back("tree_leptWPt");
   varList.push_back("tree_leptWEta");
-  //  varList.push_back("tree_leadJetPt");   // Duncan commented this out
+  //  varList.push_back("tree_leadJetPt");
   varList.push_back("tree_leadJetEta");  
   //  varList.push_back("tree_met" );
   //  varList.push_back("tree_mTW" );
-
-  //  User Added
   //  varList.push_back("tree_totPtVec");
   //  varList.push_back("tree_totVecM");
   //  varList.push_back("tree_lepPt");
-  //  varList.push_back("tree_lepMetPt");    // Duncan commented this out
+  //  varList.push_back("tree_lepMetPt"); 
   //  varList.push_back("tree_totPt2Jet");
   //  varList.push_back("tree_leadJetbTag");
   varList.push_back("tree_secJetbTag");
   varList.push_back("tree_secJetPt");
-  //  varList.push_back("tree_secJetEta");   // Duncan commented this out
-  varList.push_back("tree_wzdelR");          // Duncan uncommented this
+  //  varList.push_back("tree_secJetEta");
+  varList.push_back("tree_wzdelR");   
   varList.push_back("tree_jjdelR");
-  //  varList.push_back("tree_zjminR");
+  varList.push_back("tree_zjminR");
   //  varList.push_back("tree_ZlepWdelPhi");
   //  varList.push_back("tree_ZmetdelPhi");
   //  varList.push_back("tree_ZlepWdelR");
-  varList.push_back("tree_lbDelR");          // Duncan uncommented this
-  varList.push_back("tree_lbDelPhi");
-  varList.push_back("tree_zlb1DelR");        // Duncan uncommented this
-  varList.push_back("tree_zlb1DelPhi");      // Duncan uncommented this 
+  varList.push_back("tree_lbDelR");
+  //  varList.push_back("tree_lbDelPhi");
+  varList.push_back("tree_zlb1DelR");
+  varList.push_back("tree_zlb1DelPhi");
   //  varList.push_back("tree_zlb2DelR");
-  varList.push_back("tree_zlb2DelPhi");      // Duncan uncommented this
-  varList.push_back("tree_totHt");           // Duncan uncommented this
+  varList.push_back("tree_zlb2DelPhi");
+  varList.push_back("tree_totHt");
   //  varList.push_back("tree_lepHt");
   //  varList.push_back("tree_jetHt");
   //  varList.push_back("tree_lepMetHt");
@@ -71,8 +69,8 @@ theMVAtool::theMVAtool(){
   samplelist.push_back("WZ");
   samplelist.push_back("ZZ");
   samplelist.push_back("TbarsChan");
-   samplelist.push_back("TsChan");
-   samplelist.push_back("TtChan");
+  samplelist.push_back("TsChan");
+  samplelist.push_back("TtChan");
   samplelist.push_back("TbartChan");
   samplelist.push_back("TtW");
   samplelist.push_back("TbartW");
@@ -93,6 +91,16 @@ theMVAtool::theMVAtool(){
   systlist.push_back("__jer__minus");
   systlist.push_back("__met__plus");
   systlist.push_back("__met__minus"); 
+
+// Additional Systematics
+/*
+  systlist.push_back("__matching__plus");
+  systlist.push_back("__matching__minus");
+  systlist.push_back("__scale__plus");
+  systlist.push_back("__scale__minus");
+  systlist.push_back("__zPt__plus");
+  systlist.push_back("__zPt__minus");
+*/
 
   // Original Systematics
   /*
@@ -216,7 +224,7 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees, TS
 
   factory->AddSignalTree (signal, 1.0);
 
-  //  factory->AddBackgroundTree (background_WZ,  0.102); 
+//  factory->AddBackgroundTree (background_WZ,  0.102); 
   factory->AddBackgroundTree (background_WZ,  1.0); 
 
   //  factory->AddBackgroundTree (background_wJets, 1.2);
@@ -226,7 +234,7 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees, TS
 //  factory->AddBackgroundTree (background_TTW, 0.39); 
 
   factory->AddBackgroundTree (background_TTZ, 1.0); 
-//    factory->AddBackgroundTree (background_TTZ, 0.26);     
+//  factory->AddBackgroundTree (background_TTZ, 0.26);     
 
   //  factory->AddBackgroundTree (background_TbarsChan, 0.2);
   //  factory->AddBackgroundTree (background_TbartChan, 0.3);
@@ -234,8 +242,8 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees, TS
   //  factory->AddBackgroundTree (background_TsChan, 0.30);
   //  factory->AddBackgroundTree (background_TtChan, 0.30);
   
-  //  factory->AddBackgroundTree (background_Zjets, 2.5);
-  //  factory->AddBackgroundTree (background_ZZ, 0.0);
+//  factory->AddBackgroundTree (background_Zjets, 1.0);
+//  factory->AddBackgroundTree (background_ZZ, 1.0);
   
   //  factory->AddBackgroundTree (background_DY1,  0.01);
   //  factory->AddBackgroundTree (background_DY2,  0.10);
@@ -267,7 +275,7 @@ void theMVAtool::doTraining(TString inDir, TString channel, TString bdtTrees, TS
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees="+bdtTrees+":nEventsMin=100:MaxDepth="+bdtDepth+":BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees="+bdtTrees+":nEventsMin=100:MaxDepth="+bdtDepth+":BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=30:PruneMethod=NoPruning" );
 
    //Default: NTrees= 100,nEventsMin=100,MaxDepth=3
    //Duncan's copy: NTrees= 800,nEventsMin=100,MaxDepth=2
@@ -401,9 +409,9 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
       if(theChannel == 2) sf_local = sf_DY[2]; 
       if(theChannel == 3) sf_local = sf_DY[3]; 
     } 
-    //if(sample == "WZ") cout << "weight 1 " << theweight << endl;
+    //if(sample == "TTZ") cout << "weight 1 " << theweight << endl;
     theweight*=sf_local;
-    //if(sample == "WZ") cout << "weight 2 " << theweight << endl;
+    //if(sample == "TTZ") cout << "weight 2 " << theweight << endl;
     
     double mvaValue = reader->EvaluateMVA( "BDT");
     //    cout << reader->EvaluateMVA( "BDT") << endl;
