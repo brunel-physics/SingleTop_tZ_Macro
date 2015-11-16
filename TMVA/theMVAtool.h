@@ -42,13 +42,12 @@ class theMVAtool {
 public :
    
    
-   theMVAtool();
+   theMVAtool(bool doCtrlReg = true);
    theMVAtool(std::vector<TString > thevarlist, std::vector<TString > thesamplelist, std::vector<TString > thesystlist);
    ~theMVAtool(){};
    
-   
-   void doTraining(TString indir = "inputroot/met0mtw0/", TString channel = "all", TString bdtTrees = "100", TString bdtDepth = "3");
-   void doReading(TString indir = "inputroot/met0mtw0/", TString outDir = "outputroot/met0mtw0/", TString channel = "all", float bdtcut = 100.0);
+   void doTraining(TString channel = "all",TString inDir = "inputroot/met0mtw0/");
+   void doReading(float bdtcut = 100., TString channel = "all", TString inDir = "inputroot/met0mtw0/", TString outDir = "outputroot/");
    
    void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);
    
@@ -56,13 +55,14 @@ public :
    //deal with histograms
    //--------------------
    void createHisto(TString sample, TString channel);
-   void fillHisto(TString sample,  float* theVar, double mva, double weight=1);
-   void writeHisto(TString sample, TString syst);
+   void fillHisto(TString sample,  float* theVar, double mva, double mtw, double weight=1);
+   void writeHisto(TString sample, TString syst, TString reg);
    void scaleHisto(TString sample, double thescale);
    
    std::vector<TString > varList;
    std::vector<TString > samplelist;
    std::vector<TString > systlist;
+   std::vector<TString > regList;
    
    
    std::vector<TH1F*> histovect;
