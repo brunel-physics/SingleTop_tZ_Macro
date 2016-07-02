@@ -4,7 +4,6 @@
 theMVAtool::theMVAtool(bool doCtrlReg){
   
   //constructor
-  varList.push_back("eventWeight");
   varList.push_back("mTW");
   varList.push_back("wQuark1Pt");
   varList.push_back("wQuark1Eta");
@@ -46,8 +45,8 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("topPt");
   varList.push_back("topEta");
   varList.push_back("topPhi");
-  varList.push_back("j1j2delR");
-  varList.push_back("j1j2delPhi");
+  varList.push_back("jjdelR");
+  varList.push_back("jjdelPhi");
   varList.push_back("zLepdelR");
   varList.push_back("zLepdelPhi");
   varList.push_back("zlb1DelR");
@@ -62,9 +61,10 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("totVecM");
   varList.push_back("chan");
   varList.push_back("totPt2Jet");
-  varList.push_back("wZdelR");
-  varList.push_back("wZdelPhi");
-  varList.push_back("minZJetR");
+  varList.push_back("wzdelR");
+  varList.push_back("wzdelPhi");
+  varList.push_back("zminR");
+  varList.push_back("zminPhi");
   varList.push_back("totHt");
   varList.push_back("jetHt");
   varList.push_back("totHtOverPt");
