@@ -4,69 +4,70 @@
 theMVAtool::theMVAtool(bool doCtrlReg){
   
   //constructor
-  ////varList.push_back("cosThetaStar");
-  ////varList.push_back("totMass");     
-  ////varList.push_back("deltaPhilb");  
-  ////varList.push_back("deltaRlb");    
-  //varList.push_back("deltaRTopZ");  
-  //varList.push_back("asym");        
-  //varList.push_back("topPt");       
-  //varList.push_back("NBJets");	 
-  //varList.push_back("deltaRZl");	 
-  //varList.push_back("deltaPhiZmet");
-  
-  //varList.push_back("deltaRZlepW");
-  //varList.push_back("deltaPhiZleptW");
-  //varList.push_back("secJetEta");
-  //varList.push_back("lepPt");
-  //varList.push_back("lepMetPt");
-  //varList.push_back("totPt2Jet");
-  //varList.push_back("met" );
-  //varList.push_back("mTW" );
-  
-  /*  varList.push_back("ZlepWdelPhi");
-  varList.push_back("ZmetdelPhi");
-  varList.push_back("ZlepWdelR");
+  varList.push_back("eventWeight");
+  varList.push_back("mTW");
+  varList.push_back("wQuark1Pt");
+  varList.push_back("wQuark1Eta");
+  varList.push_back("wQuark1Phi");
+  varList.push_back("wQuark2Pt");
+  varList.push_back("wQuark2Eta");
+  varList.push_back("wQuark2Phi");
+  varList.push_back("met");
+  varList.push_back("nJets");
+  varList.push_back("leadJetPt");
+  varList.push_back("leadJetPhi");
+  varList.push_back("leadJetEta");
+  varList.push_back("leadJetbTag");
+  varList.push_back("secJetPt");
+  varList.push_back("secJetPhi");
+  varList.push_back("secJetEta");
+  varList.push_back("secJetbTag");
+  varList.push_back("nBjets");
+  varList.push_back("bTagDisc");
+  varList.push_back("lep1Pt");
+  varList.push_back("lep1Eta");
+  varList.push_back("lep1Phi");
+  varList.push_back("lep1RelIso");
+  varList.push_back("lep1D0");
+  varList.push_back("lep2Pt");
+  varList.push_back("lep2Eta");
+  varList.push_back("lep2Phi");
+  varList.push_back("lep2RelIso");
+  varList.push_back("lep2D0");
+  varList.push_back("lepMass");
+  varList.push_back("lepPt");
+  varList.push_back("lepEta");
+  varList.push_back("lepPhi");
+  varList.push_back("zMass");
+  varList.push_back("zPt");
+  varList.push_back("zEta");
+  varList.push_back("zPhi");
+  varList.push_back("topMass");
+  varList.push_back("topPt");
+  varList.push_back("topEta");
+  varList.push_back("topPhi");
+  varList.push_back("j1j2delR");
+  varList.push_back("j1j2delPhi");
+  varList.push_back("zLepdelR");
+  varList.push_back("zLepdelPhi");
+  varList.push_back("zlb1DelR");
+  varList.push_back("zlb1DelPhi");
   varList.push_back("zlb2DelR");
-  varList.push_back("lbDelPhi");
+  varList.push_back("zlb2DelPhi");
   varList.push_back("lepHt");
-  varList.push_back("jetHt");
-  varList.push_back("lepMetHt");
-  varList.push_back("totHtOverPt");
-  
+  varList.push_back("wQuarkHt");
+  varList.push_back("totPt");
   varList.push_back("totEta");
   varList.push_back("totPtVec");
-  
-  varList.push_back("topEta");      
-
-    varList.push_back("leadJetbTag");
-  varList.push_back("topMass");     
-    varList.push_back("Zpt");         
-  varList.push_back("NJets");   
-  varList.push_back("wLepjminR");
-  */
-  varList.push_back("jjdelR");
-  //  varList.push_back("btagDiscri");  
-  varList.push_back("zjminR");
-  varList.push_back("leadJetEta");  
-  //varList.push_back("secJetbTag");
-  varList.push_back("lbDelR");
-  varList.push_back("leptWPt");	 
+  varList.push_back("totVecM");
+  varList.push_back("chan");
+  varList.push_back("totPt2Jet");
+  varList.push_back("wZdelR");
+  varList.push_back("wZdelPhi");
+  varList.push_back("minZJetR");
   varList.push_back("totHt");
-  varList.push_back("totPt");	
-  varList.push_back("leptWEta");	 
-  varList.push_back("zlb2DelPhi");
-  varList.push_back("Zeta");        
-  varList.push_back("wzdelR");
-  varList.push_back("secJetPt");
-  varList.push_back("zlb1DelPhi");
-  varList.push_back("zlb1DelR");
-
-  varList.push_back("secJetEta");
-
-  //  varList.push_back("leadJetPt");   
-  //  varList.push_back("totVecM");
-  //  varList.push_back("totEta");	
+  varList.push_back("jetHt");
+  varList.push_back("totHtOverPt");
 
   if (doCtrlReg){
     regList.push_back("sig_");
@@ -79,23 +80,17 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   for(unsigned int i=0; i< varList.size() ; i++) theVarMap[varList[i]] = i;
   
   samplelist.push_back("DataMu");
-  samplelist.push_back("DataMuEG");
   samplelist.push_back("DataEG");
-  samplelist.push_back("DataEGZenriched");
-  samplelist.push_back("DataMuEGZenriched");
-  samplelist.push_back("DataMuZenriched");
-  //samplelist.push_back("tZq");
-  samplelist.push_back("tZq4f");
+  samplelist.push_back("tZq");
+  samplelist.push_back("THQ");
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
   samplelist.push_back("DYToLL_M10-50");
-  samplelist.push_back("Zjets");
+  samplelist.push_back("DYToLL_M50");
   samplelist.push_back("Wjets");
+  samplelist.push_back("WW");
   samplelist.push_back("WZ");
-  //  samplelist.push_back("WZHF");
-  //  samplelist.push_back("WZbc");
-  //  samplelist.push_back("WZl");
   samplelist.push_back("ZZ");
   samplelist.push_back("TbarsChan");
   samplelist.push_back("TsChan");
@@ -103,7 +98,6 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   samplelist.push_back("TbartChan");
   samplelist.push_back("TtW");
   samplelist.push_back("TbartW");
-  //samplelist.push_back("WW");
   
   systlist.push_back("");  
   systlist.push_back("__pileup__plus");
@@ -118,19 +112,13 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   systlist.push_back("__jes__minus");
   systlist.push_back("__jer__plus"); 
   systlist.push_back("__jer__minus");
-  systlist.push_back("__met__plus");
-  systlist.push_back("__met__minus"); 
-  systlist.push_back("__matching__plus"); 
-  systlist.push_back("__matching__minus");
-  systlist.push_back("__scale__plus");
-  systlist.push_back("__scale__minus"); 
-  systlist.push_back("__zPt__plus");
-  systlist.push_back("__zPt__minus");
+  systlist.push_back("__ME_PS__plus");
+  systlist.push_back("__ME_PS__minus"); 
   
   
   
-
-  
+// Trilepton sf's
+/*  
   sf_DY.push_back(1.); sf_DY_err.push_back(1.);
   sf_DY.push_back(1.); sf_DY_err.push_back(1.);
   sf_DY.push_back(1.); sf_DY_err.push_back(1.);
@@ -140,7 +128,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
   sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
   sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
-
+*/
   /* These are from the lepton selection stage calculations
   sf_WZ.push_back(1.204); sf_WZ_err.push_back(0.04);
   sf_WZ.push_back(1.267); sf_WZ_err.push_back(0.06);
