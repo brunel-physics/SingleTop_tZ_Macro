@@ -184,7 +184,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_ZZ         = TFile::Open( inDir+"/histofile_ZZ.root" );
 
   TFile *input_TtChan     = TFile::Open( inDir+"/histofile_TtChan.root" );
-  TFile *input_TtbarChan  = TFile::Open( inDir+"/histofile_TtbarChan.root" );
+  TFile *input_TbartChan  = TFile::Open( inDir+"/histofile_TbartChan.root" );
   TFile *input_TsChan     = TFile::Open( inDir+"/histofile_TsChan.root" );
   TFile *input_TtW        = TFile::Open( inDir+"/histofile_TtW.root" );
   TFile *input_TbartW     = TFile::Open( inDir+"/histofile_TbartW.root" );
@@ -206,7 +206,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TTree *background_ZZ     = (TTree*)input_ZZ->Get("Ttree_"+treePost+"ZZ");
   
   TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_"+treePost+"TtChan");
-  TTree *background_TtbarChan = (TTree*)input_TtbarChan->Get("Ttree_"+treePost+"TtbarChan");
+  TTree *background_TbartChan = (TTree*)input_TbartChan->Get("Ttree_"+treePost+"TbartChan");
   TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_"+treePost+"TsChan");
   TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_"+treePost+"TtW");  
   TTree *background_TbartW    = (TTree*)input_TbartW->Get("Ttree_"+treePost+"TbartW");  
@@ -225,7 +225,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   factory->AddBackgroundTree  ( background_ZZ, 1. );
 
   factory->AddBackgroundTree  ( background_TtChan, 1. );
-  factory->AddBackgroundTree  ( background_TtbarChan, 1. );
+  factory->AddBackgroundTree  ( background_TbartChan, 1. );
   factory->AddBackgroundTree  ( background_TsChan, 1. );
   factory->AddBackgroundTree  ( background_TtW, 1. );
   factory->AddBackgroundTree  ( background_TbartW, 1. );
