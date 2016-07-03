@@ -178,7 +178,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_TTW        = TFile::Open( inDir+"/histofile_TTW.root" );
   TFile *input_THQ        = TFile::Open( inDir+"/histofile_THQ.root" );
 
-  TFile *input_TT        = TFile::Open( inDir+"/histofile_TT.root" );  
+  TFile *input_TT         = TFile::Open( inDir+"/histofile_TT.root" );  
   TFile *input_WW         = TFile::Open( inDir+"/histofile_WW.root" );
   TFile *input_WZ         = TFile::Open( inDir+"/histofile_WZ.root" );
   TFile *input_ZZ         = TFile::Open( inDir+"/histofile_ZZ.root" );
@@ -189,8 +189,8 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_TtW        = TFile::Open( inDir+"/histofile_TtW.root" );
   TFile *input_TbartW     = TFile::Open( inDir+"/histofile_TbartW.root" );
 
-  TFile *input_DY-50	  = TFile::Open( inDir+"/histofile_DYToLL_M-50.root" );
-  TFile *input_DY10-50	  = TFile::Open( inDir+"/histofile_DYToLL_M10-50.root" );
+  TFile *input_DY50	  = TFile::Open( inDir+"/histofile_DYToLL_M-50.root" );
+  TFile *input_DY10to50	  = TFile::Open( inDir+"/histofile_DYToLL_M10-50.root" );
   
   TString treePost = "";
   if (regList.size() > 1) treePost = "sig_";
@@ -205,14 +205,14 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TTree *background_WZ     = (TTree*)input_WZ->Get("Ttree_"+treePost+"WZ");
   TTree *background_ZZ     = (TTree*)input_ZZ->Get("Ttree_"+treePost+"ZZ");
   
-  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_"+treePost"+TtChan");
-  TTree *background_TtbarChan = (TTree*)input_TtbarChan->Get("Ttree_"+treePost"+TtbarChan");
-  TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_"+treePost"+TsChan");
-  TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_"+treePost"+TtW");  
-  TTree *background_TbartW    = (TTree*)input_TbartW->Get("Ttree_"+treePost"+TbartW");  
+  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_"+treePost+"TtChan");
+  TTree *background_TtbarChan = (TTree*)input_TtbarChan->Get("Ttree_"+treePost+"TtbarChan");
+  TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_"+treePost+"TsChan");
+  TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_"+treePost+"TtW");  
+  TTree *background_TbartW    = (TTree*)input_TbartW->Get("Ttree_"+treePost+"TbartW");  
 
-  TTree *background_DY-50     = (TTree*)input_DY-50->Get("Tree_"+treePost"+DY-50");
-  TTree *background_DY10-50   = (TTree*)input_DY10-50->Get("Tree_"+treePost"+DY10-50");
+  TTree *background_DY50     = (TTree*)input_DY50->Get("Tree_"+treePost+"DY50");
+  TTree *background_DY10to50   = (TTree*)input_DY10to50->Get("Tree_"+treePost+"DY10to50");
 
   factory->AddSignalTree      ( signal, 1. );
   factory->AddBackgroundTree  ( background_TTZ, 1. );
@@ -225,13 +225,13 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   factory->AddBackgroundTree  ( background_ZZ, 1. );
 
   factory->AddBackgroundTree  ( background_TtChan, 1. );
-  factory->AddBackgroundTree  ( background_TtbarCha, 1. );
+  factory->AddBackgroundTree  ( background_TtbarChan, 1. );
   factory->AddBackgroundTree  ( background_TsChan, 1. );
   factory->AddBackgroundTree  ( background_TtW, 1. );
   factory->AddBackgroundTree  ( background_TbartW, 1. );
 
-  factory->AddBackgroundTree  ( background_DY-50, 1. );
-  factory->AddBackgroundTree  ( background_DY10-50, 1. );
+  factory->AddBackgroundTree  ( background_DY50, 1. );
+  factory->AddBackgroundTree  ( background_DY10to50, 1. );
 
   for(unsigned int i=0; i< varList.size() ; i++) factory->AddVariable( varList[i].Data(),    'F');
   
