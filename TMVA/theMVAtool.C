@@ -59,12 +59,12 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("totEta");
   varList.push_back("totPtVec");
   varList.push_back("totVecM");
-  varList.push_back("chan");
+  varList.push_back("Channel");
   varList.push_back("totPt2Jet");
   varList.push_back("wzdelR");
   varList.push_back("wzdelPhi");
-  varList.push_back("zminR");
-  varList.push_back("zminPhi");
+  varList.push_back("zjminR");
+  varList.push_back("zjminPhi");
   varList.push_back("totHt");
   varList.push_back("jetHt");
   varList.push_back("totHtOverPt");
@@ -441,7 +441,7 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="totPt")	   {nbins = 10; xmin = 0;   xmax = 250;};
     if(varList[j]=="topEta")        {nbins = 10; xmin = -2.5;xmax = 2.5;};
     if(varList[j]=="totEta")        {nbins = 10; xmin = -2.5;xmax = 2.5;};
-    if(varList[j]=="NJets")	   {nbins = 6;  xmin = 0.5; xmax = 6.5;};      
+    if(varList[j]=="nJets")	   {nbins = 6;  xmin = 0.5; xmax = 6.5;};      
     if(varList[j]=="NBJets")        {nbins = 4;  xmin = -0.5;xmax = 3.5;};  
     if(varList[j]=="deltaRZl")      {nbins = 10; xmin = 0;   xmax = 3.2;}; 
     if(varList[j]=="deltaPhiZmet")  {nbins = 10; xmin = 0;   xmax = 3.2;};
