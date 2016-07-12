@@ -21,6 +21,14 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("secJetPhi");
   varList.push_back("secJetEta");
   varList.push_back("secJetbTag");
+  varList.push_back("thirdJetPt");
+  varList.push_back("thirdJetPhi");
+  varList.push_back("thirdJetEta");
+  varList.push_back("thirdJetbTag");
+  varList.push_back("fourthJetPt");
+  varList.push_back("fourthJetPhi");
+  varList.push_back("fourthJetEta");
+  varList.push_back("fourthJetbTag");
   varList.push_back("nBjets");
   varList.push_back("bTagDisc");
   varList.push_back("lep1Pt");
@@ -59,7 +67,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("totEta");
   varList.push_back("totPtVec");
   varList.push_back("totVecM");
-  varList.push_back("Channel");
+//  varList.push_back("Channel");
   varList.push_back("totPt2Jet");
   varList.push_back("wzdelR");
   varList.push_back("wzdelPhi");
@@ -446,6 +454,14 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="secJetPhi"       ){     nbins = 20; xmin = -3.2;   xmax = 3.2;};
     if(varList[j]=="secJetEta"       ){     nbins = 20; xmin = -5.;   xmax = 5.;};
     if(varList[j]=="secJetbTag"      ){     nbins = 10; xmin = 0;   xmax = 1;};
+    if(varList[j]=="thirdJetPt"        ){     nbins = 15; xmin = 0;   xmax = 300;};
+    if(varList[j]=="thirdJetPhi"       ){     nbins = 20; xmin = -3.2;   xmax = 3.2;};
+    if(varList[j]=="thirdJetEta"       ){     nbins = 20; xmin = -5.;   xmax = 5.;};
+    if(varList[j]=="thirdJetbTag"      ){     nbins = 10; xmin = 0;   xmax = 1;};
+    if(varList[j]=="fourthJetPt"        ){     nbins = 15; xmin = 0;   xmax = 300;};
+    if(varList[j]=="fourthJetPhi"       ){     nbins = 20; xmin = -3.2;   xmax = 3.2;};
+    if(varList[j]=="fourthJetEta"       ){     nbins = 20; xmin = -5.;   xmax = 5.;};
+    if(varList[j]=="fourthJetbTag"      ){     nbins = 10; xmin = 0;   xmax = 1;};
     if(varList[j]=="nBjets"          ){     nbins = 4;  xmin = -0.5;xmax = 3.5;};  
     if(varList[j]=="bTagDisc"        ){     nbins = 10; xmin = 0.6;   xmax = 1;};
     if(varList[j]=="lep1Pt"	     ){     nbins = 20; xmin = 0;   xmax = 500;};
