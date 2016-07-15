@@ -3,6 +3,8 @@
 
 theMVAtool::theMVAtool(bool doCtrlReg){
   
+  doCtrlReg = false;
+
   //constructor
   varList.push_back("mTW");
   varList.push_back("wQuark1Pt");
@@ -95,7 +97,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
 //  samplelist.push_back("DYToLL_M10-50"); // Empty tree - background totally cut
-  samplelist.push_back("DYToLL_M50");
+  samplelist.push_back("DYToLL_M-50");
 //  samplelist.push_back("Wjets"); // Empty tree - background totally cut
 //  samplelist.push_back("WW"); // Empty tree - background totally cut
   samplelist.push_back("WZ");
@@ -257,7 +259,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );   
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=75:nEventsMin=100:MaxDepth=2:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=50:nEventsMin=100:MaxDepth=50:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
    /*for (int nTrees = 25; nTrees < 125; nTrees+=25){
      for (int nCuts = 20; nCuts < 51; nCuts+=10){
        for (int mDepth = 2; mDepth < 5; mDepth++){
@@ -315,20 +317,18 @@ void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString
   unsigned int varsize = varList.size();
   float  treevars[varsize];
   for(unsigned int i=0; i<varsize; i++) treevars[i] = 0;  
-  
   for(unsigned int i=0; i< varList.size() ; i++) reader->AddVariable( varList[i].Data(),  &(treevars[i])  );
-  //  reader->AddVariable("mTW", &(treevars[varsize-1]));
+//  reader->AddVariable("mTW", &(treevars[varsize-1]));
    
   reader->BookMVA( "BDT", ("weights/BDT_trainning_"+channel+"_tzq_BDT.weights.xml").Data() ); 
   
- // cout << __LINE__ << "   SAMPLE SIZE " << samplelist.size() << endl;
+  //cout << __LINE__ << "   SAMPLE SIZE " << samplelist.size() << endl;
   for(unsigned int i=0; i< samplelist.size(); i++){
     //cout << samplelist[i] << endl;
     TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
-    TFile * theoutputfile = new TFile(   (outDir+"output_"+channel+"_"+samplelist[i]+".root").Data(), "recreate");
+    TFile *theoutputfile = new TFile(   (outDir+"output_"+channel+"_"+samplelist[i]+".root").Data(), "recreate");
     theOutputFileMap[samplelist[i]] = theoutputfile;
-    
-    
+
     //---------------------
     //loop over systematics
     //---------------------
@@ -336,14 +336,12 @@ void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString
    
    
     for(unsigned int j=0; j<systlist.size(); j++){
-     // cout << __LINE__  << "  " << samplelist[i]+systlist[j] << endl;
-      for (unsigned int k=0; k<regList.size(); k++){
-	if( (samplelist[i] == "DataMu" || samplelist[i] == "DataEG" || samplelist[i] == "DataMuEG") && systlist[j] != "") continue;
-	if( (samplelist[i] == "DataMuZenriched" || samplelist[i] == "DataEGZenriched" || samplelist[i] == "DataMuEGZenriched") && !(systlist[j] == "" || systlist[j] == "__zPt__plus" || systlist[j] == "__zPt__minus") ) continue;
+      for (unsigned int k=0;k<regList.size(); k++){
+	if( (samplelist[i] == "DataMu" || samplelist[i] == "DataEG") && systlist[j] != "") continue;
+//	if( (samplelist[i] == "DataMuZenriched" || samplelist[i] == "DataEGZenriched") && !(systlist[j] == "" || systlist[j] == "__zPt__plus" || systlist[j] == "__zPt__minus") ) continue;
 	createHisto(regList[k]+samplelist[i]+systlist[j], channel);
 	//      cout << samplelist[i]+systlist[j] << channel << endl;
 	loopInSample(input, regList[k]+samplelist[i]+systlist[j], treevars, bdtcut, channel);
-	writeHisto(samplelist[i], systlist[j], regList[k]);
       }
     }
    
@@ -385,9 +383,8 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
     theTree->GetEntry(i);
     
     double sf_local = 1.;
-    
-    
-    /*cout << "----------------------" << endl;
+        
+/*    cout << "----------------------" << endl;
     cout << "channel " << channel << endl;
     cout << "theChannel    " << theChannel << endl;
     cout << "theSelChannel " <<  theSelChannel<< endl;*/
@@ -412,7 +409,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
     theweight*=sf_local;
     //if(sample == "TTZ") cout << "weight 2 " << theweight << endl;
     
-    double mvaValue = reader->EvaluateMVA( "BDT");
+    double mvaValue = reader->EvaluateMVA( "BDT" );
     //cout << reader->EvaluateMVA( "BDT") << endl;
     if(mvaValue > bdtcut) continue;
     //cout << "the bdt " << bdtcut << endl;
