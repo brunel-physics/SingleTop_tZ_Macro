@@ -6,7 +6,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   doCtrlReg = false;
 
   //constructor
-  varList.push_back("mTW");
+//  varList.push_back("mTW");
   varList.push_back("wQuark1Pt");
   varList.push_back("wQuark1Eta");
   varList.push_back("wQuark1Phi");
@@ -510,9 +510,9 @@ void theMVAtool::createHisto(TString sample, TString channel){
     histovect.push_back(histo);
   }
 
-/*  TH1F * histomTW = new TH1F(("mTW_"+channel+"__"+sample).Data(), ("mTW_"+channel+"__"+sample).Data(), 15,0.,200.);
+  TH1F * histomTW = new TH1F(("mTW_"+channel+"__"+sample).Data(), ("mTW_"+channel+"__"+sample).Data(), 15,0.,200.);
   histomTW->Sumw2();
-  histovect.push_back(histomTW);*/
+  histovect.push_back(histomTW);
 
   TH1F * histo = new TH1F( ("MVA_"+channel+"__"+sample).Data(), ("MVA_"+channel+"__"+sample).Data(),  20, -1., 1.);
   histo->Sumw2();
