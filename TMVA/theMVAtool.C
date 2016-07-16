@@ -259,7 +259,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
    
    //for WZ
    //factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );   
-   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=50:nEventsMin=100:MaxDepth=50:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+   factory->BookMethod( TMVA::Types::kBDT, "BDT", "!H:!V:NTrees=100:nEventsMin=100:MaxDepth=5:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
    /*for (int nTrees = 25; nTrees < 125; nTrees+=25){
      for (int nCuts = 20; nCuts < 51; nCuts+=10){
        for (int mDepth = 2; mDepth < 5; mDepth++){
@@ -342,6 +342,7 @@ void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString
 	createHisto(regList[k]+samplelist[i]+systlist[j], channel);
 	//      cout << samplelist[i]+systlist[j] << channel << endl;
 	loopInSample(input, regList[k]+samplelist[i]+systlist[j], treevars, bdtcut, channel);
+	writeHisto(samplelist[i], systlist[j], regList[k]);
       }
     }
    
@@ -420,9 +421,6 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
   
   
 }
-
-
-
 
 
 
@@ -511,9 +509,11 @@ void theMVAtool::createHisto(TString sample, TString channel){
     histo->Sumw2();
     histovect.push_back(histo);
   }
-  TH1F * histomTW = new TH1F(("mTW_"+channel+"__"+sample).Data(), ("mTW_"+channel+"__"+sample).Data(), 15,0.,200.);
+
+/*  TH1F * histomTW = new TH1F(("mTW_"+channel+"__"+sample).Data(), ("mTW_"+channel+"__"+sample).Data(), 15,0.,200.);
   histomTW->Sumw2();
-  histovect.push_back(histomTW);
+  histovect.push_back(histomTW);*/
+
   TH1F * histo = new TH1F( ("MVA_"+channel+"__"+sample).Data(), ("MVA_"+channel+"__"+sample).Data(),  20, -1., 1.);
   histo->Sumw2();
   histovect.push_back(histo);
@@ -524,9 +524,9 @@ void theMVAtool::createHisto(TString sample, TString channel){
 
 void theMVAtool::fillHisto(TString sample, float* theVar, double mva, double mtw, double weight){
    
-  //   cout << "sample " << sample << endl;
+   //  cout << "sample " << sample << endl;
    std::vector<TH1F*> histovect = theHistoMap[sample];
-   // cout << " histovect.size() " <<  histovect.size()  << endl;
+   //cout << " histovect.size() " <<  histovect.size()  << endl;
    for(unsigned int i=0; i<  varList.size(); i++) histovect[i]->Fill(theVar[i], weight);
    histovect[varList.size()]->Fill(mtw,weight);
    histovect.back()->Fill(mva, weight);
