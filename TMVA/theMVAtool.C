@@ -57,6 +57,8 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("topPhi");
   varList.push_back("jjdelR");
   varList.push_back("jjdelPhi");
+  varList.push_back("wwdelR");
+  varList.push_back("wwdelPhi");
   varList.push_back("zLepdelR");
   varList.push_back("zLepdelPhi");
   varList.push_back("zlb1DelR");
@@ -483,6 +485,8 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="topPhi"	     ){	    nbins = 20; xmin = -3.2;xmax = 3.2;};
     if(varList[j]=="jjdelR"          ){     nbins = 20;xmin = 0; xmax = 6;};
     if(varList[j]=="jjdelPhi"        ){     nbins = 10;xmin = 0; xmax = 3.2;};
+    if(varList[j]=="wwdelR"          ){     nbins = 20;xmin = 0; xmax = 6;};
+    if(varList[j]=="wwdelPhi"        ){     nbins = 10;xmin = 0; xmax = 3.2;};
     if(varList[j]=="zLepdelR"        ){     nbins = 15;xmin = 0; xmax = 6;};
     if(varList[j]=="zLepdelPhi"      ){     nbins = 20;xmin = -4; xmax = 4;};
     if(varList[j]=="zlb1DelR"        ){     nbins = 15;xmin = 0; xmax = 6;};
