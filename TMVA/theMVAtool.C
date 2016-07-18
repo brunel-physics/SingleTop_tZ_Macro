@@ -105,7 +105,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   samplelist.push_back("WZ");
   samplelist.push_back("ZZ");
 //  samplelist.push_back("TsChan"); // Empty tree - background totally cut
-  samplelist.push_back("TtChan");
+//  samplelist.push_back("TtChan"); // Empty tree - background totally cut
   samplelist.push_back("TbartChan");
   samplelist.push_back("TtW");
   samplelist.push_back("TbartW");
@@ -192,7 +192,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_WZ         = TFile::Open( inDir+"/histofile_WZ.root" );
   TFile *input_ZZ         = TFile::Open( inDir+"/histofile_ZZ.root" );
 
-  TFile *input_TtChan     = TFile::Open( inDir+"/histofile_TtChan.root" );
+//  TFile *input_TtChan     = TFile::Open( inDir+"/histofile_TtChan.root" ); // Empty tree - background totally cut
   TFile *input_TbartChan  = TFile::Open( inDir+"/histofile_TbartChan.root" );
 //  TFile *input_TsChan     = TFile::Open( inDir+"/histofile_TsChan.root" ); // Empty tree - background totally cut
   TFile *input_TtW        = TFile::Open( inDir+"/histofile_TtW.root" );
@@ -212,7 +212,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TTree *background_WZ     = (TTree*)input_WZ->Get("Ttree_WZ");
   TTree *background_ZZ     = (TTree*)input_ZZ->Get("Ttree_ZZ");
   
-  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_TtChan");
+//  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_TtChan");
   TTree *background_TbartChan = (TTree*)input_TbartChan->Get("Ttree_TbartChan");
 //  TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_TsChan");
   TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_TtW");  
@@ -231,7 +231,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   factory->AddBackgroundTree  ( background_WZ, 1. );
   factory->AddBackgroundTree  ( background_ZZ, 1. );
 
-  factory->AddBackgroundTree  ( background_TtChan, 1. );
+//  factory->AddBackgroundTree  ( background_TtChan, 1. );
   factory->AddBackgroundTree  ( background_TbartChan, 1. );
 //  factory->AddBackgroundTree  ( background_TsChan, 1. );
   factory->AddBackgroundTree  ( background_TtW, 1. );
