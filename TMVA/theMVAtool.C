@@ -13,6 +13,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("wQuark2Pt");
   varList.push_back("wQuark2Eta");
   varList.push_back("wQuark2Phi");
+  varList.push_back("wPairMass");
   varList.push_back("met");
   varList.push_back("nJets");
   varList.push_back("leadJetPt");
@@ -441,6 +442,7 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="wQuark2Pt"	     ){     nbins = 20; xmin = 0;   xmax = 500;};
     if(varList[j]=="wQuark2Eta"	     ){     nbins = 20; xmin = -5.; xmax = 5.;};
     if(varList[j]=="wQuark2Phi"	     ){     nbins = 20; xmin = -3.2;   xmax = 3.2;};
+    if(varList[j]=="wPairMass"	     ){     nbins = 10; xmin = 0;   xmax = 200;};
     if(varList[j]=="met"	     ){     nbins = 10; xmin = 0;   xmax = 200;};	   
     if(varList[j]=="nJets"           ){	    nbins = 8;  xmin = 0.5; xmax = 8.5;};      
     if(varList[j]=="leadJetPt"       ){     nbins = 20; xmin = 0;   xmax = 500;};	      
