@@ -120,6 +120,8 @@ void ProdTemplate(const bool theta=false)
         "__trig__minus",
         "__bTag__plus",
         "__bTag__minus",
+        "__met__plus",
+        "__met__minus",
         "__pdf__plus",
         "__pdf__minus",
         "__jes__plus",
