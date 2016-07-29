@@ -1,7 +1,7 @@
 #define theMVAtool_cxx
 #include "theMVAtool.h"
 
-theMVAtool::theMVAtool(bool doCtrlReg){
+theMVAtool::theMVAtool(bool doCtrlReg, bool sigMode){
   
   //constructor
 //  varList.push_back("mTW");
@@ -194,7 +194,10 @@ void theMVAtool::doTraining(TString channel, TString inDir){
 //  TFile *input_DY10To50	  = TFile::Open( inDir+"/histofile_DYToLL_M10To50.root" ); // Empty tree - background totally cut
   
   TString treePost = "";
-  if (regList.size() > 1) treePost = "sig_";
+  if (regList.size() > 1) { 
+    if (!sigMode) treePost = "sig_";
+    else treePost = "ctrl_!;
+  }
   TTree *signal              = (TTree*)input_sig->Get("Ttree_"+treePost+"tZq");
   TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_"+treePost+"TTZ");
   TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_"+treePost+"TTW");

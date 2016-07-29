@@ -42,7 +42,7 @@ class theMVAtool {
 public :
    
    
-   theMVAtool(bool doCtrlReg = true);
+   theMVAtool(bool doCtrlReg = true, bool sigMode = false);
    theMVAtool(std::vector<TString > thevarlist, std::vector<TString > thesamplelist, std::vector<TString > thesystlist);
    ~theMVAtool(){};
    
