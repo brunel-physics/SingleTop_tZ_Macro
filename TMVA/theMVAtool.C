@@ -122,7 +122,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   samplelist.push_back("DYToLL_M50");
 //  samplelist.push_back("Wjets"); // Empty tree - background totally cut
 //  samplelist.push_back("WW"); // Empty tree - background totally cut
-  samplelist.push_back("WZ");
+//  samplelist.push_back("WZ"); // Empty tree - background totally cut for sig/ctrl, all has 1 event
   samplelist.push_back("ZZ");
 //  samplelist.push_back("TsChan"); // Empty tree - background totally cut
   samplelist.push_back("TtChan"); // Empty tree - background totally cut
@@ -148,36 +148,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   systlist.push_back("__ME_PS__plus");
   systlist.push_back("__ME_PS__minus"); 
   
-  
-// Trilepton sf's
-/*  
-  sf_DY.push_back(1.); sf_DY_err.push_back(1.);
-  sf_DY.push_back(1.); sf_DY_err.push_back(1.);
-  sf_DY.push_back(1.); sf_DY_err.push_back(1.);
-  sf_DY.push_back(1.); sf_DY_err.push_back(1.);
-  
-  sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
-  sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
-  sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
-  sf_WZ.push_back(1.); sf_WZ_err.push_back(1.);
-*/
-  /* These are from the lepton selection stage calculations
-  sf_WZ.push_back(1.204); sf_WZ_err.push_back(0.04);
-  sf_WZ.push_back(1.267); sf_WZ_err.push_back(0.06);
-  sf_WZ.push_back(1.051); sf_WZ_err.push_back(0.05);
-  sf_WZ.push_back(1.167); sf_WZ_err.push_back(0.04);*/
-  /*    sf_DY.push_back(0.39); sf_DY_err.push_back(0.63);
-    sf_DY.push_back(1.13); sf_DY_err.push_back(0.3); 
-    sf_DY.push_back(3.36); sf_DY_err.push_back(1.39);
-    sf_DY.push_back(0.754); sf_DY_err.push_back(0.03); 
-  
-  
-    sf_WZ.push_back(1.01); sf_WZ_err.push_back(0.05);
-    sf_WZ.push_back(1.16); sf_WZ_err.push_back(0.09); 
-    sf_WZ.push_back(0.94); sf_WZ_err.push_back(0.07);
-    sf_WZ.push_back(1.651); sf_WZ_err.push_back(0.03); 
-  */
-} 
+  } 
 
 
 theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > thesamplelist, std::vector<TString > thesystlist){
@@ -206,14 +177,14 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_sig        = TFile::Open( inDir+"/histofile_tZq.root" );
   TFile *input_TTZ        = TFile::Open( inDir+"/histofile_TTZ.root" );
   TFile *input_TTW        = TFile::Open( inDir+"/histofile_TTW.root" );
-//  TFile *input_THQ        = TFile::Open( inDir+"/histofile_THQ.root" );
+//  TFile *input_THQ        = TFile::Open( inDir+"/histofile_THQ.root" ); // Empty tree - background totally cut
 
   TFile *input_TT         = TFile::Open( inDir+"/histofile_TT.root" );  
 //  TFile *input_WW         = TFile::Open( inDir+"/histofile_WW.root" ); // Empty tree - background totally cut
-  TFile *input_WZ         = TFile::Open( inDir+"/histofile_WZ.root" );
+//  TFile *input_WZ         = TFile::Open( inDir+"/histofile_WZ.root" );
   TFile *input_ZZ         = TFile::Open( inDir+"/histofile_ZZ.root" );
 
-  TFile *input_TtChan     = TFile::Open( inDir+"/histofile_TtChan.root" ); // Empty tree - background totally cut
+//  TFile *input_TtChan     = TFile::Open( inDir+"/histofile_TtChan.root" ); // Empty tree - background totally cut
   TFile *input_TbartChan  = TFile::Open( inDir+"/histofile_TbartChan.root" );
 //  TFile *input_TsChan     = TFile::Open( inDir+"/histofile_TsChan.root" ); // Empty tree - background totally cut
   TFile *input_TtW        = TFile::Open( inDir+"/histofile_TtW.root" );
@@ -222,37 +193,36 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TFile *input_DY50	  = TFile::Open( inDir+"/histofile_DYToLL_M50.root" );
 //  TFile *input_DY10To50	  = TFile::Open( inDir+"/histofile_DYToLL_M10To50.root" ); // Empty tree - background totally cut
   
-  TTree *signal              = (TTree*)input_sig->Get("Ttree_tZq");
+  TString treePost = "";
+  if (regList.size() > 1) treePost = "sig_";
+  TTree *signal              = (TTree*)input_sig->Get("Ttree_"+treePost+"tZq");
+  TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_"+treePost+"TTZ");
+  TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_"+treePost+"TTW");
+//  TTree *background_THQ     = (TTree*)input_TTW->Get("Ttree_"+treePost+"THQ");
 
-  TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_TTZ");
-  TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_TTW");
-//  TTree *background_THQ     = (TTree*)input_TTW->Get("Ttree_THQ");
-
-  TTree *background_TT     = (TTree*)input_TT->Get("Ttree_TT");
-//  TTree *background_WW     = (TTree*)input_WW->Get("Ttree_WW");
-  TTree *background_WZ     = (TTree*)input_WZ->Get("Ttree_WZ");
-  TTree *background_ZZ     = (TTree*)input_ZZ->Get("Ttree_ZZ");
+  TTree *background_TT     = (TTree*)input_TT->Get("Ttree_"+treePost+"TT");
+//  TTree *background_WW     = (TTree*)input_WW->Get("Ttree_"+treePost+"WW");
+//  TTree *background_WZ     = (TTree*)input_WZ->Get("Ttree_"+treePost+"WZ");
+  TTree *background_ZZ     = (TTree*)input_ZZ->Get("Ttree_"+treePost+"ZZ");
   
-  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_TtChan");
-  TTree *background_TbartChan = (TTree*)input_TbartChan->Get("Ttree_TbartChan");
-//  TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_TsChan");
-  TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_TtW");  
-  TTree *background_TbartW    = (TTree*)input_TbartW->Get("Ttree_TbartW");  
+//  TTree *background_TtChan    = (TTree*)input_TtChan->Get("Ttree_"+treePost+"TtChan");
+  TTree *background_TbartChan = (TTree*)input_TbartChan->Get("Ttree_"+treePost+"TbartChan");
+//  TTree *background_TsChan    = (TTree*)input_TsChan->Get("Ttree_"+treePost+"TsChan");
+  TTree *background_TtW       = (TTree*)input_TtW->Get("Ttree_"+treePost+"TtW");  
+  TTree *background_TbartW    = (TTree*)input_TbartW->Get("Ttree_"+treePost+"TbartW");  
 
-  TTree *background_DY50         = (TTree*)input_DY50->Get("Ttree_DYToLL_M50");
-//  TTree *background_DY10To50   = (TTree*)input_DY10To50->Get("Tree_DYToLL_M10To50");
+  TTree *background_DY50         = (TTree*)input_DY50->Get("Ttree_"+treePost+"DYToLL_M50");
+//  TTree *background_DY10To50   = (TTree*)input_DY10To50->Get("Ttree_"+treePost+"DYToLL_M10To50");
 
   factory->AddSignalTree      ( signal, 1. );
   factory->AddBackgroundTree  ( background_TTZ, 1. );
   factory->AddBackgroundTree  ( background_TTW, 1. );
-//  factory->AddBackgroundTree  ( background_THQ, 1. );
 
   factory->AddBackgroundTree  ( background_TT, 1. );
-//  factory->AddBackgroundTree  ( background_WW, 1. );
-  factory->AddBackgroundTree  ( background_WZ, 1. );
+//  factory->AddBackgroundTree  ( background_WZ, 1. );
   factory->AddBackgroundTree  ( background_ZZ, 1. );
 
-  factory->AddBackgroundTree  ( background_TtChan, 1. );
+//  factory->AddBackgroundTree  ( background_TtChan, 1. );
   factory->AddBackgroundTree  ( background_TbartChan, 1. );
 //  factory->AddBackgroundTree  ( background_TsChan, 1. );
   factory->AddBackgroundTree  ( background_TtW, 1. );
@@ -389,7 +359,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
 
   input->cd();
   //  cout << "sample " << sample << endl;
-  // cout << "tree name " << "Ttree_"+sample  << endl;
+  // cout << "tree name " << "Tree_"+sample  << endl;
   TTree* theTree = (TTree*)input->Get("Ttree_"+sample);
   for (unsigned int ivar=0; ivar<varsize; ivar++) theTree->SetBranchAddress( varList[ivar].Data(), &(treevars[ivar]) );
   float theweight = 0;
