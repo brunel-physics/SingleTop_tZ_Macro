@@ -42,11 +42,11 @@ class theMVAtool {
 public :
    
    
-   theMVAtool(bool doCtrlReg = false, bool sigMode = false);
+   theMVAtool(bool doCtrlReg = false);
    theMVAtool(std::vector<TString > thevarlist, std::vector<TString > thesamplelist, std::vector<TString > thesystlist);
    ~theMVAtool(){};
    
-   void doTraining(TString channel = "all",TString inDir = "inputroot/met0mtw0/");
+   void doTraining(TString channel = "all",TString inDir = "inputroot/met0mtw0/", bool sigMode = false);
    void doReading(float bdtcut = 100., TString channel = "all", TString inDir = "inputroot/met0mtw0/", TString outDir = "outputroot/");
    
    void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);

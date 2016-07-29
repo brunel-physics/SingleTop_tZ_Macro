@@ -1,7 +1,7 @@
 #define theMVAtool_cxx
 #include "theMVAtool.h"
 
-theMVAtool::theMVAtool(bool doCtrlReg, bool sigMode){
+theMVAtool::theMVAtool(bool doCtrlReg){
   
   //constructor
 //  varList.push_back("mTW");
@@ -164,7 +164,7 @@ theMVAtool::theMVAtool(std::vector<TString > thevarlist, std::vector<TString > t
  // to perform the training
 //---------------------------------------------------------------
 
-void theMVAtool::doTraining(TString channel, TString inDir){
+void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
 
  //---------------------------------------------------------------
   // This loads the library
@@ -195,7 +195,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   
   TString treePost = "";
   if (regList.size() > 1) { 
-    if (!sigMode) treePost = "sig_";
+    if ( !sigMode ) treePost = "sig_";
     else treePost = "ctrl_";
   }
   TTree *signal              = (TTree*)input_sig->Get("Ttree_"+treePost+"tZq");
