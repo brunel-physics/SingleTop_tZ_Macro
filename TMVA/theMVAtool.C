@@ -3,8 +3,6 @@
 
 theMVAtool::theMVAtool(bool doCtrlReg){
   
-  doCtrlReg = false;
-
   //constructor
 //  varList.push_back("mTW");
   varList.push_back("wQuark1Pt");
