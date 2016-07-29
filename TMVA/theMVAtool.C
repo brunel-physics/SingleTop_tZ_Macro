@@ -196,7 +196,7 @@ void theMVAtool::doTraining(TString channel, TString inDir){
   TString treePost = "";
   if (regList.size() > 1) { 
     if (!sigMode) treePost = "sig_";
-    else treePost = "ctrl_!;
+    else treePost = "ctrl_";
   }
   TTree *signal              = (TTree*)input_sig->Get("Ttree_"+treePost+"tZq");
   TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_"+treePost+"TTZ");
