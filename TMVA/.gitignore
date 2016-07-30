@@ -1,0 +1,9 @@
+## Files
+*.d
+*.so
+*.pcm
+
+## Directories
+weights/
+outputroot/
+TemplateRootFiles/
