@@ -64,7 +64,8 @@ public :
    std::vector<TString > systlist;
    std::vector<TString > regList;
    
-   
+   void PseudoData  ( TString channel = "all", bool FakesData = false );
+  
    std::vector<TH1F*> histovect;
    
    std::map<TString,std::vector<TH1F*> > theHistoMap;

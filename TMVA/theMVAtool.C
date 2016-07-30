@@ -581,4 +581,59 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
   
 }
 
+void theMVAtool::PseudoData(TString channel, bool FakesData) {
 
+  TRandom3 therand(0); //Randomization
+
+  TString pseudodata_input_name = "outputs/controlString.root";
+  TFile* file = TFile::Open( pseudodata_input_name.Data(), "UPDATE");
+  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
+
+  TH1F *h_sum = 0, *h_tmp = 0;
+
+  //file->ls(); //output the content of the file
+
+  for(int iVar=0; iVar<varList.size(); iVar++) {
+
+    std::cout << " --- " << varList[iVar] << std::endl;
+
+    h_sum = 0;
+
+    // get the sum of all the samples to be used as expectation value of the poisson
+    for(unsigned int i=0; i< samplelist.size(); i++){
+      //cout << samplelist[i] << endl;
+
+      //if ( !FakesData && FakesFromData ) continue; //Fakes from MC only
+      //if ( FakesData && (samplelist[i].Contains("Data") || samplelist[i].Contains("WW") || samplelist[i].Contains("WZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("TT") || samplelist[i].Contains("DY")) ) continue;
+
+      h_tmp = 0;
+
+      TString histo_name = "Control_" + channel + "_" + VarList_[iVar] + "_" + SampleList_[iSample];
+      if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : ERROR"<<endl; continue;}	
+      h_tmp = (TH1F*) file->Get(histo_name.Data())->Clone();
+
+      if(h_sum == 0) {h_sum = (TH1F*) h_tmp->Clone();}
+      else {h_sum->Add(h_tmp);}
+    }
+  
+    int nofbins = h_sum->GetNbinsX();
+  
+    for(int i=0; i<nofbins; i++)
+    {
+      int bin_content = h_sum->GetBinContent(i+1); // std::cout << "initial content = " << bin_content << std::endl;
+      int new_bin_content = therand.Poisson(bin_content); //std::cout<<"new content = " << new_bin_content << std::endl;
+      h_sum->SetBinContent(i+1, new_bin_content);
+    }
+  
+    file->cd();
+    TString output_histo_name = "BDT_" + channel + "__DATA";
+    h_sum->Write(output_histo_name, TObject::kOverwrite);
+  }
+
+  file->Close();
+   
+  std::cout << "--- Done with generation of pseudo-data" << std::endl;
+
+  }
+  
+}
