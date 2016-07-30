@@ -1,6 +1,8 @@
 #define theMVAtool_cxx
 #include "theMVAtool.h"
 
+#include <boost/algorithm/string/replace.hpp>
+
 theMVAtool::theMVAtool(bool doCtrlReg){
   
   //constructor
@@ -568,6 +570,12 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
   std::vector<TH1F*> histovect = theHistoMap[reg+sample+syst];
   for(unsigned int i=0; i< (histovect.size()); i++) { 
     if(histovect[i] == 0) cout << "no histogram existing for " << reg+sample+syst << endl;
+    if (reg != "")
+    {
+        std::string name{histovect[i]->GetName()};
+        boost::replace_last(name, reg.Data(), "");
+        histovect[i]->SetName(name.c_str());
+    }
     histovect[i]->Write();
   }
   
