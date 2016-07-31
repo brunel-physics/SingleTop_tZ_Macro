@@ -588,7 +588,7 @@ void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) 
 
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << output_file->GetName() << " ! ---\n" << std::endl;
 
-  TH1F *h_sum = 0, *h_tmp = 0;
+  TH1F *h_sum = 0;
 
   //file->ls(); //output the content of the file
 
@@ -596,38 +596,42 @@ void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) 
 
     std::cout << " --- " << varList[iVar] << std::endl;
 
-    h_sum = 0;
+    std::vector<float> sum;
 
     // get the sum of all the samples to be used as expectation value of the poisson
     for(unsigned int i=0; i< samplelist.size(); i++){
       //cout << samplelist[i] << endl;
 
       if ( samplelist[i].Contains("Data") ) continue; //From MC only
-
       TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
-      TTree *input_tree    = (TTree*)input->Get("TTree_"+region+"_"+samplelist[i]);
-      	
-      h_tmp = 0;
+      TTree *input_tree    = (TTree*)input->Get("Ttree_"+region+"_"+samplelist[i]);
 
-      TString branch_name = varList[iVar];
-      h_tmp = (TH1F*) input->Get(branch_name.Data())->Clone();
-
-      if (h_sum == 0) h_sum = (TH1F*) h_tmp->Clone();
-      else h_sum->Add(h_tmp);
+      Float_t var;
+      TString varName = varList[iVar];
+      std::cout << __LINE__<< std::endl;
+      input_tree->SetBranchAddress(varName, &var);
+      std::cout<<__LINE__<<std::endl;
+      for (Int_t nEntry = 0; nEntry < input_tree->GetEntries(); nEntry++) {
+	input_tree->GetEntry(nEntry);
+	sum[nEntry] += var;
+      }
     }
   
-    int nofbins = h_sum->GetNbinsX();
+    int nofbins = sum.size();
   
     for(int i=0; i<nofbins; i++)
     {
-      int bin_content = h_sum->GetBinContent(i+1); // std::cout << "initial content = " << bin_content << std::endl;
+      int bin_content = sum[i]; // std::cout << "initial content = " << bin_content << std::endl;
       int new_bin_content = therand.Poisson(bin_content); //std::cout<<"new content = " << new_bin_content << std::endl;
-      h_sum->SetBinContent(i+1, new_bin_content);
+      sum[i] = new_bin_content;
     }
 
     // Add new branch to tree
-    TBranch *newBranch = output_tree->Branch(varList[iVar], &h_sum, ( varList[iVar]+"/F") );
+      std::cout << __LINE__<< std::endl;
+    TBranch *newBranch = output_tree->Branch(varList[iVar], &sum[0], ( varList[iVar]+"/F") );
+      std::cout << __LINE__<< std::endl;
     newBranch->Fill();
+      std::cout << __LINE__<< std::endl;
   }
 
   output_file->cd();
