@@ -569,7 +569,7 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
     if(histovect[i] == 0) cout << "no histogram existing for " << reg+sample+syst << endl;
     if (reg != "")
     {
-        std::string name{histovect[i]->GetName()};
+        std::string name = histovect[i]->GetName();
         boost::replace_last(name, reg.Data(), "");
         histovect[i]->SetName(name.c_str());
     }
@@ -586,13 +586,13 @@ void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) 
   TFile *output_file = new TFile (pseudodata_output_name, "RECREATE");
   TTree *output_tree = new TTree("Ttree_pseudoData", "Ttree_pseudoData");
 
-  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
+  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << output_file->GetName() << " ! ---\n" << std::endl;
 
   TH1F *h_sum = 0, *h_tmp = 0;
 
   //file->ls(); //output the content of the file
 
-  for(int iVar=0; iVar<varList.size(); iVar++) {
+  for(uint iVar=0; iVar<varList.size(); iVar++) {
 
     std::cout << " --- " << varList[iVar] << std::endl;
 
@@ -602,14 +602,14 @@ void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) 
     for(unsigned int i=0; i< samplelist.size(); i++){
       //cout << samplelist[i] << endl;
 
-      if (  (samplelist[i].Contains("Data") ) continue; //From MC only
+      if ( samplelist[i].Contains("Data") ) continue; //From MC only
 
       TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
       TTree *input_tree    = (TTree*)input->Get("TTree_"+region+"_"+samplelist[i]);
       	
       h_tmp = 0;
 
-      TString branch_name = VarList_[iVar];
+      TString branch_name = varList[iVar];
       h_tmp = (TH1F*) input->Get(branch_name.Data())->Clone();
 
       if (h_sum == 0) h_sum = (TH1F*) h_tmp->Clone();
@@ -626,14 +626,13 @@ void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) 
     }
 
     // Add new branch to tree
-    TBranch *newBranch = output_tree->Branch(VarList_[iVar], &h_sum, ( VarList_[iVar]+"/F").c_str() );
+    TBranch *newBranch = output_tree->Branch(varList[iVar], &h_sum, ( varList[iVar]+"/F") );
     newBranch->Fill();
   }
 
-  out_file->cd();
-  out_tree->Write();
-  out_tree->Close();
-  out_file->Close();
+  output_file->cd();
+  output_tree->Write();
+  output_file->Close();
 
   std::cout << "--- Done with generation of pseudo-data" << std::endl;  
 }
