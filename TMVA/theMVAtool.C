@@ -304,7 +304,7 @@ void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
 // also fills histograms of the varList used into the BDT
 //---------------------------------------------------------------
 
-void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString outDir){
+void theMVAtool::doReading(float bdtcut, TString channel, TString inDir, TString outDir, bool usePseudoData){
   
   
   // This loads the library
@@ -413,10 +413,7 @@ void theMVAtool::loopInSample(TFile* input, TString sample, float *treevars, flo
     if(mvaValue > bdtcut) continue;
     //cout << "the bdt " << bdtcut << endl;
     fillHisto(sample, treevars, mvaValue, mtwValue, theweight);
-  }
-  
-  
-  
+  }  
   
 }
 
@@ -581,12 +578,14 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
   
 }
 
-void theMVAtool::PseudoData(TString channel, bool FakesData) {
+void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) {
 
   TRandom3 therand(0); //Randomization
 
-  TString pseudodata_input_name = "outputs/controlString.root";
-  TFile* file = TFile::Open( pseudodata_input_name.Data(), "UPDATE");
+  TString pseudodata_output_name = "pseudoData/histoFile_"+region+"_"+channel+"_pseudoData.root";
+  TFile *output_file = new TFile (pseudodata_output_name, "RECREATE");
+  TTree *output_tree = new TTree("Ttree_pseudoData", "Ttree_pseudoData");
+
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
 
   TH1F *h_sum = 0, *h_tmp = 0;
@@ -603,17 +602,18 @@ void theMVAtool::PseudoData(TString channel, bool FakesData) {
     for(unsigned int i=0; i< samplelist.size(); i++){
       //cout << samplelist[i] << endl;
 
-      //if ( !FakesData && FakesFromData ) continue; //Fakes from MC only
-      //if ( FakesData && (samplelist[i].Contains("Data") || samplelist[i].Contains("WW") || samplelist[i].Contains("WZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("TT") || samplelist[i].Contains("DY")) ) continue;
+      if (  (samplelist[i].Contains("Data") ) continue; //From MC only
 
+      TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
+      TTree *input_tree    = (TTree*)input->Get("TTree_"+region+"_"+samplelist[i]);
+      	
       h_tmp = 0;
 
-      TString histo_name = "Control_" + channel + "_" + VarList_[iVar] + "_" + SampleList_[iSample];
-      if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : ERROR"<<endl; continue;}	
-      h_tmp = (TH1F*) file->Get(histo_name.Data())->Clone();
+      TString branch_name = VarList_[iVar];
+      h_tmp = (TH1F*) input->Get(branch_name.Data())->Clone();
 
-      if(h_sum == 0) {h_sum = (TH1F*) h_tmp->Clone();}
-      else {h_sum->Add(h_tmp);}
+      if (h_sum == 0) h_sum = (TH1F*) h_tmp->Clone();
+      else h_sum->Add(h_tmp);
     }
   
     int nofbins = h_sum->GetNbinsX();
@@ -624,16 +624,16 @@ void theMVAtool::PseudoData(TString channel, bool FakesData) {
       int new_bin_content = therand.Poisson(bin_content); //std::cout<<"new content = " << new_bin_content << std::endl;
       h_sum->SetBinContent(i+1, new_bin_content);
     }
-  
-    file->cd();
-    TString output_histo_name = "BDT_" + channel + "__DATA";
-    h_sum->Write(output_histo_name, TObject::kOverwrite);
+
+    // Add new branch to tree
+    TBranch *newBranch = output_tree->Branch(VarList_[iVar], &h_sum, ( VarList_[iVar]+"/F").c_str() );
+    newBranch->Fill();
   }
 
-  file->Close();
-   
-  std::cout << "--- Done with generation of pseudo-data" << std::endl;
+  out_file->cd();
+  out_tree->Write();
+  out_tree->Close();
+  out_file->Close();
 
-  }
-  
+  std::cout << "--- Done with generation of pseudo-data" << std::endl;  
 }

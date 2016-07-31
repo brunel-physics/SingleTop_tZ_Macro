@@ -47,7 +47,7 @@ public :
    ~theMVAtool(){};
    
    void doTraining(TString channel = "all",TString inDir = "inputroot/met0mtw0/", bool sigMode = false);
-   void doReading(float bdtcut = 100., TString channel = "all", TString inDir = "inputroot/met0mtw0/", TString outDir = "outputroot/");
+   void doReading(float bdtcut = 100., TString channel = "all", TString inDir = "inputroot/met0mtw0/", TString outDir = "outputroot/", bool usePseudoData = true);
    
    void loopInSample(TFile* input, TString sample, float *treevars, float bdtcut, TString channel);
    
@@ -64,7 +64,7 @@ public :
    std::vector<TString > systlist;
    std::vector<TString > regList;
    
-   void PseudoData  ( TString channel = "all", bool FakesData = false );
+   void makePseudoData  ( TString inDir, TString channel = "all", TString region = "" );
   
    std::vector<TH1F*> histovect;
    
