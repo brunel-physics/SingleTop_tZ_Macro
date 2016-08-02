@@ -102,6 +102,12 @@ theMVAtool::theMVAtool(bool doCtrlReg){
 //  varList.push_back("totHt");
 //  varList.push_back("jetHt");
 //  varList.push_back("totHtOverPt");
+  varList.push_back("wTopDelR");
+  varList.push_back("wTopDelPhi");
+  varList.push_back("w1TopDelR");
+  varList.push_back("w1TopDelPhi");
+  varList.push_back("w2TopDelR");
+  varList.push_back("w2TopDelPhi");
 
   if (doCtrlReg){
     regList.push_back("sig_");
@@ -522,6 +528,12 @@ void theMVAtool::createHisto(TString sample, TString channel){
     if(varList[j]=="totHt"           ){     nbins = 20;xmin = 150; xmax = 1500;};
     if(varList[j]=="jetHt"           ){     nbins = 20;xmin = 0; xmax = 500;};
     if(varList[j]=="totHtOverPt"     ){     nbins = 20;xmin = 0; xmax = 4;};
+    if(varList[j]=="wTopDelR"          ){     nbins = 20;xmin = 0; xmax = 7;};
+    if(varList[j]=="wTopDelPhi"        ){     nbins = 20;xmin = 0; xmax = 3.2;};
+    if(varList[j]=="w1TopDelR"          ){     nbins = 20;xmin = 0; xmax = 7;};
+    if(varList[j]=="w1TopDelPhi"        ){     nbins = 20;xmin = 0; xmax = 3.2;};
+    if(varList[j]=="w2TopDelR"          ){     nbins = 20;xmin = 0; xmax = 7;};
+    if(varList[j]=="w2TopDelPhi"        ){     nbins = 20;xmin = 0; xmax = 3.2;};
     
     if(nbins==1)  cout << "warning : no TH1F definition for variable " << varList[j] << endl;
     TH1F * histo = new TH1F((varList[j]+"_"+channel+"__"+sample).Data(), (varList[j]+"_"+channel+"__"+sample).Data(), nbins, xmin, xmax);
