@@ -7,12 +7,12 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   
   //constructor
 //  varList.push_back("mTW");
-  varList.push_back("wQuark1Pt");
-  varList.push_back("wQuark1Eta");
-  varList.push_back("wQuark1Phi");
-  varList.push_back("wQuark2Pt");
-  varList.push_back("wQuark2Eta");
-  varList.push_back("wQuark2Phi");
+//  varList.push_back("wQuark1Pt");
+//  varList.push_back("wQuark1Eta");
+//  varList.push_back("wQuark1Phi");
+//  varList.push_back("wQuark2Pt");
+//  varList.push_back("wQuark2Eta");
+//  varList.push_back("wQuark2Phi");
   varList.push_back("wPairMass");
   varList.push_back("wPairPt");
   varList.push_back("wPairEta");
@@ -20,77 +20,77 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("met");
   varList.push_back("nJets");
   varList.push_back("leadJetPt");
-  varList.push_back("leadJetPhi");
-  varList.push_back("leadJetEta");
+//  varList.push_back("leadJetPhi");
+//  varList.push_back("leadJetEta");
   varList.push_back("leadJetbTag");
   varList.push_back("secJetPt");
-  varList.push_back("secJetPhi");
+//  varList.push_back("secJetPhi");
   varList.push_back("secJetEta");
-  varList.push_back("secJetbTag");
+//  varList.push_back("secJetbTag");
   varList.push_back("thirdJetPt");
-  varList.push_back("thirdJetPhi");
+//  varList.push_back("thirdJetPhi");
   varList.push_back("thirdJetEta");
-  varList.push_back("thirdJetbTag");
+//  varList.push_back("thirdJetbTag");
   varList.push_back("fourthJetPt");
-  varList.push_back("fourthJetPhi");
+//  varList.push_back("fourthJetPhi");
   varList.push_back("fourthJetEta");
-  varList.push_back("fourthJetbTag");
-  varList.push_back("nBjets");
-  varList.push_back("bTagDisc");
-  varList.push_back("lep1Pt");
-  varList.push_back("lep1Eta");
-  varList.push_back("lep1Phi");
-  varList.push_back("lep1RelIso");
-  varList.push_back("lep1D0");
-  varList.push_back("lep2Pt");
-  varList.push_back("lep2Eta");
-  varList.push_back("lep2Phi");
-  varList.push_back("lep2RelIso");
-  varList.push_back("lep2D0");
-  varList.push_back("lepMass");
-  varList.push_back("lepPt");
-  varList.push_back("lepEta");
-  varList.push_back("lepPhi");
+//  varList.push_back("fourthJetbTag");
+//  varList.push_back("nBjets");
+//  varList.push_back("bTagDisc");
+//  varList.push_back("lep1Pt");
+//  varList.push_back("lep1Eta");
+//  varList.push_back("lep1Phi");
+//  varList.push_back("lep1RelIso");
+//  varList.push_back("lep1D0");
+//  varList.push_back("lep2Pt");
+//  varList.push_back("lep2Eta");
+//  varList.push_back("lep2Phi");
+//  varList.push_back("lep2RelIso");
+//  varList.push_back("lep2D0");
+//  varList.push_back("lepMass");
+//  varList.push_back("lepPt");
+//  varList.push_back("lepEta");
+//  varList.push_back("lepPhi");
   varList.push_back("zMass");
   varList.push_back("zPt");
   varList.push_back("zEta");
-  varList.push_back("zPhi");
+//  varList.push_back("zPhi");
   varList.push_back("topMass");
   varList.push_back("topPt");
   varList.push_back("topEta");
-  varList.push_back("topPhi");
+//  varList.push_back("topPhi");
   varList.push_back("jjdelR");
   varList.push_back("jjdelPhi");
   varList.push_back("wwdelR");
   varList.push_back("wwdelPhi");
   varList.push_back("zLepdelR");
-  varList.push_back("zLepdelPhi");
-  varList.push_back("zl1Quark1DelR");
-  varList.push_back("zl1Quark1DelPhi");
+//  varList.push_back("zLepdelPhi");
+//  varList.push_back("zl1Quark1DelR");
+//  varList.push_back("zl1Quark1DelPhi");
   varList.push_back("zl1Quark2DelR");
-  varList.push_back("zl1Quark2DelPhi");
+//  varList.push_back("zl1Quark2DelPhi");
   varList.push_back("zl2Quark1DelR");
-  varList.push_back("zl2Quark1DelPhi");
-  varList.push_back("zl2Quark2DelR");
-  varList.push_back("zl2Quark2DelPhi");
+//  varList.push_back("zl2Quark1DelPhi");
+//  varList.push_back("zl2Quark2DelR");
+//  varList.push_back("zl2Quark2DelPhi");
   varList.push_back("zlb1DelR");
-  varList.push_back("zlb1DelPhi");
+//  varList.push_back("zlb1DelPhi");
   varList.push_back("zlb2DelR");
-  varList.push_back("zlb2DelPhi");
-  varList.push_back("lepHt");
+//  varList.push_back("zlb2DelPhi");
+//  varList.push_back("lepHt");
   varList.push_back("wQuarkHt");
-  varList.push_back("totPt");
-  varList.push_back("totEta");
-  varList.push_back("totPtVec");
+//  varList.push_back("totPt");
+//  varList.push_back("totEta");
+//  varList.push_back("totPtVec");
   varList.push_back("totVecM");
-//  varList.push_back("Channel");
-  varList.push_back("totPt2Jet");
-  varList.push_back("wzdelR");
-  varList.push_back("wzdelPhi");
-  varList.push_back("zQuark1DelR");
-  varList.push_back("zQuark1DelPhi");
-  varList.push_back("zQuark2DelR");
-  varList.push_back("zQuark2DelPhi");
+////  varList.push_back("Channel");
+//  varList.push_back("totPt2Jet");
+//  varList.push_back("wzdelR");
+//  varList.push_back("wzdelPhi");
+//  varList.push_back("zQuark1DelR");
+//  varList.push_back("zQuark1DelPhi");
+//  varList.push_back("zQuark2DelR");
+//  varList.push_back("zQuark2DelPhi");
   varList.push_back("zTopDelR");
   varList.push_back("zTopDelPhi");
   varList.push_back("zl1TopDelR");
@@ -99,9 +99,9 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   varList.push_back("zl2TopDelPhi");
   varList.push_back("zjminR");
   varList.push_back("zjminPhi");
-  varList.push_back("totHt");
-  varList.push_back("jetHt");
-  varList.push_back("totHtOverPt");
+//  varList.push_back("totHt");
+//  varList.push_back("jetHt");
+//  varList.push_back("totHtOverPt");
 
   if (doCtrlReg){
     regList.push_back("sig_");
@@ -127,7 +127,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
 //  samplelist.push_back("WZ"); // Empty tree - background totally cut for sig/ctrl, all has 1 event
   samplelist.push_back("ZZ");
 //  samplelist.push_back("TsChan"); // Empty tree - background totally cut
-  samplelist.push_back("TtChan"); // Empty tree - background totally cut
+//  samplelist.push_back("TtChan"); // Empty tree - background totally cut
   samplelist.push_back("TbartChan");
   samplelist.push_back("TtW");
   samplelist.push_back("TbartW");
@@ -228,10 +228,10 @@ void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
   factory->AddBackgroundTree  ( background_ZZ, 1. );
 
 //  factory->AddBackgroundTree  ( background_TtChan, 1. );
-  factory->AddBackgroundTree  ( background_TbartChan, 1. );
+//  factory->AddBackgroundTree  ( background_TbartChan, 1. );
 //  factory->AddBackgroundTree  ( background_TsChan, 1. );
-  factory->AddBackgroundTree  ( background_TtW, 1. );
-  factory->AddBackgroundTree  ( background_TbartW, 1. );
+//  factory->AddBackgroundTree  ( background_TtW, 1. );
+//  factory->AddBackgroundTree  ( background_TbartW, 1. );
 
   factory->AddBackgroundTree  ( background_DY50, 1. );
 //  factory->AddBackgroundTree  ( background_DY10To50, 1. );
@@ -578,65 +578,86 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
   
 }
 
-void theMVAtool::makePseudoData(TString inDir, TString channel, TString region) {
+void theMVAtool::makePseudoDataMVA(TString inDir, TString channel) {
 
   TRandom3 therand(0); //Randomization
 
-  TString pseudodata_output_name = "pseudoData/histoFile_"+region+"_"+channel+"_pseudoData.root";
-  TFile *output_file = new TFile (pseudodata_output_name, "RECREATE");
-  TTree *output_tree = new TTree("Ttree_pseudoData", "Ttree_pseudoData");
+  TString input_name = inDir+"output_all_merged.root";
+  TFile *file = new TFile (input_name.Data(), "UPDATE");
 
-  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << output_file->GetName() << " ! ---\n" << std::endl;
+  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
 
-  TH1F *h_sum = 0;
+  TH1F *h_sum = 0, *h_tmp = 0;
 
-  //file->ls(); //output the content of the file
+  for(unsigned int i=0; i< samplelist.size(); i++){
+    if ( samplelist[i].Contains("Data") ) continue; //From MC only
+    h_tmp = 0;
+    TString histo_name = "MVA_" + channel + "__" + samplelist[i];
+    if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : problem"<<endl; continue;}
+    h_tmp = (TH1F*) file->Get(histo_name.Data())->Clone();
+    if(h_sum == 0) {h_sum = (TH1F*) h_tmp->Clone();}
+    else {h_sum->Add(h_tmp);}
+  }
+
+  int nofbins = h_sum->GetNbinsX();
+  
+  for(int i=0; i<nofbins; i++)
+  {
+    int bin_content = h_sum->GetBinContent(i+1); //cout<<"initial content = "<<bin_content<<endl;
+    int new_bin_content = therand.Poisson(bin_content); //cout<<"new content = "<<new_bin_content<<endl;
+    h_sum->SetBinContent(i+1, new_bin_content);
+  }
+  
+  file->cd();
+  TString output_histo_name = "MVA_"+channel+"_DATA";
+  h_sum->Write(output_histo_name, TObject::kOverwrite);
+  
+  file->Close();
+
+  std::cout << "--- Done with generation of pseudo-data" << std::endl;  
+}
+
+void theMVAtool::makePseudoDataVars(TString inDir, TString channel) {
+
+  TRandom3 therand(0); //Randomization
+
+  TString input_name = inDir+"output_all_merged.root";
+  TFile *file = new TFile (input_name.Data(), "UPDATE");
+
+  std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
+
+  TH1F *h_sum = 0, *h_tmp = 0;
 
   for(uint iVar=0; iVar<varList.size(); iVar++) {
 
     std::cout << " --- " << varList[iVar] << std::endl;
 
-    std::vector<float> sum;
+    h_sum = 0;
 
-    // get the sum of all the samples to be used as expectation value of the poisson
     for(unsigned int i=0; i< samplelist.size(); i++){
-      //cout << samplelist[i] << endl;
-
       if ( samplelist[i].Contains("Data") ) continue; //From MC only
-      TFile *input         = new TFile( (inDir+"histofile_"+samplelist[i]+".root").Data(), "read");
-      TTree *input_tree    = (TTree*)input->Get("Ttree_"+region+"_"+samplelist[i]);
-
-      Float_t var;
-      TString varName = varList[iVar];
-      std::cout << __LINE__<< std::endl;
-      input_tree->SetBranchAddress(varName, &var);
-      std::cout<<__LINE__<<std::endl;
-      for (Int_t nEntry = 0; nEntry < input_tree->GetEntries(); nEntry++) {
-	input_tree->GetEntry(nEntry);
-	sum[nEntry] += var;
-      }
+      h_tmp = 0;
+      TString histo_name = varList[iVar] + "_" + channel + "__" + samplelist[i];
+      if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : problem"<<endl; continue;}
+      h_tmp = (TH1F*) file->Get(histo_name.Data())->Clone();
+      if(h_sum == 0) {h_sum = (TH1F*) h_tmp->Clone();}
+      else {h_sum->Add(h_tmp);}
     }
-  
-    int nofbins = sum.size();
+
+    int nofbins = h_sum->GetNbinsX();
   
     for(int i=0; i<nofbins; i++)
     {
-      int bin_content = sum[i]; // std::cout << "initial content = " << bin_content << std::endl;
-      int new_bin_content = therand.Poisson(bin_content); //std::cout<<"new content = " << new_bin_content << std::endl;
-      sum[i] = new_bin_content;
+      int bin_content = h_sum->GetBinContent(i+1); //cout<<"initial content = "<<bin_content<<endl;
+      int new_bin_content = therand.Poisson(bin_content); //cout<<"new content = "<<new_bin_content<<endl;
+      h_sum->SetBinContent(i+1, new_bin_content);
     }
-
-    // Add new branch to tree
-      std::cout << __LINE__<< std::endl;
-    TBranch *newBranch = output_tree->Branch(varList[iVar], &sum[0], ( varList[iVar]+"/F") );
-      std::cout << __LINE__<< std::endl;
-    newBranch->Fill();
-      std::cout << __LINE__<< std::endl;
+  
+    file->cd();
+    TString output_histo_name = varList[iVar]+"_"+channel+"_DATA";
+    h_sum->Write(output_histo_name, TObject::kOverwrite);
   }
-
-  output_file->cd();
-  output_tree->Write();
-  output_file->Close();
+  file->Close();
 
   std::cout << "--- Done with generation of pseudo-data" << std::endl;  
 }
