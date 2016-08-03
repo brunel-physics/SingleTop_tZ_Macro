@@ -64,8 +64,8 @@ public :
    std::vector<TString > systlist;
    std::vector<TString > regList;
    
-   void makePseudoDataMVA  ( TString inDir, TString channel = "all" );
-   void makePseudoDataVars  ( TString inDir, TString channel = "all" );
+   void makePseudoDataMVA  ( TString inDir, TString channel = "all", bool useData = true );
+   void makePseudoDataVars  ( TString inDir, TString channel = "all", bool useData = true );
   
    std::vector<TH1F*> histovect;
    
