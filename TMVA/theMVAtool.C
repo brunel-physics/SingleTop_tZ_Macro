@@ -603,7 +603,7 @@ void theMVAtool::makePseudoDataMVA(TString inDir, TString channel, bool useData)
 
   for(unsigned int i=0; i< samplelist.size(); i++){
     if ( !useData && samplelist[i].Contains("Data") ) continue; //From MC only
-    if ( useData && (samplelist[i].Contains("DYToLL_M50") || samplelist[i].Contains("TT") || samplelist[i].Contains("TTW") || samplelist[i].Contains("TTZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("WZ") || samplelist[i].Contains("WW") || samplelist[i].Contains("tZq") || samplelist[i].Contains("TbartChan") || samplelist[i].Contains("TtW") || samplelist[i].Contains("TbartW) ) continue; //From Data only
+    if ( useData && (samplelist[i].Contains("DYToLL_M50") || samplelist[i].Contains("TT") || samplelist[i].Contains("TTW") || samplelist[i].Contains("TTZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("WZ") || samplelist[i].Contains("WW") || samplelist[i].Contains("tZq") || samplelist[i].Contains("TbartChan") || samplelist[i].Contains("TtW") || samplelist[i].Contains("TbartW")) ) continue; //From Data only
     h_tmp = 0;
     TString histo_name = "MVA_" + channel + "__" + samplelist[i];
     if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : problem"<<endl; continue;}
@@ -649,7 +649,7 @@ void theMVAtool::makePseudoDataVars(TString inDir, TString channel, bool useData
 
     for(unsigned int i=0; i< samplelist.size(); i++){
       if ( !useData && samplelist[i].Contains("Data") ) continue; //From MC only
-      if ( useData && (samplelist[i].Contains("DYToLL_M50") || samplelist[i].Contains("TT") || samplelist[i].Contains("TTW") || samplelist[i].Contains("TTZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("WZ") || samplelist[i].Contains("WW") || samplelist[i].Contains("tZq") || samplelist[i].Contains("TbartChan") || samplelist[i].Contains("TtW") || samplelist[i].Contains("TbartW) ) continue; //From Data only
+      if ( useData && (samplelist[i].Contains("DYToLL_M50") || samplelist[i].Contains("TT") || samplelist[i].Contains("TTW") || samplelist[i].Contains("TTZ") || samplelist[i].Contains("ZZ") || samplelist[i].Contains("WZ") || samplelist[i].Contains("WW") || samplelist[i].Contains("tZq") || samplelist[i].Contains("TbartChan") || samplelist[i].Contains("TtW") || samplelist[i].Contains("TbartW")) ) continue; //From Data only
       h_tmp = 0;
       TString histo_name = varList[iVar] + "_" + channel + "__" + samplelist[i];
       if(!file->GetListOfKeys()->Contains(histo_name.Data())) {cout<<histo_name<<" : problem"<<endl; continue;}
