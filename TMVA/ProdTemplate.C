@@ -110,7 +110,6 @@ void ProdTemplate(const bool theta=false)
         "TtW",
         "TTW",
         "TTZ",
-        "WZ",
         "ZZ"};
 
     const std::vector<TString> systList{
