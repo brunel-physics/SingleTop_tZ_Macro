@@ -8,19 +8,30 @@ bool ProdTemplate(const TString& inputdistrib,
         const std::vector<TString>& sampleList,
         const std::vector<TString>& systList,
         const TString& intputfilename,
-        const bool theta)
+        const bool theta,
+        const bool pseudodata)
 {
     TFile* inputfile{new TFile{intputfilename.Data()}};
 
-    TH1F* histBdt_DataEG{dynamic_cast<TH1F*>
-        (inputfile->Get((inputdistrib+"__DataEG").Data())->Clone())};
-    TH1F* histBdt_DataMu{dynamic_cast<TH1F*>
-        (inputfile->Get((inputdistrib+"__DataMu").Data())->Clone())};
+    TH1F* histBdt_DataEG;
+    TH1F* histBdt_DataMu;
+    if (pseudodata)
+    {
+        histBdt_DataMu = dynamic_cast<TH1F*>
+            (inputfile->Get((inputdistrib+"__DATA").Data())->Clone());
+    }
+    else
+    {
+        histBdt_DataEG= dynamic_cast<TH1F*>
+            (inputfile->Get((inputdistrib+"__DataEG").Data())->Clone());
+        histBdt_DataMu = dynamic_cast<TH1F*>
+            (inputfile->Get((inputdistrib+"__DataMu").Data())->Clone());
+
+        histBdt_DataMu->Add(histBdt_DataEG);
+    }
 
     std::vector<TH1F*> distrib_MC;
     std::vector<TH1F*> distrib_MC_sys;
-
-    histBdt_DataMu->Add(histBdt_DataEG);
 
     //deal with nominal templates
     for(const auto& sample: sampleList)
@@ -99,7 +110,7 @@ bool ProdTemplate(const TString& inputdistrib,
 }
 
  
-void ProdTemplate(const bool theta=false)
+void ProdTemplate(const bool theta=false, const bool pseudodata=true)
 {
     const std::vector<TString> sampleList{
         "tZq",
@@ -130,10 +141,10 @@ void ProdTemplate(const bool theta=false)
         "__ME_PS__plus",
         "__ME_PS__minus"};
 
-    ProdTemplate("MVA_all", sampleList, systList,
-            "outputroot/output_merged.root", theta);
+    // ProdTemplate("MVA_all", sampleList, systList,
+    //         "outputroot/output_merged.root", theta, pseudodata);
     ProdTemplate("MVA_ee", sampleList, systList,
-            "outputroot/output_merged_ee.root", theta);
+            "outputroot/output_merged_ee.root", theta, pseudodata);
     ProdTemplate("MVA_mumu", sampleList, systList,
-            "outputroot/output_merged_mumu.root", theta);
+            "outputroot/output_merged_mumu.root", theta, pseudodata);
 }
