@@ -1,7 +1,7 @@
 #define theMVAtool_cxx
 #include "theMVAtool.h"
 
-//#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 theMVAtool::theMVAtool(bool doCtrlReg){
   
@@ -579,12 +579,12 @@ void theMVAtool::writeHisto(TString sample, TString syst, TString reg){
   std::vector<TH1F*> histovect = theHistoMap[reg+sample+syst];
   for(unsigned int i=0; i< (histovect.size()); i++) { 
     if(histovect[i] == 0) cout << "no histogram existing for " << reg+sample+syst << endl;
-/*    if (reg != "")
+    if (reg != "")
     {
         std::string name = histovect[i]->GetName();
         boost::replace_last(name, reg.Data(), "");
         histovect[i]->SetName(name.c_str());
-    }*/
+    }
     histovect[i]->Write();
   }
   
@@ -594,7 +594,7 @@ void theMVAtool::makePseudoDataMVA(TString inDir, TString channel, bool useData)
 
   TRandom3 therand(0); //Randomization
 
-  TString input_name = inDir+"output_"+channel+"_merged.root";
+  TString input_name = inDir+"output_merged_" + channel + ".root";
   TFile *file = new TFile (input_name.Data(), "UPDATE");
 
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
@@ -622,7 +622,7 @@ void theMVAtool::makePseudoDataMVA(TString inDir, TString channel, bool useData)
   }
   
   file->cd();
-  TString output_histo_name = "MVA_"+channel+"_DATA";
+  TString output_histo_name = "MVA_"+channel+"__DATA";
   h_sum->Write(output_histo_name, TObject::kOverwrite);
   
   file->Close();
@@ -634,7 +634,7 @@ void theMVAtool::makePseudoDataVars(TString inDir, TString channel, bool useData
 
   TRandom3 therand(0); //Randomization
 
-  TString input_name = inDir+"output_"+channel+"_merged.root";
+  TString input_name = inDir+"output_merged_" + channel + ".root";
   TFile *file = new TFile (input_name.Data(), "UPDATE");
 
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
@@ -668,7 +668,7 @@ void theMVAtool::makePseudoDataVars(TString inDir, TString channel, bool useData
     }
   
     file->cd();
-    TString output_histo_name = varList[iVar]+"_"+channel+"_DATA";
+    TString output_histo_name = varList[iVar]+"_"+channel+"__DATA";
     h_sum->Write(output_histo_name, TObject::kOverwrite);
   }
   file->Close();
