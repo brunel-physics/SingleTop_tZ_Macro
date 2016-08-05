@@ -594,7 +594,7 @@ void theMVAtool::makePseudoDataMVA(TString inDir, TString channel, bool useData)
 
   TRandom3 therand(0); //Randomization
 
-  TString input_name = inDir+"output_"+channel+"_merged.root";
+  TString input_name = inDir+"output_merged_" + channel + ".root";
   TFile *file = new TFile (input_name.Data(), "UPDATE");
 
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
@@ -622,7 +622,7 @@ void theMVAtool::makePseudoDataMVA(TString inDir, TString channel, bool useData)
   }
   
   file->cd();
-  TString output_histo_name = "MVA_"+channel+"_DATA";
+  TString output_histo_name = "MVA_"+channel+"__DATA";
   h_sum->Write(output_histo_name, TObject::kOverwrite);
   
   file->Close();
@@ -634,7 +634,7 @@ void theMVAtool::makePseudoDataVars(TString inDir, TString channel, bool useData
 
   TRandom3 therand(0); //Randomization
 
-  TString input_name = inDir+"output_"+channel+"_merged.root";
+  TString input_name = inDir+"output_merged_" + channel + ".root";
   TFile *file = new TFile (input_name.Data(), "UPDATE");
 
   std::cout << "\n--- GENERATION OF PSEUDODATA IN " << file->GetName() << " ! ---\n" << std::endl;
@@ -668,7 +668,7 @@ void theMVAtool::makePseudoDataVars(TString inDir, TString channel, bool useData
     }
   
     file->cd();
-    TString output_histo_name = varList[iVar]+"_"+channel+"_DATA";
+    TString output_histo_name = varList[iVar]+"_"+channel+"__DATA";
     h_sum->Write(output_histo_name, TObject::kOverwrite);
   }
   file->Close();
