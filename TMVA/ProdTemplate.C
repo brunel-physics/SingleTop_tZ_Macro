@@ -4,6 +4,11 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <iostream>
 
+namespace
+{
+    const std::unordered_set<std::string> blackList{};
+}  // namespace
+
 bool ProdTemplate(const TString& inputdistrib,
         const std::vector<TString>& sampleList,
         const std::vector<TString>& systList,
@@ -45,7 +50,10 @@ bool ProdTemplate(const TString& inputdistrib,
                 inputdistrib+"__"+sample << endl;
             return false;
         }
-        distrib_MC.emplace_back(tmp);
+        else if (tmp->GetEntries() > 0)
+        {
+            distrib_MC.emplace_back(tmp);
+        }
     }
 
 
@@ -62,7 +70,11 @@ bool ProdTemplate(const TString& inputdistrib,
             TH1F* tmp{dynamic_cast<TH1F*>
                 (inputfile->
                  Get((inputdistrib + "__" + sample + syst).Data())->Clone())};
-            distrib_MC_sys.emplace_back(tmp);  
+            if (tmp->GetEntries() > 0
+                    && blackList.find(tmp->GetName()) == blackList.end())
+            {
+                distrib_MC_sys.emplace_back(tmp);
+            }
         }
     }
 
@@ -140,6 +152,7 @@ void ProdTemplate(const bool theta=false, const bool pseudodata=true)
         "__jer__minus",
         "__ME_PS__plus",
         "__ME_PS__minus"};
+
 
     // ProdTemplate("MVA_all", sampleList, systList,
     //         "outputroot/output_merged.root", theta, pseudodata);
