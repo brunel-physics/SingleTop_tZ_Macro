@@ -43,7 +43,6 @@ bool ProdTemplate(const TString& inputdistrib,
     //deal with nominal templates
     for(const auto& sample: sampleList)
     { 
-        cout << inputdistrib + "__"+ sample  << endl;
         TH1F* tmp{dynamic_cast<TH1F*>
             (inputfile->Get((inputdistrib + "__" + sample).Data())->Clone())};
         if(!tmp)
@@ -55,6 +54,7 @@ bool ProdTemplate(const TString& inputdistrib,
         else if (tmp->GetEntries() > 0
                     && blackList.find(tmp->GetName()) == blackList.end())
         {
+            cout << inputdistrib + "__"+ sample  << endl;
             distrib_MC.emplace_back(tmp);
         }
     }
@@ -69,13 +69,13 @@ bool ProdTemplate(const TString& inputdistrib,
         }
         for(const auto& syst: systList)
         {
-            cout << inputdistrib + "__" + sample + syst << endl;
             TH1F* tmp{dynamic_cast<TH1F*>
                 (inputfile->
                  Get((inputdistrib + "__" + sample + syst).Data())->Clone())};
             if (tmp->GetEntries() > 0 
                     && blackList.find(tmp->GetName()) == blackList.end())
             {
+                cout << inputdistrib + "__" + sample + syst << endl;
                 distrib_MC_sys.emplace_back(tmp);
             }
         }
