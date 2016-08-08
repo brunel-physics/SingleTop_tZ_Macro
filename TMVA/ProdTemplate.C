@@ -6,7 +6,9 @@
 
 namespace
 {
-    const std::unordered_set<std::string> blackList{};
+    const std::unordered_set<std::string> blackList{
+        "MVA_mumu__TbartChan__bTag__plus",
+        "MVA_mumu__TbartChan__bTag__minus"};
 }  // namespace
 
 bool ProdTemplate(const TString& inputdistrib,
