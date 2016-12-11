@@ -123,6 +123,7 @@ theMVAtool::theMVAtool(bool doCtrlReg){
   samplelist.push_back("DataEG");
   samplelist.push_back("tZq");
 //  samplelist.push_back("THQ"); // Empty tree - background totally cut
+  samplelist.push_back("TWZ");
   samplelist.push_back("TTZ");
   samplelist.push_back("TTW");
   samplelist.push_back("TT");
@@ -183,6 +184,7 @@ void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
   TMVA::Factory *factory = new TMVA::Factory( "BDT_trainning_"+channel+"_tzq", outputFile,"!V:!Silent:Color:DrawProgressBar:Transformations=I:AnalysisType=Classification" );
   
   TFile *input_sig        = TFile::Open( inDir+"/histofile_tZq.root" );
+  TFile *input_TWZ        = TFile::Open( inDir+"/histofile_TWZ.root" );
   TFile *input_TTZ        = TFile::Open( inDir+"/histofile_TTZ.root" );
   TFile *input_TTW        = TFile::Open( inDir+"/histofile_TTW.root" );
 //  TFile *input_THQ        = TFile::Open( inDir+"/histofile_THQ.root" ); // Empty tree - background totally cut
@@ -207,6 +209,7 @@ void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
     else treePost = "ctrl_";
   }
   TTree *signal              = (TTree*)input_sig->Get("Ttree_"+treePost+"tZq");
+  TTree *background_TWZ     = (TTree*)input_TTZ->Get("Ttree_"+treePost+"TWZ");
   TTree *background_TTZ     = (TTree*)input_TTZ->Get("Ttree_"+treePost+"TTZ");
   TTree *background_TTW     = (TTree*)input_TTW->Get("Ttree_"+treePost+"TTW");
 //  TTree *background_THQ     = (TTree*)input_TTW->Get("Ttree_"+treePost+"THQ");
@@ -226,6 +229,7 @@ void theMVAtool::doTraining(TString channel, TString inDir, bool sigMode){
 //  TTree *background_DY10To50   = (TTree*)input_DY10To50->Get("Ttree_"+treePost+"DYToLL_M10To50");
 
   factory->AddSignalTree      ( signal, 1. );
+//  factory->AddBackgroundTree  ( background_TWZ, 1. );
 //  factory->AddBackgroundTree  ( background_TTZ, 1. );
 //  factory->AddBackgroundTree  ( background_TTW, 1. );
 
